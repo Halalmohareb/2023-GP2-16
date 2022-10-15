@@ -1,6 +1,6 @@
 # dhyaa_application
 
-A new Flutter project.
+ Flutter project.
 
 ## Getting Started
 
