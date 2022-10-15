@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "143138479208",
+    "project_id": "dhyaa-application-87f85",
+    "storage_bucket": "dhyaa-application-87f85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143138479208:android:5a10534752f7de91af6fdd",
+        "android_client_info": {
+          "package_name": "com.example.dhyaa_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143138479208-h9s2mefgtnq7vk91objlblb0opb22t06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsAwBfP7L8VBOjmKyKSn4x4ApIRy4w4w4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143138479208-h9s2mefgtnq7vk91objlblb0opb22t06.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
