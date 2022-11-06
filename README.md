@@ -1,4 +1,4 @@
-                                                # Dhyaa- ضياء
+# Dhyaa- ضياء
 
 ![DhyaaLogo](https://user-images.githubusercontent.com/115453402/200195587-d6ce41a1-73f8-4cee-9116-5dd996c56c9a.png)
 
