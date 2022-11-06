@@ -37,22 +37,22 @@ Dhyaa is an Android-based mobile application that supports Arabic language. It鈥
 
 Tutors are able to:
 
- .Register/log-in
+    .Register/log-in
  
- .Update profile
+    .Update profile
  
- .Manage availability
+    .Manage availability
  
- 路View student profile
+    路View student profile
  
 ------------------------------
 
 Students are able to:
 
- .Register/log-in
+    .Register/log-in
  
- .Update profile
+    .Update profile
  
- .Find a tutor
+    .Find a tutor
  
- 路View tuter profile
+    路View tuter profile
