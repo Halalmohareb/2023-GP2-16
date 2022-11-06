@@ -11,14 +11,16 @@ Dhyaa is an Android-based mobile application that supports Arabic language. It�
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
-💻 Technology Used
+# 💻 Technology Used
+
 . flutter framework(Dart Programing language)
 . Cloud firebase
 . figma
 
 
 
-☑️ requirement to launch launch the application
+# ☑️ requirement to launch launch the application
+
 . mobile emulater or android mobile
 . dart programing language
 . flutter framework
