@@ -45,7 +45,8 @@ Tutors are able to:
  
  ·View student profile
  
-....................
+------------------------------
+
 Students are able to:
 
  .Register/log-in
