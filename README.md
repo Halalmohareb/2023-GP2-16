@@ -9,3 +9,18 @@ whether it is in person or online, private tutoring allows students to take as m
 
 Dhyaa is an Android-based mobile application that supports Arabic language. It’s an application that makes it easy for students who struggle to connect with expert tutors for in-person or online lessons. It permits students to search based on a wide variety of subjects, different hourly rates, ratings, session types (in-person or online), level of education , and any location of their choosin!
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+💻 Technology Used
+. flutter framework(Dart Programing language)
+. Cloud firebase
+. figma
+
+
+
+☑️ requirement to launch launch the application
+. mobile emulater or android mobile
+. dart programing language
+. flutter framework
+. android stduio(skd) or visual studio code
+
