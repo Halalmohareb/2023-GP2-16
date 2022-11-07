@@ -43,7 +43,6 @@ Tutors are able to:
  
     -Manage availability
  
-    -View student profile
  
 ------------------------------
 
