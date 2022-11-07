@@ -254,7 +254,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               builder: (context) => LoginScreen()));
                         },
                         child: text(
-                            'تسجيل الدخول', screenWidth * 3.2, theme.mainColor,
+                            'إنشاء حساب', screenWidth * 3.2, theme.mainColor,
                             fontWeight: FontWeight.w500),
                       ),
                     ],
