@@ -239,14 +239,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                   borderRadius:
                                       BorderRadius.circular(screenWidth * 50),
                                   color: theme.blueColor),
-                              child: text(' تسجيل الدخول', screenWidth * 3.4,
+                              child: text(' إنشاء حساب', screenWidth * 3.4,
                                   theme.whiteColor)),
                         ),
                   sizedBox(height: screenWidth * 7),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      text('إذا كان لديك حساب من قبل', screenWidth * 3.1,
+                      text('إذا كان لديك حساب مسبقا  ', screenWidth * 3.1,
                           theme.lightTextColor),
                       GestureDetector(
                         onTap: () {
@@ -254,7 +254,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               builder: (context) => LoginScreen()));
                         },
                         child: text(
-                            'إنشاء حساب', screenWidth * 3.2, theme.mainColor,
+                            'تسجيل الدخول', screenWidth * 3.2, theme.mainColor,
                             fontWeight: FontWeight.w500),
                       ),
                     ],
