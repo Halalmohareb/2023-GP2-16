@@ -270,8 +270,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            text('إذا لم تكن مسجل من قبل', screenWidth * 3.1,
-                                theme.lightTextColor),
+                            text('إذا لم يكن لديك حساب من قبل  ',
+                                screenWidth * 3.1, theme.lightTextColor),
                             GestureDetector(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
