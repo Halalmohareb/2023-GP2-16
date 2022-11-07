@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                   style: subHeadingTextStyle,
                 ),
                 Text(
-                  "أليوم",
+                  "اليوم",
                   style: headingTextStyle,
                 )
               ],
