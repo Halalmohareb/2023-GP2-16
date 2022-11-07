@@ -1,8 +1,8 @@
 # Dhyaa- ضياء
 
-<div style="width:60px ; height:60px">
+<p align="center">
 ![DhyaaLogo](https://user-images.githubusercontent.com/115453402/200195587-d6ce41a1-73f8-4cee-9116-5dd996c56c9a.png)
-<div>
+</p>
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 # Introduction:
 whether it is in person or online, private tutoring allows students to take as much time as they require to study, and comprehend their coursework, furthermore, tutoring offers students a safe environment where they can ask questions, they're too hesitant or embarrassed to ask in class.the problem is that students struggle to find suitable tutors and tutors struggle to reach students who need them, due to the lack of communication platforms between the two.
