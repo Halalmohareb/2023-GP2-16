@@ -120,7 +120,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                         height: 20,
                       ),
                       Text(
-                        'معلمين ضياء',
+                        ' معلمين ضياء',
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
