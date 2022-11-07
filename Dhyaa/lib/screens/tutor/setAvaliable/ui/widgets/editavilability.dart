@@ -377,7 +377,7 @@ class _EditAvilability extends State<EditAvilability> {
     var sameDatExist = false;
     if (timeList.indexOf(_selectedTimeStart.toString()) >
         timeList.indexOf(_selectedTimeEnd.toString())) {
-      _showBottomwarnning(context, 'وقت البديه اكبر من وقت النهايه');
+      _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
     } else {
       if (timeList
           .indexOf(_selectedTimeStart.toString())
@@ -415,7 +415,7 @@ class _EditAvilability extends State<EditAvilability> {
 
                 } else {
                   // sameDatExist = false;
-               }
+                }
                 //  sameDatExist = false;
               }
             }
@@ -580,23 +580,22 @@ class _EditAvilability extends State<EditAvilability> {
   }
 
   _addTaskToDB() async {
-      await _taskController.updateTask(
-          task: Task(
-              widget.editTask!.id,
-              0,
-              _selectedTimeStart.toString(),
-              _selectedTimeStart.toString(),
-              _selectedTimeEnd.toString(),
-              _selectedColor,
-              _selectedRepeat.toString()));
+    await _taskController.updateTask(
+        task: Task(
+            widget.editTask!.id,
+            0,
+            _selectedTimeStart.toString(),
+            _selectedTimeStart.toString(),
+            _selectedTimeEnd.toString(),
+            _selectedColor,
+            _selectedRepeat.toString()));
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('تم تحديث الوقت بنجاح.'),
-      ));
-      Navigator.pop(context);
-      Navigator.pop(context);
-    }
-
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('تم تحديث الوقت بنجاح.'),
+    ));
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
 
   _colorChips() {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

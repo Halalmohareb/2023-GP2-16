@@ -298,7 +298,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     var sameDatExist = false;
     if (timeList.indexOf(_selectedTimeStart.toString()) >
         timeList.indexOf(_selectedTimeEnd.toString())) {
-      _showBottomwarnning(context, 'وقت البديه اكبر من وقت النهايه');
+      _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
     } else {
       if (timeList
           .indexOf(_selectedTimeStart.toString())
