@@ -23,13 +23,13 @@ Dhyaa is an Android-based mobile application that supports Arabic language. It�
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 # ✔️ requirement to launch launch the application
 
-- mobile emulater or android mobile
+1- mobile emulater or android mobile
 
-- dart programing language
+2- dart programing language
 
-- flutter framework
+3- flutter framework
 
-- android stduio(skd) or visual studio code
+4- android stduio(skd) or visual studio code
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,3 +55,22 @@ Students are able to:
     -Find a tutor
  
     -View tuter profile
+    
+    
+    
+---------------------------------------------------------------------------------------------------------------------------------------------
+# 📱 APK
+ 
+ -Install the Dhyaa APK files on your Android smartphone or tablet directly from your browser 
+ 
+ - Open your browser
+ 
+ - Find the APK file you want to download 
+ 
+ - Tap it-you should then be able to see it downloading on the top bar of your device 
+ 
+ - Open Downloads 
+ 
+ - Tap on the APK file and tap Yes when prompted 
+
+- The app will begin installing on your device
