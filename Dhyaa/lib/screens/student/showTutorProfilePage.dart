@@ -102,7 +102,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     height: 10,
                   ),
                   Text(
-                    userData.majorSubjects + ' :التخصص ',
+                    'التخصص: ' + userData.majorSubjects,
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   Text(
@@ -110,7 +110,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    userData.degree + ' :المادة',
+                    'المادة: ' + userData.degree,
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                 ],
