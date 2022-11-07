@@ -52,6 +52,6 @@ Students are able to:
  
     -Update profile
  
-    .Find a tutor
+    -Find a tutor
  
     -View tuter profile
