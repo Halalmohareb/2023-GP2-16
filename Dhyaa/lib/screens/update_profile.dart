@@ -313,7 +313,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-                      Text('المادة'),
+                      Text('التخصص'),
                       SizedBox(
                         height: screenWidth * 12.5,
                         width: double.infinity,
@@ -352,7 +352,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Text('التخصص'),
+                      Text('المادة'),
                       SizedBox(
                         height: screenWidth * 12.5,
                         width: double.infinity,
