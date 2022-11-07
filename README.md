@@ -31,6 +31,18 @@ Dhyaa is an Android-based mobile application that supports Arabic language. It�
 
 4- android stduio(skd) or visual studio code
 
+---------------------------------------------------------------------------------------------------------------------------------------------
+# 📋 Launch Instructions
+
+1. Open 2022-GP1-3 repository on GitHub 
+2. Click on the code button 
+3. Download .zip file 
+4. Unzip the file 
+5. Open Android Studio or Visual Studio Code
+6. Click on File > Open > Location of the saved unzipped file then click on Ok 
+7. Turn on an Android Emulator or connect an android mobile to the system 
+8. Run the Elfaa application
+
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 # 📱 Current supported features 
@@ -75,14 +87,4 @@ Students are able to:
 
 - The app will begin installing on your device
 
----------------------------------------------------------------------------------------------------------------------------------------------
-# 📋 Launch Instructions
 
-1. Open 2022-GP1-3 repository on GitHub 
-2. Click on the code button 
-3. Download .zip file 
-4. Unzip the file 
-5. Open Android Studio or Visual Studio Code
-6. Click on File > Open > Location of the saved unzipped file then click on Ok 
-7. Turn on an Android Emulator or connect an android mobile to the system 
-8. Run the Elfaa application
