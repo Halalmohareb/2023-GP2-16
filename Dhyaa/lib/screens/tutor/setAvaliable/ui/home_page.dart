@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MyButton(
-            label: "+ اضافة وقت جديد ",
+            label: "+ اضافة وقت  ",
             onTap: () async {
               Navigator.push(
                 context,
