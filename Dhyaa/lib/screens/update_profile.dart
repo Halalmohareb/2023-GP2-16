@@ -352,7 +352,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Text('المادة'),
+                      Text('المادة '),
                       SizedBox(
                         height: screenWidth * 12.5,
                         width: double.infinity,
