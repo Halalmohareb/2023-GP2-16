@@ -34,7 +34,7 @@ Dhyaa is an Android-based mobile application that supports Arabic language. Itâ€
 ---------------------------------------------------------------------------------------------------------------------------------------------
 # ðŸ“‹ Launch Instructions
 
-1. Open 2022-GP1-3 repository on GitHub 
+1. Open 2022-GP1-16 repository on GitHub 
 2. Click on the code button 
 3. Download .zip file 
 4. Unzip the downloaded file 
