@@ -135,10 +135,8 @@ class _HomePageState extends State<HomePage> {
             //  locale: const Locale("ar","AR"),
           ),
         ),
-
         onDateChange: (date) {
           // New date selected
-
           setState(
             () {
               _selectedDate = date;
@@ -156,7 +154,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MyButton(
-            label: "+ اضافة وقت  ",
+            label: "+ اضافةاتاحه ",
             onTap: () async {
               Navigator.push(
                 context,
@@ -172,13 +170,13 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
+                  "تاريخ اليوم",
+                  style: headingTextStyle,
+                ),
+                Text(
                   DateFormat('yyyy-MM-dd ').format(DateTime.now()),
                   style: subHeadingTextStyle,
                 ),
-                Text(
-                  "اليوم",
-                  style: headingTextStyle,
-                )
               ],
             ),
           ),

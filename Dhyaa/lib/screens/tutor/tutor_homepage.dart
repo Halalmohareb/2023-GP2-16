@@ -2,6 +2,8 @@ import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/screens/tutor/tutor_home_screen.dart';
 
+import '../chat_page.dart';
+
 class TutorHomepage extends StatefulWidget {
   const TutorHomepage({Key? key}) : super(key: key);
 
@@ -14,7 +16,7 @@ class _TutorHomepageState extends State<TutorHomepage> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   final List _children = [
-    Center(child: Icon(Icons.mail, size: 40)),
+     ChatPage(),
     TutorHomeScreen(),
     Center(child: Icon(Icons.list, size: 40)),
   ];

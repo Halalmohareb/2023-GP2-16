@@ -48,7 +48,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     'friday',
     'saturday',
   ];
-
+  final dateController = TextEditingController();
   List<String> timeList = [
     "1:00",
     "2:00",
@@ -106,7 +106,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           },
         ),
         title: Text(
-          "اضافة وقت جديد ",
+          "اضافةاتاحة ",
           style: headingTextStyle,
         ),
       ),
@@ -253,6 +253,43 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       ],
                     ),
                   ),
+      Container(
+        margin: const EdgeInsets.only(top: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              "اليوم",
+              style: titleTextStle,
+            ),
+        Container(
+          padding: const EdgeInsets.only(left: 14.0),
+          height: 52,
+          decoration: BoxDecoration(
+              border: Border.all(
+                width: 0.6,
+                color: Colors.grey,
+              ),
+              borderRadius: BorderRadius.circular(24)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child:
+                  TextField(
+                    readOnly: true,
+                    controller: dateController,
+                    decoration: InputDecoration(
+                        hintText: 'اختر يوم'
+                    ),
+                    onTap: () async {
+                      var date =  await showDatePicker(
+                          context: context,
+                          initialDate:DateTime.now(),
+                          firstDate:DateTime(1900),
+                          lastDate: DateTime(2100));
+                      dateController.text = date.toString().substring(0,10);
+                    },),),],),),],),),
                   const SizedBox(
                     height: 18.0,
                   ),
@@ -266,7 +303,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           _validateInputs();
                         },
                       ),
-                      _colorChips(),
+                      //_colorChips(),
                     ],
                   ),
                   const SizedBox(

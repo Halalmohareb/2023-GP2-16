@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:Dhyaa/screens/student/findTutor_screen.dart';
 
 import '../../constant.dart';
+import '../chat_page.dart';
 
 class StudentHomepage extends StatefulWidget {
   const StudentHomepage({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _StudentHomepageState extends State<StudentHomepage> {
 
   int _currentIndex = 1;
   final List _children = [
-    Center(child: Icon(Icons.mail, size: 40)),
+  ChatPage(),
     FindTutorScreen(),
     Center(child: Icon(Icons.list, size: 40)),
   ];

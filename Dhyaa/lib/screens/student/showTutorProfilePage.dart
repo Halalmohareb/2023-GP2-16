@@ -10,6 +10,8 @@ import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 
+import '../chat_screen.dart';
+
 class ShowTutorProfilePage extends StatefulWidget {
   const ShowTutorProfilePage({Key? key, required this.userData});
   final UserData userData;
@@ -24,6 +26,10 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
   int selectedTime = 1;
   bool moreBool = false;
+  UserData userData2 = emptyUserData;
+
+
+
   @override
   void initState() {
     setState(() {
@@ -34,7 +40,13 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
         tasks = value;
       });
     });
+    FirestoreHelper.getMyUserData().then((value) {
+      setState(() {
+        userData2 = value;
+      });
+    });
     super.initState();
+
   }
 
   @override
@@ -401,20 +413,49 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
             SizedBox(
               height: 10,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              decoration: BoxDecoration(
-                color: Color(0xff1E1C61),
-                borderRadius: BorderRadius.circular(10),
+
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                backgroundColor:Color(0xff1E1C61),
+                side: BorderSide(
+                  color: Color(0xff1E1C61),
+                ),
               ),
-              child: Text(
-                'احجز موعد مع المعلم',
+
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      friendId: userData.userId, friendName: userData.username,userData: userData2,
+                    ),
+                  ),
+                );
+              },
+
+              child: const Text(
+                "تواصل مع المعلم",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xffF2F2F2),
                 ),
               ),
             ),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //   decoration: BoxDecoration(
+            //     color: Color(0xff1E1C61),
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: Text(
+            //     'احجز موعد مع المعلم',
+            //     style: TextStyle(
+            //       fontWeight: FontWeight.bold,
+            //       color: Color(0xffF2F2F2),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),
