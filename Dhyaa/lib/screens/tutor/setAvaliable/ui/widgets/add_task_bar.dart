@@ -212,47 +212,47 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       ),
                     )
                   ]),
-                  InputField(
-                    textDirection: TextDirection.RTL,
-                    title: "اليوم",
-                    hint: _selectedRepeat,
-                    widget: Row(
-                      children: [
-                        Container(
-                          child: DropdownButton<String>(
-                              dropdownColor: Colors.white,
-                              //value: _selectedRemind.toString(),
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Colors.grey,
-                              ),
-                              iconSize: 32,
-                              elevation: 4,
-                              style: subTitleTextStle,
-                              underline: Container(
-                                height: 6,
-                              ),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  _selectedRepeat = newValue;
-                                });
-                              },
-                              items: repeatList.map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style:
-                                        const TextStyle(color: Colors.black45),
-                                  ),
-                                );
-                              }).toList()),
-                        ),
-                        const SizedBox(width: 6),
-                      ],
-                    ),
-                  ),
+                  // InputField(
+                  //   textDirection: TextDirection.RTL,
+                  //   title: "اليوم",
+                  //   hint: _selectedRepeat,
+                  //   widget: Row(
+                  //     children: [
+                  //       Container(
+                  //         child: DropdownButton<String>(
+                  //             dropdownColor: Colors.white,
+                  //             //value: _selectedRemind.toString(),
+                  //             icon: const Icon(
+                  //               Icons.keyboard_arrow_down,
+                  //               color: Colors.grey,
+                  //             ),
+                  //             iconSize: 32,
+                  //             elevation: 4,
+                  //             style: subTitleTextStle,
+                  //             underline: Container(
+                  //               height: 6,
+                  //             ),
+                  //             onChanged: (String? newValue) {
+                  //               setState(() {
+                  //                 _selectedRepeat = newValue;
+                  //               });
+                  //             },
+                  //             items: repeatList.map<DropdownMenuItem<String>>(
+                  //                 (String value) {
+                  //               return DropdownMenuItem<String>(
+                  //                 value: value,
+                  //                 child: Text(
+                  //                   value,
+                  //                   style:
+                  //                       const TextStyle(color: Colors.black45),
+                  //                 ),
+                  //               );
+                  //             }).toList()),
+                  //       ),
+                  //       const SizedBox(width: 6),
+                  //     ],
+                  //   ),
+                  // ),
       Container(
         margin: const EdgeInsets.only(top: 16.0),
         child: Column(
@@ -289,6 +289,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           firstDate:DateTime(1900),
                           lastDate: DateTime(2100));
                       dateController.text = date.toString().substring(0,10);
+                      print(dateController.text);
+                      _selectedRepeat=dateController.text;
                     },),),],),),],),),
                   const SizedBox(
                     height: 18.0,

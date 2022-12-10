@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
   // DateTime jHijri = DateTime.parse(JHijri.now().toString());
 
+
   final _taskController = Get.put(TaskController());
 
   // late var notifyHelper;
@@ -140,6 +141,8 @@ class _HomePageState extends State<HomePage> {
           setState(
             () {
               _selectedDate = date;
+              print("dedededed" );
+              print( _selectedDate.toString().substring(0,10));
             },
           );
         },
@@ -189,34 +192,30 @@ class _HomePageState extends State<HomePage> {
     bool i = false;
     return Expanded(
       child: Obx(() {
-        //  if(_taskController.taskList[])
-        for (int j = 0; j < _taskController.taskList.length; j++) {
-          print(_taskController.taskList[j].day);
-          if (_taskController.taskList[j].day ==
-              (repeatList[(repeatList2.indexOf(
-                  DateFormat('EEEE').format(_selectedDate).toLowerCase()))]))
-            i = true;
-        }
-        print(i);
-        // int y = _taskController.taskList.indexOf((repeatList[(repeatList2.indexOf(DateFormat('EEEE').format(_selectedDate).toLowerCase()))]));
-        //   print(y);
-        //   print(_taskController.taskList.contains((repeatList[(repeatList2.indexOf(DateFormat('EEEE').format(_selectedDate).toLowerCase()))])));
-        //   print((repeatList[(repeatList2.indexOf(DateFormat('EEEE').format(_selectedDate).toLowerCase()))]));
 
-        if (!i) {
-          return Container(child: Text("لايوجد وقت متاح "));
-        } else {
+        // for (int j = 0; j < _taskController.taskList.length; j++) {
+        //   print(_taskController.taskList[j].day);
+        //   if (_taskController.taskList[j].day ==
+        //       (repeatList[(repeatList2.indexOf(
+        //           DateFormat('EEEE').format(_selectedDate).toLowerCase()))]))
+        //     i = true;
+        // }
+        // print(i);
+
+        // if (!i) {
+        //   return Container(child: Text("لايوجد وقت متاح "));
+        // } else {
           return ListView.builder(
-              //             scrollDirection: Axis.vertical,
+
               itemCount: _taskController.taskList.length,
               itemBuilder: (_, index) {
                 Task task = _taskController.taskList[index];
                 // print("task.toJson()");
                 int v = (repeatList2.indexOf(
                     DateFormat('EEEE').format(_selectedDate).toLowerCase()));
-                //  print(false||(task.day).contains(repeatList[v]));
-                // print(repeatList[v]);
-                if (task.day == repeatList[v]) {
+
+                 if (( _selectedDate.toString().substring(0,10))==task.day){
+              //  if (task.day == repeatList[v]) {
                   return AnimationConfiguration.staggeredList(
                       position: index,
                       child: SlideAnimation(
@@ -249,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                 }
                 //   }
               });
-        }
+      //  }
       }),
     );
   }
