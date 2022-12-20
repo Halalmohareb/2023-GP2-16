@@ -1,6 +1,8 @@
+import 'package:Dhyaa/globalWidgets/sizedBoxWidget/sized_box_widget.dart';
 import 'package:Dhyaa/screens/chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../constant.dart';
 import '../models/UserData.dart';
@@ -27,12 +29,11 @@ import '../theme/studentTopBarNavigator.dart';
       });
     });
     super.initState();
-    print("initState Called");
   }
 
+
    Widget build(BuildContext context) {
-   // print(userData.username);
-     print("initState Called 2");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor:Color(0xffF9F9F9),
@@ -60,7 +61,6 @@ import '../theme/studentTopBarNavigator.dart';
     // height: 10,
     // ),
      body:  StreamBuilder(
-
         stream: FirebaseFirestore.instance.collection('Users').doc(userData.userId).collection('message').snapshots() ,
         builder: (context,AsyncSnapshot snapshot){
           if(snapshot.hasData){
@@ -75,6 +75,9 @@ import '../theme/studentTopBarNavigator.dart';
               itemBuilder:(context,index){
                 var friendId = snapshot.data.docs[index].id;
                 var lastMsg = snapshot.data.docs[index]['last_msg'];
+                var lastMsgtime = snapshot.data.docs[index]['time'];
+                print(snapshot.data.docs[index]['time']);
+                //.data.docs[index]['date']
                 return FutureBuilder(
                   future: FirebaseFirestore.instance.collection('Users').doc(friendId).get() ,
                   builder: (context,AsyncSnapshot asyncSnapshot){
@@ -91,6 +94,26 @@ import '../theme/studentTopBarNavigator.dart';
                         title: Text(friend['username'],),
                         subtitle: Container(
                           child:Text("$lastMsg",style: TextStyle(color: Colors.grey),overflow:TextOverflow.ellipsis,),
+                        ),
+                        trailing: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const SizedBox(
+                              height: 9,
+                            ),
+                             Text("$lastMsgtime",
+                               style:Theme.of(context).textTheme.overline?.copyWith(
+                        color:Colors.black54,
+                            ),
+                             ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Icon(Icons.circle,
+                              color:Colors.red.shade300,
+                              size: 30,
+                            ),
+                          ],
                         ),
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen(
@@ -109,14 +132,6 @@ import '../theme/studentTopBarNavigator.dart';
           }
           return Center(child: CircularProgressIndicator(),);
         })
-    //],
-    // ),
-    // ),
-    // ],
-    // ),
-    // ),
-    // ),
-    // ),
     );
 
   }

@@ -25,7 +25,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   int _selectedColor = 0;
   String? _selectedTimeStart = "1:00";
   String? _selectedTimeEnd = "3:00";
-  String? _selectedRepeat = 'الاحد';
+  String? _selectedrepeat = "كل يوم";
+  String? _selectedRepeat = DateTime.now().toString().substring(0,10);
   String? _selecteddaystart = 'PM';
   String? _selecteddayend = 'PM';
 
@@ -79,6 +80,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
     "PM",
     "AM",
   ];
+
+  List<String> repeatdayList = [
+  'كل يوم',
+  'كل اسبوع',
+  'كل شهر',
+  'كل سنه',
+ ];
+
   @override
   Widget build(BuildContext context) {
     //Below shows the time like Sep 15, 2021
@@ -280,18 +289,69 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     readOnly: true,
                     controller: dateController,
                     decoration: InputDecoration(
-                        hintText: 'اختر يوم'
+                    hintText:_selectedRepeat ,
+                      icon: const Icon(
+                      Icons.calendar_month,
+                      color: Colors.black54,
+
+                    ),
+
                     ),
                     onTap: () async {
                       var date =  await showDatePicker(
                           context: context,
                           initialDate:DateTime.now(),
-                          firstDate:DateTime(1900),
+                          firstDate:DateTime.now(),
                           lastDate: DateTime(2100));
                       dateController.text = date.toString().substring(0,10);
                       print(dateController.text);
                       _selectedRepeat=dateController.text;
                     },),),],),),],),),
+                  Row(children: [
+                    Expanded(
+                      child: InputField(
+                        textDirection: TextDirection.RTL,
+                        title: "تكرار",
+                        hint: _selectedrepeat,
+                        widget: Row(
+                          children: [
+                            Container(
+                              child: DropdownButton<String>(
+                                  dropdownColor: Colors.white,
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.grey,
+                                  ),
+                                  iconSize: 32,
+                                  elevation: 4,
+                                  style: subTitleTextStle,
+                                  underline: Container(
+                                    height: 6,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    print(newValue);
+                                    setState(() {
+                                      _selectedrepeat = newValue;
+                                    });
+                                  },
+                                  items: repeatdayList.map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: const TextStyle(
+                                                color: Colors.black54),
+                                          ),
+                                        );
+                                      }).toList()),
+                            ),
+                            const SizedBox(width: 6),
+                          ],
+                        ),
+                      ),
+                    )
+                  ]),
                   const SizedBox(
                     height: 18.0,
                   ),

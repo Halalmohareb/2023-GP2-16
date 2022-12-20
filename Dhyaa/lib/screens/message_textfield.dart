@@ -46,11 +46,15 @@ void initState() {
       color: Colors.white,
       padding: EdgeInsetsDirectional.all(8),
       child: Row(
+        textDirection: TextDirection.rtl,
         children: [
           Expanded(child: TextField(
+            textAlign: TextAlign.right,
             controller: _controller,
+            textDirection: TextDirection.rtl,
             decoration: InputDecoration(
-              labelText:"text now",
+              labelText:"اكتب....",
+              hintTextDirection: TextDirection.rtl,
               fillColor: Colors.grey[100],
               filled: true,
               border: OutlineInputBorder(
@@ -76,6 +80,7 @@ void initState() {
               }).then((value) {
 FirebaseFirestore.instance.collection('Users').doc(userData.userId).collection('message').doc(widget.friendId).set({
 'last_msg':message,
+  "time":DateTime.now().toString().substring(11, 16),
 });
               });
               await FirebaseFirestore.instance.collection('Users').doc(widget.friendId).collection('message').doc(userData.userId).collection('chats').add({
@@ -96,7 +101,10 @@ FirebaseFirestore.instance.collection('Users').doc(userData.userId).collection('
                 shape: BoxShape.circle,
                 color: Colors.blue,
               ),
-              child: Icon(Icons.send,color: Colors.white,),
+              child: Icon(Icons.send,
+                color: Colors.white,
+                textDirection: TextDirection.rtl,
+              ),
             ),
           )
         ],

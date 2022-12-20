@@ -14,6 +14,7 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/add_task_bar.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/editavilability.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../controllers/task_controller.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     'friday',
     'saturday',
   ];
-
+  CalendarFormat format =CalendarFormat.month;
   int index = 0;
   final screens = [
     Center(child: Text('uuuuu1u')),
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 12,
             ),
-            _showTasks(),
+           _showTasks(),
           ],
         ),
       ),
@@ -105,48 +106,70 @@ class _HomePageState extends State<HomePage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10, left: 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-      child: DatePicker(
+      child:
+      TableCalendar(
         locale: "ar",
-        DateTime.now(),
-        height: 130,
-        width: 80,
-        initialSelectedDate: DateTime.now(),
-        selectionColor: primaryClr,
-        //selectedTextColor: primaryClr,
-        selectedTextColor: Colors.white,
-        dateTextStyle: GoogleFonts.lato(
-          textStyle: const TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey,
-            //   locale: const Locale("ar","AR"),
-          ),
-        ),
-        dayTextStyle: GoogleFonts.lato(
-          textStyle: const TextStyle(
-            fontSize: 16.0,
-            color: Colors.grey,
-            //  locale: const Locale("ar","AR"),
-          ),
-        ),
-        monthTextStyle: GoogleFonts.lato(
-          textStyle: const TextStyle(
-            fontSize: 15.0,
-            color: Colors.grey,
-            //  locale: const Locale("ar","AR"),
-          ),
-        ),
-        onDateChange: (date) {
-          // New date selected
-          setState(
-            () {
-              _selectedDate = date;
-              print("dedededed" );
-              print( _selectedDate.toString().substring(0,10));
-            },
-          );
+        firstDay: DateTime.now(),
+        lastDay: DateTime.utc(2030, 3, 14),
+        focusedDay: DateTime.now(),
+          calendarFormat: format ,
+        onFormatChanged: (CalendarFormat _format){
+         setState(() {
+           format = _format;
+         });
+        },
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectedDate, day);
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            _selectedDate = selectedDay;
+            _selectedDate = focusedDay; // update `_focusedDay` here as well
+          });
         },
       ),
+      // DatePicker(
+      //   locale: "ar",
+      //   DateTime.now(),
+      //   height: 130,
+      //   width: 80,
+      //   initialSelectedDate: DateTime.now(),
+      //   selectionColor: primaryClr,
+      //   //selectedTextColor: primaryClr,
+      //   selectedTextColor: Colors.white,
+      //   dateTextStyle: GoogleFonts.lato(
+      //     textStyle: const TextStyle(
+      //       fontSize: 20.0,
+      //       fontWeight: FontWeight.w600,
+      //       color: Colors.grey,
+      //       //   locale: const Locale("ar","AR"),
+      //     ),
+      //   ),
+      //   dayTextStyle: GoogleFonts.lato(
+      //     textStyle: const TextStyle(
+      //       fontSize: 16.0,
+      //       color: Colors.grey,
+      //       //  locale: const Locale("ar","AR"),
+      //     ),
+      //   ),
+      //   monthTextStyle: GoogleFonts.lato(
+      //     textStyle: const TextStyle(
+      //       fontSize: 15.0,
+      //       color: Colors.grey,
+      //       //  locale: const Locale("ar","AR"),
+      //     ),
+      //   ),
+      //   onDateChange: (date) {
+      //     // New date selected
+      //     setState(
+      //       () {
+      //         _selectedDate = date;
+      //         print("dedededed" );
+      //         print( _selectedDate.toString().substring(0,10));
+      //       },
+      //     );
+      //   },
+      // ),
     );
   }
 
