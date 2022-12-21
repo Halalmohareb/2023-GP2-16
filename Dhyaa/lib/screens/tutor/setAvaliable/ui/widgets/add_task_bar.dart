@@ -8,6 +8,8 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dar
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/input_field.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+//import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -267,6 +269,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         margin: const EdgeInsets.only(top: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
               "اليوم",
@@ -275,6 +278,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         Container(
           padding: const EdgeInsets.only(left: 14.0),
           height: 52,
+
           decoration: BoxDecoration(
               border: Border.all(
                 width: 0.6,
@@ -283,18 +287,21 @@ class _AddTaskPageState extends State<AddTaskPage> {
               borderRadius: BorderRadius.circular(24)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Expanded(
                 child:
                   TextField(
+                   // textDirection:TextDirection.RTL,
                     readOnly: true,
                     controller: dateController,
                     decoration: InputDecoration(
+                     // hintTextDirection:TextDirection.RTL,
                     hintText:_selectedRepeat ,
                       icon: const Icon(
                       Icons.calendar_month,
                       color: Colors.black54,
-
+                        //  hintTextDirection:TextDirection.RTL,
                     ),
 
                     ),
@@ -303,7 +310,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           context: context,
                           initialDate:DateTime.now(),
                           firstDate:DateTime.now(),
-                          lastDate: DateTime(2100));
+                          lastDate: DateTime(2100),
+                          locale: Locale('ar', ''),
+
+                      );
                       dateController.text = date.toString().substring(0,10);
                       print(dateController.text);
                       _selectedRepeat=dateController.text;

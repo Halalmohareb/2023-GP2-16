@@ -44,6 +44,7 @@ class InputField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
                     child: TextFormField(

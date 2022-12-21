@@ -46,6 +46,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   date_picker_timeline:
+  flutter_cupertino_date_picker: ^1.0.26+2
   sqflite:
   flutter_staggered_animations:
   custom_navigator: 
