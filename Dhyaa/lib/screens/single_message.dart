@@ -21,9 +21,12 @@ class SingleMessage extends StatelessWidget {
 String time = date.toDate().toString().substring(11, 16);
     return Container(
       child: Row(
+        crossAxisAlignment:isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       mainAxisAlignment: isMe ?  MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Column(
+          //textDirection:TextDirection.RTL,
+          crossAxisAlignment:isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           mainAxisAlignment: isMe ?  MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
         Container(
@@ -51,10 +54,13 @@ String time = date.toDate().toString().substring(11, 16);
           //     Column(
           //       children: [
            //  Text(message,style: TextStyle(color: Colors.black54,)),
-          Align(
-            alignment:isMe? Alignment.bottomRight:Alignment.bottomLeft,
+          //Align(
+          Container(
+           // alignment:isMe? Alignment.bottomRight:Alignment.bottomLeft,
              child:
-           Text(time, style: TextStyle(color: Colors.black54,),),
+           Text(time,
+               style: TextStyle(color: Colors.black54,),
+               textAlign:TextAlign.end),
         ),
                ], ),
 

@@ -56,6 +56,7 @@ class InputField extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: hint,
                         hintStyle: subTitleTextStle,
+                        hintTextDirection: TextDirection.rtl,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: context.theme.backgroundColor,

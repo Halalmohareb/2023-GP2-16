@@ -170,6 +170,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     );
                                   }).toList()),
                             ),
+
                             const SizedBox(width: 6),
                           ],
                         ),

@@ -54,6 +54,9 @@
       <excludeFolder url="file://$MODULE_DIR$/zia/linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/zia/linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux/example/build" />
       <excludeFolder url="file://$MODULE_DIR$/zia/linux/flutter/ephemeral/.plugin_symlinks/shared_preferences_linux/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/moyasar_testing/build" />
+      <excludeFolder url="file://$MODULE_DIR$/moyasar_testing/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/moyasar_testing/.pub" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

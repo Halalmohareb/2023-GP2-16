@@ -46,6 +46,7 @@ void initState() {
       color: Colors.white,
       padding: EdgeInsetsDirectional.all(8),
       child: Row(
+        //crossAxisAlignment: CrossAxisAlignment.end ,
         textDirection: TextDirection.rtl,
         children: [
           Expanded(child: TextField(
@@ -53,15 +54,16 @@ void initState() {
             controller: _controller,
             textDirection: TextDirection.rtl,
             decoration: InputDecoration(
-              labelText:"اكتب....",
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(width: 0),
+                  gapPadding: 10,
+                  borderRadius: BorderRadius.circular(25)
+              ),
+              labelText:"                                                           ....اكتب",
               hintTextDirection: TextDirection.rtl,
               fillColor: Colors.grey[100],
               filled: true,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(width: 0),
-                gapPadding: 10,
-                borderRadius: BorderRadius.circular(25)
-              )
+
             ),
           )),
           SizedBox(width: 20,),
