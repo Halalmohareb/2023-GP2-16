@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
+import 'package:Dhyaa/theme/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/theme/theme.dart';
+import 'package:material_tag_editor/tag_editor.dart';
 import '../models/UserData.dart';
 import '../responsiveBloc/size_config.dart';
 import 'package:fluttertoast/fluttertoast.dart'
@@ -54,12 +59,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
   bool isLocationValid = false;
   bool isSubjectValid = false;
   bool isDegreeValid = false;
+  bool isAddressValid = false;
+  bool isPriceValid = false;
   bool allValid = false;
 
   TextEditingController location = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController subject = TextEditingController();
   TextEditingController degree = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController price = TextEditingController();
+  String lessonType = 'حضوري';
+
+  List values = [];
 
   // Functions
   @override
@@ -81,30 +93,34 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   setter() {
     type = widget.userData.type;
-    // if (userData.phone.startsWith('+966')) {
-    //   phone.text = userData.phone.substring(4);
-    // } else {
-    //   phone.text = userData.phone.replaceAll('+966', 'replace');
-    // }
     phone.text = userData.phone.replaceAll('+966', '');
-
     location.text = userData.location;
     subject.text = userData.majorSubjects;
     degree.text = userData.degree;
+    values = jsonDecode(userData.degree);
+    address.text = userData.address;
+    price.text = userData.price;
+    if (userData.lessonType != '') {
+      lessonType = userData.lessonType;
+    }
   }
 
   update() {
     checkValidation();
     if (allValid) {
+      print(degree.text);
       var form = {
         'phone': phone.text,
         'location': location.text,
         'majorSubjects': subject.text,
         'degree': degree.text,
+        'address': address.text,
+        'price': price.text,
+        'lessonType': lessonType,
       };
       FirestoreHelper.updateUserData(userData.userId, form).then((value) {
-        showToast('تم تحديث الملف الشخصي بنجاح');
         FirestoreHelper.getMyUserData().then((value) {
+          showToast('تم تحديث الملف الشخصي بنجاح');
           userData = value;
           if (mounted) setState(() {});
         });
@@ -124,6 +140,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
       allValid = false;
     } else if (degree.text.isEmpty && type == 'Tutor') {
       showToast("تم تحديث الملف الشخصي");
+      allValid = false;
+    } else if (address.text.isEmpty && type == 'Tutor') {
+      showToast('العنوان / الحي  المدخل غير صحيح');
+      allValid = false;
+    } else if (price.text.isEmpty && type == 'Tutor') {
+      showToast('سعرالحصة المدخل غير صحيح');
       allValid = false;
     } else {
       allValid = true;
@@ -306,13 +328,52 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     ),
                   ),
                 ),
-
+                SizedBox(height: 20),
+                Text('العنوان / الحي'),
+                SizedBox(
+                  height: screenWidth * 12.5,
+                  width: double.infinity,
+                  child: TextFormField(
+                    controller: address,
+                    onChanged: (value) {
+                      isAddressValid = address.text.length > 0;
+                      if (mounted) setState(() {});
+                    },
+                    style: textStyle(screenWidth * 3.7, theme.mainColor),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 4,
+                          vertical: screenWidth * 3),
+                      hintText: 'الياسمين',
+                      hintStyle:
+                          textStyle(screenWidth * 3.3, theme.lightTextColor),
+                      filled: true,
+                      fillColor: Colors.white24,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 200),
+                        borderSide:
+                            BorderSide(width: .3, color: theme.lightTextColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(screenWidth * 200),
+                        borderSide: BorderSide(
+                          width: .6,
+                          color: !isAddressValid
+                              ? theme.redColor
+                              : theme.yellowColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
                 // Additional only for tutor
                 if (type == 'Tutor')
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 20),
                       Text('التخصص'),
                       SizedBox(
                         height: screenWidth * 12.5,
@@ -352,14 +413,75 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Text('المادة '),
+                      Text('المادة'),
+                      Container(
+                        width: double.infinity,
+                        child: TagEditor(
+                          length: values.length,
+                          hasAddButton: true,
+                          inputDecoration: InputDecoration(
+                            isDense: true,
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 4,
+                              vertical: screenWidth * 2,
+                            ),
+                            hintStyle: textStyle(
+                                screenWidth * 3.3, theme.lightTextColor),
+                            hintText: 'إضافة مادة أخرى',
+                            filled: true,
+                            fillColor: Colors.white24,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(screenWidth * 200),
+                              borderSide: BorderSide(
+                                width: .3,
+                                color: theme.lightTextColor,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(screenWidth * 200),
+                              borderSide: BorderSide(
+                                width: .6,
+                                color: !isDegreeValid
+                                    ? theme.redColor
+                                    : theme.yellowColor,
+                              ),
+                            ),
+                          ),
+                          textStyle:
+                              textStyle(screenWidth * 3.7, theme.mainColor),
+                          onTagChanged: (newValue) {
+                            values.add(newValue);
+                            isDegreeValid = values.length > 0;
+                            degree.text = jsonEncode(values);
+                            if (mounted) setState(() {});
+                          },
+                          tagBuilder: (context, index) => _Chip(
+                            index: index,
+                            label: values[index],
+                            onDeleted: (i) {
+                              values.removeAt(i);
+                              if (mounted) setState(() {});
+                            },
+                          ),
+                        ),
+                      ),
+                      text(
+                        'انقر فوق + للإضافة المادة',
+                        screenWidth * 2.7,
+                        kSearchTextColor,
+                      ),
+                      SizedBox(height: 10),
+                      Text('سعرالحصة'),
                       SizedBox(
                         height: screenWidth * 12.5,
                         width: double.infinity,
                         child: TextFormField(
-                          controller: degree,
+                          controller: price,
                           onChanged: (value) {
-                            isDegreeValid = degree.text.length > 0;
+                            isPriceValid = price.text.length > 0;
                             if (mounted) setState(() {});
                           },
                           style: textStyle(screenWidth * 3.7, theme.mainColor),
@@ -380,14 +502,120 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                 borderSide: BorderSide(
                                     width: .3, color: theme.lightTextColor)),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
-                                borderSide: BorderSide(
-                                    width: .6,
-                                    color: !isDegreeValid
-                                        ? theme.redColor
-                                        : theme.yellowColor)),
+                              borderRadius:
+                                  BorderRadius.circular(screenWidth * 200),
+                              borderSide: BorderSide(
+                                width: .6,
+                                color: !isPriceValid
+                                    ? theme.redColor
+                                    : theme.yellowColor,
+                              ),
+                            ),
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.all(13),
+                              child: Text('ريال/ساعة'),
+                            ),
                           ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Container(
+                        height: screenWidth * 8,
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.only(bottom: screenWidth * 2),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: theme.mainColor),
+                          borderRadius: BorderRadius.circular(screenWidth),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    lessonType = 'حضوري';
+                                  });
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: lessonType == 'حضوري'
+                                        ? theme.blueColor
+                                        : theme.whiteColor,
+                                    border: Border(
+                                      left: BorderSide(
+                                        width: 1,
+                                        color: theme.lightTextColor,
+                                      ),
+                                    ),
+                                  ),
+                                  child: text(
+                                    'حضوري',
+                                    screenWidth * 3.2,
+                                    lessonType == 'حضوري'
+                                        ? theme.whiteColor
+                                        : theme.lightTextColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    lessonType = 'أون لاين';
+                                  });
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: lessonType == 'أون لاين'
+                                        ? theme.blueColor
+                                        : theme.whiteColor,
+                                    border: Border(
+                                      left: BorderSide(
+                                          width: 1,
+                                          color: theme.lightTextColor),
+                                    ),
+                                  ),
+                                  child: text(
+                                    'أون لاين',
+                                    screenWidth * 3.2,
+                                    lessonType == 'أون لاين'
+                                        ? theme.whiteColor
+                                        : theme.lightTextColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    lessonType = 'كلاهما';
+                                  });
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: lessonType == 'كلاهما'
+                                        ? theme.blueColor
+                                        : theme.whiteColor,
+                                  ),
+                                  child: text(
+                                    'كلاهما',
+                                    screenWidth * 3.2,
+                                    lessonType == 'كلاهما'
+                                        ? theme.whiteColor
+                                        : theme.lightTextColor,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -402,7 +630,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(vertical: screenWidth * 2)
                         .copyWith(bottom: 0),
-                    padding: EdgeInsets.all(screenWidth * 4.3),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 4, vertical: screenWidth * 3),
                     decoration: BoxDecoration(
                       border: Border.all(color: theme.mainColor),
                       borderRadius: BorderRadius.circular(screenWidth * 50),
@@ -421,6 +650,32 @@ class _UpdateProfileState extends State<UpdateProfile> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Chip extends StatelessWidget {
+  final String label;
+  final ValueChanged<int> onDeleted;
+  final int index;
+  const _Chip({
+    required this.label,
+    required this.onDeleted,
+    required this.index,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      backgroundColor: theme.blueColor,
+      labelPadding: const EdgeInsets.only(right: 10, top: 6, bottom: 6),
+      label: Text(
+        label,
+        style: TextStyle(color: theme.whiteColor),
+      ),
+      deleteIcon: Icon(Icons.close, size: 18, color: theme.whiteColor),
+      onDeleted: () {
+        onDeleted(index);
+      },
     );
   }
 }
