@@ -5,7 +5,7 @@ import 'package:Dhyaa/models/bookedLesson.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
 
-UserData emptyUserData = UserData('', '', '', '', '', '', '', '');
+UserData emptyUserData = UserData('', '', '', '', '', '', '', '', '', '', '');
 
 class FirestoreHelper {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -82,9 +82,7 @@ class FirestoreHelper {
     await db.collection('Users').where('email', isEqualTo: data).get().then(
       (value) {
         if (value.docs.isNotEmpty) {
-          UserData userrr = UserData.fromMap(
-            value.docs.first.data(),
-          );
+          UserData userrr = UserData.fromMap(value.docs.first.data());
           userDataa = userrr;
         }
       },
@@ -129,7 +127,8 @@ class FirestoreHelper {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        tutors.add(UserData(
+        tutors.add(
+          UserData(
             element.data()['email'],
             element.data()['majorSubjects'],
             element.data()['degree'],
@@ -137,7 +136,12 @@ class FirestoreHelper {
             element.data()['phone'],
             element.data()['userId'],
             element.data()['username'],
-            element.data()['type']));
+            element.data()['type'],
+            element.data()['address'],
+            element.data()['price'],
+            element.data()['lessonType'],
+          ),
+        );
       });
     });
     return tutors;
@@ -151,7 +155,8 @@ class FirestoreHelper {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        tutors.add(UserData(
+        tutors.add(
+          UserData(
             element.data()['email'],
             element.data()['majorSubjects'],
             element.data()['degree'],
@@ -159,7 +164,12 @@ class FirestoreHelper {
             element.data()['phone'],
             element.data()['userId'],
             element.data()['username'],
-            element.data()['type']));
+            element.data()['type'],
+            element.data()['address'],
+            element.data()['price'],
+            element.data()['lessonType'],
+          ),
+        );
       });
     });
     return Future.value(tutors);

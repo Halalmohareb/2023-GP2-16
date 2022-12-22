@@ -15,15 +15,20 @@ class AuthProvider extends ChangeNotifier {
   final tutorPassword = TextEditingController();
   final tutorPhoneNumber = TextEditingController();
   final tutorMajor = TextEditingController();
+  final tutorPrice = TextEditingController();
   final tutorDegree = TextEditingController();
   final tutorLocation = TextEditingController();
+  final tutorAddress = TextEditingController();
+  String tutorLessonType = 'حضوري';
+
   String degree = '';
 
+  final studentUserName = TextEditingController();
   final studentEmail = TextEditingController();
   final studentPassword = TextEditingController();
   final studentPhoneNumber = TextEditingController();
   final studentLocation = TextEditingController();
-  final studentUserName = TextEditingController();
+  final studentAddress = TextEditingController();
 
   List<String> categoryList = [
     "Art",
@@ -163,6 +168,8 @@ class AuthProvider extends ChangeNotifier {
           final User user = userCredential.user!;
           await addUser(user, context, type);
         } else {
+          isLoading = false;
+          notifyListeners();
           showToast("اسم المستخدم مسجل مسبقًا الرجاء اختيار اسم اخر");
         }
       } else {
@@ -174,26 +181,23 @@ class AuthProvider extends ChangeNotifier {
           final User user = userCredential.user!;
           await addUser(user, context, type);
         } else {
+          isLoading = false;
+          notifyListeners();
           showToast("اسم المستخدم مسجل مسبقًا الرجاء اختيار اسم اخر");
         }
       }
-
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(
-      //         builder: (context) => CustomerAccountCreation(
-      //           user: user,
-      //         )),
-      //         (Route<dynamic> route) => false);
-      // showToast("Please verify your email");
-    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showToast('كلمة المرور المستخدمة ضعيفة ');
       } else if (e.code == 'email-already-in-use') {
         showToast('البريد الإلكتروني مسجل مسبقًا');
       }
     } catch (e) {
+      isLoading = false;
+      notifyListeners();
       print(e);
     }
   }
@@ -241,10 +245,7 @@ class AuthProvider extends ChangeNotifier {
       }
 
       isLoading = false;
-      // logEmailController.clear();
-      // logPasswordController.clear();
       notifyListeners();
-
       return user;
     } on FirebaseAuthException catch (e) {
       isLoading = false;
@@ -256,6 +257,8 @@ class AuthProvider extends ChangeNotifier {
         showToast("تأكد من إدخال كلمة المرور صحيحة");
       }
     } catch (e) {
+      isLoading = false;
+      notifyListeners();
       print(e);
     }
   }
@@ -377,23 +380,27 @@ class AuthProvider extends ChangeNotifier {
     try {
       var result = db.collection("Users").doc(user.uid);
       if (type == "Student") {
-        isLoading = true;
-        notifyListeners();
         result.set({
           "email": studentEmail.text,
           "phone": studentPhoneNumber.text,
           "location": studentLocation.text,
+          "address": studentAddress.text,
           "username": studentUserName.text,
           "userId": user.uid,
           "type": 'Student',
           'majorSubjects': '',
           'degree': '',
+          'price': '',
+          'lessonType': '',
         }).then((value) {
+          studentUserName.clear();
           studentEmail.clear();
           studentPhoneNumber.clear();
-          studentLocation.clear();
-          studentUserName.clear();
           studentPassword.clear();
+          studentLocation.clear();
+          studentAddress.clear();
+          isLoading = false;
+          notifyListeners();
           showToast("تم تسجيلك كطالب");
           Navigator.pop(context);
         });
@@ -401,33 +408,39 @@ class AuthProvider extends ChangeNotifier {
         result.set({
           "email": tutorEmail.text,
           "phone": "+966${tutorPhoneNumber.text}",
-          "location": tutorLocation.text,
           "username": tutorUsername.text,
           "userId": user.uid,
           "type": 'Tutor',
           'majorSubjects': tutorMajor.text,
           'degree': tutorDegree.text,
+          "location": tutorLocation.text,
+          "address": tutorAddress.text,
+          "price": tutorPrice.text,
+          "lessonType": tutorLessonType,
         }).then((value) {
           tutorUsername.clear();
           tutorEmail.clear();
-          tutorLocation.clear();
+          tutorPassword.clear();
           tutorPhoneNumber.clear();
           tutorDegree.clear();
           tutorMajor.clear();
-          tutorPassword.clear();
+          tutorLocation.clear();
+          tutorAddress.clear();
+          tutorPrice.clear();
+          isLoading = false;
+          notifyListeners();
           showToast("تم تسجيلك كمعلم");
           Navigator.pop(context);
         });
       }
-      isLoading = false;
-      notifyListeners();
-
       return;
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
       showToast("${e.code}");
     } catch (e) {
+      isLoading = false;
+      notifyListeners();
       print(e);
     }
   }
