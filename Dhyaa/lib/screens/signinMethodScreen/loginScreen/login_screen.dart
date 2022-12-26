@@ -64,232 +64,235 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     var screenWidth = SizeConfig.widthMultiplier;
     final authProvider = Provider.of<AuthProvider>(context);
-    return Scaffold(
-      backgroundColor: theme.appBackgroundColor,
-      appBar: appBar1('مرحبًا', screenWidth, context),
-      body: Padding(
-        padding: EdgeInsets.all(screenWidth * 8).copyWith(top: 0, bottom: 0),
-        child: SizedBox(
-          height: double.infinity,
-          width: double.infinity,
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/icons/DhyaaLogo.png',
-                      height: screenWidth * 30,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                        height: screenWidth * 9,
-                        width: double.infinity,
-                        margin: EdgeInsets.only(bottom: screenWidth * 2),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: theme.mainColor),
-                          borderRadius: BorderRadius.circular(screenWidth),
-                        ),
-                        child: Row(children: [
-                          Expanded(
-                              child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                tutorSelected = true;
-                                studentSelected = false;
-                                adminSelected = false;
-                              });
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                color: tutorSelected
-                                    ? theme.blueColor
-                                    : theme.whiteColor,
-                                child: text(
-                                    'معلم',
-                                    screenWidth * 3.2,
-                                    tutorSelected
-                                        ? theme.whiteColor
-                                        : theme.blueColor)),
-                          )),
-                          Expanded(
-                              child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                tutorSelected = false;
-                                studentSelected = true;
-                                adminSelected = false;
-                              });
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                color: studentSelected
-                                    ? theme.blueColor
-                                    : theme.whiteColor,
-                                child: text(
-                                    'طالب',
-                                    screenWidth * 3.2,
-                                    studentSelected
-                                        ? theme.whiteColor
-                                        : theme.blueColor)),
-                          )),
-                          Expanded(
-                              child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                tutorSelected = false;
-                                studentSelected = false;
-                                adminSelected = true;
-                              });
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                color: adminSelected
-                                    ? theme.blueColor
-                                    : theme.whiteColor,
-                                child: text(
-                                    'إدارة',
-                                    screenWidth * 3.2,
-                                    adminSelected
-                                        ? theme.whiteColor
-                                        : theme.blueColor)),
-                          ))
-                        ])),
-                    tutorSelected
-                        ? tutorEmailPassword(screenWidth)
-                        : studentSelected
-                            ? studentEmailPassword(screenWidth)
-                            : adminSelected
-                                ? adminEmailPassword(screenWidth)
-                                : SizedBox(),
-                    sizedBox(height: screenWidth * 4),
-                    authProvider.isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    theme.mainColor)),
-                          )
-                        : GestureDetector(
-                            onTap: () async {
-                              FocusScope.of(context).unfocus();
-                              if (tutorSelected) {
-                                if (tutorAllFieldsValid) {
-                                  await authProvider.handleSignInEmail(
-                                      context,
-                                      tutorEmail.text,
-                                      tutorPassword.text,
-                                      "Tutor");
-
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => HomeScreen(
-                                  //           title: 'مرحبًا Tutor',
-                                  //         )));
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg:
-                                        "تأكد من إدخال البريد الإلكتروني وكلمة السر بشكل صحيح",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: theme.appBackgroundColor,
-                                    textColor: theme.darkTextColor,
-                                    fontSize: screenWidth * 3,
-                                  );
-                                }
-                              } else if (studentSelected) {
-                                if (studentAllFieldsValid) {
-                                  await authProvider.handleSignInEmail(
-                                      context,
-                                      studentEmail.text,
-                                      studentPassword.text,
-                                      "Student");
-
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => HomeScreen(
-                                  //           title: 'مرحبًا Student',
-                                  //         )));
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg:
-                                        "تأكد من إدخال البريد الإلكتروني وكلمة السر بشكل صحيح",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: theme.appBackgroundColor,
-                                    textColor: theme.darkTextColor,
-                                    fontSize: screenWidth * 3,
-                                  );
-                                }
-                              } else if (adminSelected) {
-                                if (adminAllFieldsValid) {
-                                  await authProvider.handleSignInEmail(
-                                      context,
-                                      adminEmail.text,
-                                      adminPassword.text,
-                                      "Admin");
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => HomeScreen(
-                                  //           title: 'مرحبًا Admin',
-                                  //         )));
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg:
-                                        "تأكد من إدخال البريد الإلكتروني وكلمة السر بشكل صحيح",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: theme.appBackgroundColor,
-                                    textColor: theme.darkTextColor,
-                                    fontSize: screenWidth * 3,
-                                  );
-                                }
-                              }
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(
-                                        vertical: screenWidth * 2)
-                                    .copyWith(bottom: screenWidth),
-                                padding: EdgeInsets.all(screenWidth * 4.3),
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(screenWidth * 50),
-                                    color: theme.blueColor),
-                                child: text('تسجيل الدخول', screenWidth * 3.4,
-                                    theme.whiteColor)),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: theme.appBackgroundColor,
+        appBar: appBar1('مرحبًا', screenWidth, context),
+        body: Padding(
+          padding: EdgeInsets.all(screenWidth * 8).copyWith(top: 0, bottom: 0),
+          child: SizedBox(
+            height: double.infinity,
+            width: double.infinity,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/icons/DhyaaLogo.png',
+                        height: screenWidth * 30,
+                        fit: BoxFit.cover,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                          height: screenWidth * 9,
+                          width: double.infinity,
+                          margin: EdgeInsets.only(bottom: screenWidth * 2),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: theme.mainColor),
+                            borderRadius: BorderRadius.circular(screenWidth),
                           ),
-                    sizedBox(height: screenWidth * 40),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: screenWidth * 4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            text('إذا لم يكن لديك حساب من قبل  ',
-                                screenWidth * 3.1, theme.lightTextColor),
-                            GestureDetector(
+                          child: Row(children: [
+                            Expanded(
+                                child: GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        CreateAccountScreen()));
+                                setState(() {
+                                  tutorSelected = true;
+                                  studentSelected = false;
+                                  adminSelected = false;
+                                });
                               },
-                              child: text('إنشاء حساب', screenWidth * 3.2,
-                                  theme.mainColor,
-                                  fontWeight: FontWeight.w500),
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  color: tutorSelected
+                                      ? theme.blueColor
+                                      : theme.whiteColor,
+                                  child: text(
+                                      'معلم',
+                                      screenWidth * 3.2,
+                                      tutorSelected
+                                          ? theme.whiteColor
+                                          : theme.blueColor)),
+                            )),
+                            Expanded(
+                                child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  tutorSelected = false;
+                                  studentSelected = true;
+                                  adminSelected = false;
+                                });
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  color: studentSelected
+                                      ? theme.blueColor
+                                      : theme.whiteColor,
+                                  child: text(
+                                      'طالب',
+                                      screenWidth * 3.2,
+                                      studentSelected
+                                          ? theme.whiteColor
+                                          : theme.blueColor)),
+                            )),
+                            Expanded(
+                                child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  tutorSelected = false;
+                                  studentSelected = false;
+                                  adminSelected = true;
+                                });
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  color: adminSelected
+                                      ? theme.blueColor
+                                      : theme.whiteColor,
+                                  child: text(
+                                      'إدارة',
+                                      screenWidth * 3.2,
+                                      adminSelected
+                                          ? theme.whiteColor
+                                          : theme.blueColor)),
+                            ))
+                          ])),
+                      tutorSelected
+                          ? tutorEmailPassword(screenWidth)
+                          : studentSelected
+                              ? studentEmailPassword(screenWidth)
+                              : adminSelected
+                                  ? adminEmailPassword(screenWidth)
+                                  : SizedBox(),
+                      sizedBox(height: screenWidth * 4),
+                      authProvider.isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      theme.mainColor)),
+                            )
+                          : GestureDetector(
+                              onTap: () async {
+                                FocusScope.of(context).unfocus();
+                                if (tutorSelected) {
+                                  if (tutorAllFieldsValid) {
+                                    await authProvider.handleSignInEmail(
+                                        context,
+                                        tutorEmail.text,
+                                        tutorPassword.text,
+                                        "Tutor");
+
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => HomeScreen(
+                                    //           title: 'مرحبًا Tutor',
+                                    //         )));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          "تأكد من إدخال البريد الإلكتروني وكلمة السر بشكل صحيح",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: theme.appBackgroundColor,
+                                      textColor: theme.darkTextColor,
+                                      fontSize: screenWidth * 3,
+                                    );
+                                  }
+                                } else if (studentSelected) {
+                                  if (studentAllFieldsValid) {
+                                    await authProvider.handleSignInEmail(
+                                        context,
+                                        studentEmail.text,
+                                        studentPassword.text,
+                                        "Student");
+
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => HomeScreen(
+                                    //           title: 'مرحبًا Student',
+                                    //         )));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          "تأكد من إدخال البريد الإلكتروني وكلمة السر بشكل صحيح",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: theme.appBackgroundColor,
+                                      textColor: theme.darkTextColor,
+                                      fontSize: screenWidth * 3,
+                                    );
+                                  }
+                                } else if (adminSelected) {
+                                  if (adminAllFieldsValid) {
+                                    await authProvider.handleSignInEmail(
+                                        context,
+                                        adminEmail.text,
+                                        adminPassword.text,
+                                        "Admin");
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => HomeScreen(
+                                    //           title: 'مرحبًا Admin',
+                                    //         )));
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          "تأكد من إدخال البريد الإلكتروني وكلمة السر بشكل صحيح",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: theme.appBackgroundColor,
+                                      textColor: theme.darkTextColor,
+                                      fontSize: screenWidth * 3,
+                                    );
+                                  }
+                                }
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(
+                                          vertical: screenWidth * 2)
+                                      .copyWith(bottom: screenWidth),
+                                  padding: EdgeInsets.all(screenWidth * 4.3),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          screenWidth * 50),
+                                      color: theme.blueColor),
+                                  child: text('تسجيل الدخول', screenWidth * 3.4,
+                                      theme.whiteColor)),
                             ),
-                          ],
+                      sizedBox(height: screenWidth * 40),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: screenWidth * 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              text('إذا لم يكن لديك حساب من قبل  ',
+                                  screenWidth * 3.1, theme.lightTextColor),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateAccountScreen()));
+                                },
+                                child: text('إنشاء حساب', screenWidth * 3.2,
+                                    theme.mainColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

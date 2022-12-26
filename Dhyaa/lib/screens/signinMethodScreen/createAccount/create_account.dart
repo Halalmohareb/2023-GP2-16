@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart'
     show Fluttertoast, Toast, ToastGravity;
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -39,7 +38,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   String tutorErrorTextMajor = '';
   String tutorErrorTextLocation = '';
   String tutorErrorTextAddress = '';
-  String tutorErrorTextPrice = '';
+  String tutorErrorTextOnlineLessonPrice = '';
+  String tutorErrorTextStudentsHomeLessonPrice = '';
+  String tutorErrorTextTutorsHomeLessonPrice = '';
 
   bool tutorUsernameValid = false;
   bool tutorEmailValid = false;
@@ -49,7 +50,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   bool tutorMajorValid = false;
   bool tutorLocationValid = false;
   bool tutorAddressValid = false;
-  bool tutorPriceValid = false;
+  bool onlineLessonPriceValid = false;
+  bool studentsHomeLessonPriceValid = true;
+  bool tutorsHomeLessonPriceValid = true;
 
   bool tutorAllFieldsValid = false;
 
@@ -139,8 +142,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           showToast("المدينة التي تم إدخالها غير صحيحة");
         } else if (!tutorAddressValid) {
           showToast('العنوان / الحي  المدخل غير صحيح');
-        } else if (!tutorPriceValid) {
-          showToast('سعر الحصة المدخل غير صحيح');
+        } else if (!onlineLessonPriceValid ||
+            !studentsHomeLessonPriceValid ||
+            !tutorsHomeLessonPriceValid) {
+          showToast(tutorErrorTextOnlineLessonPrice);
         }
       }
     }
@@ -332,7 +337,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         tutorLocationValid &&
                         tutorMajorValid &&
                         tutorAddressValid &&
-                        tutorPriceValid) {
+                        onlineLessonPriceValid &&
+                        studentsHomeLessonPriceValid &&
+                        tutorsHomeLessonPriceValid) {
                       tutorAllFieldsValid = true;
                     }
                   } else {
@@ -414,7 +421,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         tutorLocationValid &&
                         tutorMajorValid &&
                         tutorAddressValid &&
-                        tutorPriceValid) {
+                        onlineLessonPriceValid &&
+                        studentsHomeLessonPriceValid &&
+                        tutorsHomeLessonPriceValid) {
                       tutorAllFieldsValid = true;
                     }
                   } else {
@@ -492,7 +501,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         tutorLocationValid &&
                         tutorMajorValid &&
                         tutorAddressValid &&
-                        tutorPriceValid) {
+                        onlineLessonPriceValid &&
+                        studentsHomeLessonPriceValid &&
+                        tutorsHomeLessonPriceValid) {
                       tutorAllFieldsValid = true;
                     }
                   } else {
@@ -582,7 +593,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           tutorLocationValid &&
                           tutorMajorValid &&
                           tutorAddressValid &&
-                          tutorPriceValid) {
+                          onlineLessonPriceValid &&
+                          studentsHomeLessonPriceValid &&
+                          tutorsHomeLessonPriceValid) {
                         tutorAllFieldsValid = true;
                       }
                     } else {
@@ -708,6 +721,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
               textStyle: textStyle(screenWidth * 3.7, theme.mainColor),
               onTagChanged: (newValue) {
+                values.add(newValue);
                 if (values.isNotEmpty) {
                   tutorDegreeValid = true;
                   authProvider.tutorDegree.text = jsonEncode(values);
@@ -720,7 +734,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       tutorLocationValid &&
                       tutorMajorValid &&
                       tutorAddressValid &&
-                      tutorPriceValid) {
+                      onlineLessonPriceValid &&
+                      studentsHomeLessonPriceValid &&
+                      tutorsHomeLessonPriceValid) {
                     tutorAllFieldsValid = true;
                   }
                 } else {
@@ -728,7 +744,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   tutorDegreeValid = false;
                   tutorAllFieldsValid = false;
                 }
-                values.add(newValue);
                 if (mounted) setState(() {});
               },
               tagBuilder: (context, index) => _Chip(
@@ -754,94 +769,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ? sizedBox()
               : Padding(
                   padding: EdgeInsets.only(
-                      left: screenWidth * 1, top: screenWidth * 1),
-                  child: Row(
-                    children: [
-                      text(tutorErrorTextDegree, screenWidth * 2.7,
-                          theme.redColor),
-                    ],
-                  ),
-                ),
-          sizedBox(height: screenWidth * 4),
-          Row(
-            children: [
-              text(
-                'سعرالحصة',
-                screenWidth * 3,
-                theme.lightTextColor,
-                fontWeight: FontWeight.w500,
-              ),
-            ],
-          ),
-          sizedBox(height: screenWidth * 3),
-          SizedBox(
-            height: screenWidth * 12.5,
-            width: double.infinity,
-            child: TextFormField(
-              controller: authProvider.tutorPrice,
-              onChanged: (value) {
-                setState(() {
-                  if (authProvider.tutorPrice.text.isNotEmpty) {
-                    tutorPriceValid = true;
-                    tutorErrorTextPrice = '';
-                    if (tutorPasswordValid &&
-                        tutorEmailValid &&
-                        tutorUsernameValid &&
-                        tutorPhoneNumberValid &&
-                        tutorDegreeValid &&
-                        tutorLocationValid &&
-                        tutorMajorValid &&
-                        tutorAddressValid &&
-                        tutorPriceValid) {
-                      tutorAllFieldsValid = true;
-                    }
-                  } else {
-                    tutorErrorTextPrice = 'سعر الحصة المدخل غير صحيح';
-                    tutorPriceValid = false;
-                    tutorAllFieldsValid = false;
-                  }
-                });
-              },
-              style: textStyle(screenWidth * 3.7, theme.mainColor),
-              decoration: InputDecoration(
-                isDense: true,
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
-                filled: true,
-                fillColor: Colors.white24,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide:
-                      BorderSide(width: .3, color: theme.lightTextColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                    width: .6,
-                    color:
-                        !tutorPriceValid ? theme.redColor : theme.yellowColor,
-                  ),
-                ),
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.all(13),
-                  child: Text('ريال/ساعة'),
-                ),
-              ),
-            ),
-          ),
-          authProvider.tutorPrice.text.length == 0 || tutorPriceValid
-              ? sizedBox()
-              : Padding(
-                  padding: EdgeInsets.only(
                     left: screenWidth * 1,
                     top: screenWidth * 1,
                   ),
                   child: Row(
                     children: [
                       text(
-                        tutorErrorTextPrice,
+                        tutorErrorTextDegree,
                         screenWidth * 2.7,
                         theme.redColor,
                       ),
@@ -874,7 +808,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         tutorLocationValid &&
                         tutorMajorValid &&
                         tutorAddressValid &&
-                        tutorPriceValid) {
+                        onlineLessonPriceValid &&
+                        studentsHomeLessonPriceValid &&
+                        tutorsHomeLessonPriceValid) {
                       tutorAllFieldsValid = true;
                     }
                   } else {
@@ -952,7 +888,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         tutorLocationValid &&
                         tutorMajorValid &&
                         tutorAddressValid &&
-                        tutorPriceValid) {
+                        onlineLessonPriceValid &&
+                        studentsHomeLessonPriceValid &&
+                        tutorsHomeLessonPriceValid) {
                       tutorAllFieldsValid = true;
                     }
                   } else {
@@ -978,12 +916,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
-                    borderSide: BorderSide(
-                        width: .6,
-                        color: !tutorLocationValid
-                            ? theme.redColor
-                            : theme.yellowColor)),
+                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderSide: BorderSide(
+                    width: .6,
+                    color: !tutorLocationValid
+                        ? theme.redColor
+                        : theme.yellowColor,
+                  ),
+                ),
               ),
             ),
           ),
@@ -991,11 +931,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ? sizedBox()
               : Padding(
                   padding: EdgeInsets.only(
-                      left: screenWidth * 1, top: screenWidth * 1),
+                    left: screenWidth * 1,
+                    top: screenWidth * 1,
+                  ),
                   child: Row(
                     children: [
-                      text(tutorErrorTextLocation, screenWidth * 2.7,
-                          theme.redColor),
+                      text(
+                        tutorErrorTextLocation,
+                        screenWidth * 2.7,
+                        theme.redColor,
+                      ),
                     ],
                   ),
                 ),
@@ -1029,7 +974,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         tutorLocationValid &&
                         tutorMajorValid &&
                         tutorAddressValid &&
-                        tutorPriceValid) {
+                        onlineLessonPriceValid &&
+                        studentsHomeLessonPriceValid &&
+                        tutorsHomeLessonPriceValid) {
                       tutorAllFieldsValid = true;
                     }
                   } else {
@@ -1091,104 +1038,425 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             ],
           ),
-          sizedBox(height: screenWidth * 3),
-          Container(
-            height: screenWidth * 8,
-            width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.only(bottom: screenWidth * 2),
-            decoration: BoxDecoration(
-              border: Border.all(color: theme.mainColor),
-              borderRadius: BorderRadius.circular(screenWidth),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        authProvider.tutorLessonType = 'حضوري';
-                      });
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 35,
+                  child: CheckboxListTile(
+                    value: authProvider.isOnlineLesson,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.all(0),
+                    shape: CircleBorder(),
+                    onChanged: (value) {
+                      authProvider.isOnlineLesson = value!;
+                      if (mounted) setState(() {});
+                      if (authProvider.isOnlineLesson) {
+                        if (authProvider.onlineLessonPrice.text.isNotEmpty) {
+                          onlineLessonPriceValid = true;
+                          tutorErrorTextOnlineLessonPrice = '';
+                          if (tutorPasswordValid &&
+                              tutorEmailValid &&
+                              tutorUsernameValid &&
+                              tutorPhoneNumberValid &&
+                              tutorDegreeValid &&
+                              tutorLocationValid &&
+                              tutorMajorValid &&
+                              tutorAddressValid &&
+                              onlineLessonPriceValid &&
+                              studentsHomeLessonPriceValid &&
+                              tutorsHomeLessonPriceValid) {
+                            tutorAllFieldsValid = true;
+                          }
+                        } else {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          onlineLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        }
+                      } else {
+                        if (!authProvider.isOnlineLesson &&
+                            !authProvider.isStudentHomeLesson &&
+                            !authProvider.isTutorHomeLesson) {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          onlineLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        } else {
+                          onlineLessonPriceValid = true;
+                          tutorAllFieldsValid = false;
+                        }
+                      }
+                      if (mounted) setState(() {});
                     },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: authProvider.tutorLessonType == 'حضوري'
-                            ? theme.blueColor
-                            : theme.whiteColor,
-                        border: Border(
-                          left: BorderSide(
-                            width: 1,
-                            color: theme.lightTextColor,
-                          ),
-                        ),
-                      ),
-                      child: text(
-                        'حضوري',
-                        screenWidth * 3.2,
-                        authProvider.tutorLessonType == 'حضوري'
-                            ? theme.whiteColor
-                            : theme.lightTextColor,
+                    title: Text(
+                      'أون لاين',
+                      style: TextStyle(
+                        fontSize: screenWidth * 3,
+                        color: theme.lightTextColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        authProvider.tutorLessonType = 'أون لاين';
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: authProvider.tutorLessonType == 'أون لاين'
-                            ? theme.blueColor
-                            : theme.whiteColor,
-                        border: Border(
-                          left:
-                              BorderSide(width: 1, color: theme.lightTextColor),
-                        ),
+              ),
+              Container(
+                height: 35,
+                width: 110,
+                child: TextFormField(
+                  controller: authProvider.onlineLessonPrice,
+                  onChanged: (value) {
+                    setState(() {
+                      if (authProvider.isOnlineLesson) {
+                        if (authProvider.onlineLessonPrice.text.isNotEmpty) {
+                          onlineLessonPriceValid = true;
+                          tutorErrorTextOnlineLessonPrice = '';
+                          if (tutorPasswordValid &&
+                              tutorEmailValid &&
+                              tutorUsernameValid &&
+                              tutorPhoneNumberValid &&
+                              tutorDegreeValid &&
+                              tutorLocationValid &&
+                              tutorMajorValid &&
+                              tutorAddressValid &&
+                              onlineLessonPriceValid &&
+                              studentsHomeLessonPriceValid &&
+                              tutorsHomeLessonPriceValid) {
+                            tutorAllFieldsValid = true;
+                          }
+                        } else {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          onlineLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        }
+                      } else {
+                        if (!authProvider.isOnlineLesson &&
+                            !authProvider.isStudentHomeLesson &&
+                            !authProvider.isTutorHomeLesson) {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          onlineLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        } else {
+                          onlineLessonPriceValid = true;
+                          tutorAllFieldsValid = false;
+                        }
+                      }
+                    });
+                  },
+                  style: textStyle(screenWidth * 3.7, theme.mainColor),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 4,
+                        vertical: screenWidth * 1.5),
+                    hintText: 'ريال/ساعة',
+                    hintStyle:
+                        textStyle(screenWidth * 3.3, theme.lightTextColor),
+                    filled: true,
+                    fillColor: Colors.white24,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderSide:
+                          BorderSide(width: .3, color: theme.lightTextColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderSide: BorderSide(
+                        width: .6,
+                        color: !onlineLessonPriceValid
+                            ? theme.redColor
+                            : theme.yellowColor,
                       ),
-                      child: text(
-                        'أون لاين',
-                        screenWidth * 3.2,
-                        authProvider.tutorLessonType == 'أون لاين'
-                            ? theme.whiteColor
-                            : theme.lightTextColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 35,
+                  child: CheckboxListTile(
+                    value: authProvider.isStudentHomeLesson,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.all(0),
+                    shape: CircleBorder(),
+                    onChanged: (value) {
+                      authProvider.isStudentHomeLesson = value!;
+                      if (mounted) setState(() {});
+                      if (authProvider.isStudentHomeLesson) {
+                        if (authProvider
+                            .studentsHomeLessonPrice.text.isNotEmpty) {
+                          studentsHomeLessonPriceValid = true;
+                          tutorErrorTextStudentsHomeLessonPrice = '';
+                          if (tutorPasswordValid &&
+                              tutorEmailValid &&
+                              tutorUsernameValid &&
+                              tutorPhoneNumberValid &&
+                              tutorDegreeValid &&
+                              tutorLocationValid &&
+                              tutorMajorValid &&
+                              tutorAddressValid &&
+                              onlineLessonPriceValid &&
+                              studentsHomeLessonPriceValid &&
+                              tutorsHomeLessonPriceValid) {
+                            tutorAllFieldsValid = true;
+                          }
+                        } else {
+                          tutorErrorTextStudentsHomeLessonPrice =
+                              'حضوري ريال/ساعة المدخل غير صحيح';
+                          studentsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        }
+                      } else {
+                        if (!authProvider.isOnlineLesson &&
+                            !authProvider.isStudentHomeLesson &&
+                            !authProvider.isTutorHomeLesson) {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          studentsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        } else {
+                          studentsHomeLessonPriceValid = true;
+                          tutorAllFieldsValid = false;
+                        }
+                      }
+                      if (mounted) setState(() {});
+                    },
+                    title: Text(
+                      'حضوري (مكان الطالب)',
+                      style: TextStyle(
+                        fontSize: screenWidth * 3,
+                        color: theme.lightTextColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        authProvider.tutorLessonType = 'كلاهما';
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: authProvider.tutorLessonType == 'كلاهما'
-                            ? theme.blueColor
-                            : theme.whiteColor,
+              ),
+              Container(
+                height: 35,
+                width: 110,
+                child: TextFormField(
+                  controller: authProvider.studentsHomeLessonPrice,
+                  onChanged: (value) {
+                    setState(() {
+                      if (authProvider.isStudentHomeLesson) {
+                        if (authProvider
+                            .studentsHomeLessonPrice.text.isNotEmpty) {
+                          studentsHomeLessonPriceValid = true;
+                          tutorErrorTextStudentsHomeLessonPrice = '';
+                          if (tutorPasswordValid &&
+                              tutorEmailValid &&
+                              tutorUsernameValid &&
+                              tutorPhoneNumberValid &&
+                              tutorDegreeValid &&
+                              tutorLocationValid &&
+                              tutorMajorValid &&
+                              tutorAddressValid &&
+                              onlineLessonPriceValid &&
+                              studentsHomeLessonPriceValid &&
+                              tutorsHomeLessonPriceValid) {
+                            tutorAllFieldsValid = true;
+                          }
+                        } else {
+                          tutorErrorTextStudentsHomeLessonPrice =
+                              'حضوري ريال/ساعة المدخل غير صحيح';
+                          studentsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        }
+                      } else {
+                        if (!authProvider.isOnlineLesson &&
+                            !authProvider.isStudentHomeLesson &&
+                            !authProvider.isTutorHomeLesson) {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          studentsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        } else {
+                          studentsHomeLessonPriceValid = true;
+                          tutorAllFieldsValid = false;
+                        }
+                      }
+                    });
+                  },
+                  style: textStyle(screenWidth * 3.7, theme.mainColor),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 4,
+                        vertical: screenWidth * 1.5),
+                    hintText: 'ريال/ساعة',
+                    hintStyle:
+                        textStyle(screenWidth * 3.3, theme.lightTextColor),
+                    filled: true,
+                    fillColor: Colors.white24,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderSide:
+                          BorderSide(width: .3, color: theme.lightTextColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderSide: BorderSide(
+                        width: .6,
+                        color: !studentsHomeLessonPriceValid
+                            ? theme.redColor
+                            : theme.yellowColor,
                       ),
-                      child: text(
-                        'كلاهما',
-                        screenWidth * 3.2,
-                        authProvider.tutorLessonType == 'كلاهما'
-                            ? theme.whiteColor
-                            : theme.lightTextColor,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 35,
+                  child: CheckboxListTile(
+                    value: authProvider.isTutorHomeLesson,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.all(0),
+                    shape: CircleBorder(),
+                    onChanged: (value) {
+                      authProvider.isTutorHomeLesson = value!;
+                      if (mounted) setState(() {});
+                      if (authProvider.isTutorHomeLesson) {
+                        if (authProvider
+                            .tutorsHomeLessonPrice.text.isNotEmpty) {
+                          tutorsHomeLessonPriceValid = true;
+                          tutorErrorTextTutorsHomeLessonPrice = '';
+                          if (tutorPasswordValid &&
+                              tutorEmailValid &&
+                              tutorUsernameValid &&
+                              tutorPhoneNumberValid &&
+                              tutorDegreeValid &&
+                              tutorLocationValid &&
+                              tutorMajorValid &&
+                              tutorAddressValid &&
+                              onlineLessonPriceValid &&
+                              studentsHomeLessonPriceValid &&
+                              tutorsHomeLessonPriceValid) {
+                            tutorAllFieldsValid = true;
+                          }
+                        } else {
+                          tutorErrorTextTutorsHomeLessonPrice =
+                              'حضوري ريال/ساعة المدخل غير صحيح';
+                          tutorsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        }
+                      } else {
+                        if (!authProvider.isOnlineLesson &&
+                            !authProvider.isStudentHomeLesson &&
+                            !authProvider.isTutorHomeLesson) {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          tutorsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        } else {
+                          tutorsHomeLessonPriceValid = true;
+                          tutorAllFieldsValid = false;
+                        }
+                      }
+                      if (mounted) setState(() {});
+                    },
+                    title: Text(
+                      'حضوري (مكان المعلم)',
+                      style: TextStyle(
+                        fontSize: screenWidth * 3,
+                        color: theme.lightTextColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Container(
+                height: 35,
+                width: 110,
+                child: TextFormField(
+                  controller: authProvider.tutorsHomeLessonPrice,
+                  onChanged: (value) {
+                    setState(() {
+                      if (authProvider.isTutorHomeLesson) {
+                        if (authProvider
+                            .tutorsHomeLessonPrice.text.isNotEmpty) {
+                          tutorsHomeLessonPriceValid = true;
+                          tutorErrorTextTutorsHomeLessonPrice = '';
+                          if (tutorPasswordValid &&
+                              tutorEmailValid &&
+                              tutorUsernameValid &&
+                              tutorPhoneNumberValid &&
+                              tutorDegreeValid &&
+                              tutorLocationValid &&
+                              tutorMajorValid &&
+                              tutorAddressValid &&
+                              onlineLessonPriceValid &&
+                              studentsHomeLessonPriceValid &&
+                              tutorsHomeLessonPriceValid) {
+                            tutorAllFieldsValid = true;
+                          }
+                        } else {
+                          tutorErrorTextTutorsHomeLessonPrice =
+                              'حضوري ريال/ساعة المدخل غير صحيح';
+                          tutorsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        }
+                      } else {
+                        if (!authProvider.isOnlineLesson &&
+                            !authProvider.isStudentHomeLesson &&
+                            !authProvider.isTutorHomeLesson) {
+                          tutorErrorTextOnlineLessonPrice =
+                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                          tutorsHomeLessonPriceValid = false;
+                          tutorAllFieldsValid = false;
+                        } else {
+                          tutorsHomeLessonPriceValid = true;
+                          tutorAllFieldsValid = false;
+                        }
+                      }
+                    });
+                  },
+                  style: textStyle(screenWidth * 3.7, theme.mainColor),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 4,
+                        vertical: screenWidth * 1.5),
+                    hintText: 'ريال/ساعة',
+                    hintStyle:
+                        textStyle(screenWidth * 3.3, theme.lightTextColor),
+                    filled: true,
+                    fillColor: Colors.white24,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderSide:
+                          BorderSide(width: .3, color: theme.lightTextColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderSide: BorderSide(
+                        width: .6,
+                        color: !tutorsHomeLessonPriceValid
+                            ? theme.redColor
+                            : theme.yellowColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -1452,34 +1720,35 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           width: double.infinity,
           child: InternationalPhoneNumberInput(
             onInputChanged: (PhoneNumber number) {
-              setState(() {
-                if (authProvider.tutorPhoneNumber.text.startsWith('5')) {
-                  if (number.phoneNumber!.length > 10) {
-                    studentPhoneNumberValid = true;
-                    studentErrorTextPhoneNumber = '';
-                    if (studentPasswordValid &&
-                        studentEmailValid &&
-                        studentPhoneNumberValid &&
-                        studentLocationValid &&
-                        studentAddressValid) {
-                      studentAllFieldsValid = true;
-                    }
-                  } else {
-                    studentErrorTextPhoneNumber =
-                        "الهاتف الذي تم إدخاله غير صحيح";
-                    if (authProvider.studentPhoneNumber.text.contains(' ')) {
-                      studentErrorTextPhoneNumber =
-                          "يجب ألا يحتوي الهاتف على مسافات";
-                    }
-                    studentPhoneNumberValid = false;
-                    studentAllFieldsValid = false;
+              authProvider.studentPhoneNumber.text =
+                  number.phoneNumber!.replaceAll('+966', '');
+              if (authProvider.tutorPhoneNumber.text.startsWith('5')) {
+                if (number.phoneNumber!.length > 10) {
+                  studentPhoneNumberValid = true;
+                  studentErrorTextPhoneNumber = '';
+                  if (studentPasswordValid &&
+                      studentEmailValid &&
+                      studentPhoneNumberValid &&
+                      studentLocationValid &&
+                      studentAddressValid) {
+                    studentAllFieldsValid = true;
                   }
                 } else {
-                  studentErrorTextPhoneNumber = "يجب أن يبدأ الهاتف بالرقم 5";
+                  studentErrorTextPhoneNumber =
+                      "الهاتف الذي تم إدخاله غير صحيح";
+                  if (authProvider.studentPhoneNumber.text.contains(' ')) {
+                    studentErrorTextPhoneNumber =
+                        "يجب ألا يحتوي الهاتف على مسافات";
+                  }
                   studentPhoneNumberValid = false;
                   studentAllFieldsValid = false;
                 }
-              });
+              } else {
+                studentErrorTextPhoneNumber = "يجب أن يبدأ الهاتف بالرقم 5";
+                studentPhoneNumberValid = false;
+                studentAllFieldsValid = false;
+              }
+              if (mounted) setState(() {});
             },
             countries: ["SA"],
             maxLength: 9,
@@ -1488,37 +1757,48 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               print(value);
             },
             selectorConfig: SelectorConfig(
-                selectorType: PhoneInputSelectorType.DROPDOWN,
-                trailingSpace: false,
-                leadingPadding: 0.0,
-                showFlags: false),
+              selectorType: PhoneInputSelectorType.DROPDOWN,
+              trailingSpace: false,
+              leadingPadding: 0.0,
+              showFlags: false,
+            ),
             ignoreBlank: false,
             autoValidateMode: AutovalidateMode.disabled,
             selectorTextStyle: TextStyle(color: Colors.black),
             initialValue: PhoneNumber(
-                phoneNumber: "5XXXXXXXX", dialCode: "+966", isoCode: "SA"),
+              dialCode: "+966",
+              isoCode: "SA",
+              phoneNumber: "5XXXXXXXX",
+            ),
             textFieldController: authProvider.studentPhoneNumber,
             formatInput: false,
             inputDecoration: InputDecoration(
               isDense: true,
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 4, vertical: screenWidth * 4),
+                horizontal: screenWidth * 4,
+                vertical: screenWidth * 4,
+              ),
               hintText: '5XXXXXXXX',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide:
-                      BorderSide(width: .3, color: theme.lightTextColor)),
+                borderRadius: BorderRadius.circular(screenWidth * 200),
+                borderSide: BorderSide(
+                  width: .3,
+                  color: theme.lightTextColor,
+                ),
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                      width: .6,
-                      color: !studentPhoneNumberValid
-                          ? theme.redColor
-                          : theme.yellowColor)),
+                borderRadius: BorderRadius.circular(screenWidth * 200),
+                borderSide: BorderSide(
+                  width: .6,
+                  color: !studentPhoneNumberValid
+                      ? theme.redColor
+                      : theme.yellowColor,
+                ),
+              ),
             ),
             keyboardType:
                 TextInputType.numberWithOptions(signed: true, decimal: true),
