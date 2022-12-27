@@ -75,8 +75,8 @@ import '../theme/studentTopBarNavigator.dart';
               itemBuilder:(context,index){
                 var friendId = snapshot.data.docs[index].id;
                 var lastMsg = snapshot.data.docs[index]['last_msg'];
-              // var lastMsgtime = snapshot.data.docs[index]['time'];
-              // print(snapshot.data.docs[index]['time']);
+                var lastMsgtime = snapshot.data.docs[index]['time'];
+                print(snapshot.data.docs[index]['time']);
                 //.data.docs[index]['date']
                 return FutureBuilder(
                   future: FirebaseFirestore.instance.collection('Users').doc(friendId).get() ,
@@ -101,11 +101,11 @@ import '../theme/studentTopBarNavigator.dart';
                             const SizedBox(
                               height: 9,
                             ),
-                        //      Text("$lastMsgtime",
-                        //        style:Theme.of(context).textTheme.overline?.copyWith(
-                        // color:Colors.black54,
-                        //     ),
-                        //      ),
+                             Text("$lastMsgtime",
+                               style:Theme.of(context).textTheme.overline?.copyWith(
+                        color:Colors.black54,
+                            ),
+                             ),
                             const SizedBox(
                               height: 4,
                             ),

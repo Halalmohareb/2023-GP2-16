@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Dhyaa/globalWidgets/toast.dart';
+import 'package:Dhyaa/screens/homeScreen/home_screen.dart';
 import 'package:Dhyaa/screens/student/student_homepage.dart';
 import 'package:Dhyaa/screens/tutor/tutor_homepage.dart';
+import '';
 
 class AuthProvider extends ChangeNotifier {
   final tutorUsername = TextEditingController();
@@ -13,16 +15,11 @@ class AuthProvider extends ChangeNotifier {
   final tutorPassword = TextEditingController();
   final tutorPhoneNumber = TextEditingController();
   final tutorMajor = TextEditingController();
+  final tutorPrice = TextEditingController();
   final tutorDegree = TextEditingController();
   final tutorLocation = TextEditingController();
-  final tutorPrice = TextEditingController();
   final tutorAddress = TextEditingController();
-  bool isOnlineLesson = true;
-  bool isStudentHomeLesson = false;
-  bool isTutorHomeLesson = false;
-  final onlineLessonPrice = TextEditingController();
-  final studentsHomeLessonPrice = TextEditingController();
-  final tutorsHomeLessonPrice = TextEditingController();
+  String tutorLessonType = 'حضوري';
 
   String degree = '';
 
@@ -227,7 +224,9 @@ class AuthProvider extends ChangeNotifier {
         await prefs.setString('type', type);
         await prefs.setString('user', email);
         print(prefs.getString('type'));
-        print(prefs.getString('user'));
+        print(
+          prefs.getString('user'),
+        );
         if (type == "Student") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -383,7 +382,7 @@ class AuthProvider extends ChangeNotifier {
       if (type == "Student") {
         result.set({
           "email": studentEmail.text,
-          "phone": "+966${studentPhoneNumber.text}",
+          "phone": studentPhoneNumber.text,
           "location": studentLocation.text,
           "address": studentAddress.text,
           "username": studentUserName.text,
@@ -391,13 +390,8 @@ class AuthProvider extends ChangeNotifier {
           "type": 'Student',
           'majorSubjects': '',
           'degree': '',
-          "isOnlineLesson": false,
-          "isStudentHomeLesson": false,
-          "isTutorHomeLesson": false,
-          "onlineLessonPrice": '',
-          "studentsHomeLessonPrice": '',
-          "tutorsHomeLessonPrice": '',
-          "bio": '',
+          'price': '',
+          'lessonType': '',
         }).then((value) {
           studentUserName.clear();
           studentEmail.clear();
@@ -421,13 +415,8 @@ class AuthProvider extends ChangeNotifier {
           'degree': tutorDegree.text,
           "location": tutorLocation.text,
           "address": tutorAddress.text,
-          "isOnlineLesson": isOnlineLesson,
-          "isStudentHomeLesson": isStudentHomeLesson,
-          "isTutorHomeLesson": isTutorHomeLesson,
-          "onlineLessonPrice": onlineLessonPrice.text,
-          "studentsHomeLessonPrice": studentsHomeLessonPrice.text,
-          "tutorsHomeLessonPrice": tutorsHomeLessonPrice.text,
-          "bio": '',
+          "price": tutorPrice.text,
+          "lessonType": tutorLessonType,
         }).then((value) {
           tutorUsername.clear();
           tutorEmail.clear();
@@ -437,9 +426,7 @@ class AuthProvider extends ChangeNotifier {
           tutorMajor.clear();
           tutorLocation.clear();
           tutorAddress.clear();
-          onlineLessonPrice.clear();
-          studentsHomeLessonPrice.clear();
-          tutorsHomeLessonPrice.clear();
+          tutorPrice.clear();
           isLoading = false;
           notifyListeners();
           showToast("تم تسجيلك كمعلم");

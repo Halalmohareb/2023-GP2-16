@@ -29,26 +29,27 @@ class _StudentTopBarNavigatorState extends State<StudentTopBarNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          IconButton(
-            onPressed: () async {
-              Navigator.of(context, rootNavigator: false).push(
-                MaterialPageRoute(
-                  builder: (context) => Menu(
-                    userData: userData,
-                  ),
-                  maintainState: false,
-                ),
-              );
-            },
-            icon: SvgPicture.asset('assets/icons/profile.svg'),
-          ),
-          Image.asset('assets/icons/DhyaaLogo.png', height: 40),
-        ],
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: false).push(
+                  MaterialPageRoute(
+                      builder: (context) => Menu(
+                            userData: userData,
+                          ),
+                      maintainState: false),
+                );
+              },
+              icon: SvgPicture.asset('assets/icons/profile.svg'),
+            ),
+            Image.asset('assets/icons/DhyaaLogo.png', height: 40),
+          ],
+        ),
       ),
     );
   }

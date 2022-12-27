@@ -1,4 +1,3 @@
-import 'package:Dhyaa/screens/myAppointments.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/screens/student/findTutor_screen.dart';
@@ -19,9 +18,9 @@ class _StudentHomepageState extends State<StudentHomepage> {
 
   int _currentIndex = 1;
   final List _children = [
-    ChatPage(),
+  ChatPage(),
     FindTutorScreen(),
-    MyAppointmentPage(),
+    Center(child: Icon(Icons.list, size: 40)),
   ];
 
   void onTabTapped(int index) {

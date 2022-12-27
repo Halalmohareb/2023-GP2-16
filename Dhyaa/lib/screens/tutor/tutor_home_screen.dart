@@ -1,9 +1,10 @@
+import 'dart:ui';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/provider/firestore.dart';
-import 'package:Dhyaa/screens/myAppointments.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/constant.dart';
 import 'package:Dhyaa/globalWidgets/sizedBoxWidget/sized_box_widget.dart';
+import 'package:Dhyaa/models/bookedLesson.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/home_page.dart';
 import 'package:Dhyaa/theme/tutorTopBarNavigator.dart';
 
@@ -15,6 +16,7 @@ class TutorHomeScreen extends StatefulWidget {
 }
 
 class _TutorHomeScreenState extends State<TutorHomeScreen> {
+  List<BookedLesson> BookedLessons = [];
   int count = 0;
   UserData userData = emptyUserData;
 
@@ -110,41 +112,31 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context, rootNavigator: false).push(
-                              MaterialPageRoute(
-                                builder: (context) => MyAppointmentPage(),
-                                maintainState: false,
+                        Container(
+                          height: 160,
+                          width: MediaQuery.of(context).size.width / 2 - 50,
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.accents[6].withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Image.asset(
+                                'assets/images/booked_lessons.png',
+                                height: 60,
                               ),
-                            );
-                          },
-                          child: Container(
-                            height: 160,
-                            width: MediaQuery.of(context).size.width / 2 - 50,
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.accents[6].withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Image.asset(
-                                  'assets/images/booked_lessons.png',
-                                  height: 60,
-                                ),
-                                Center(
-                                  child: Text(
-                                    'الدروس المحجوزة',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                              Center(
+                                child: Text(
+                                  'الدروس المحجوزة',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

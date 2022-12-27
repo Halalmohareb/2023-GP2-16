@@ -1,13 +1,9 @@
-import 'dart:convert';
-
-import 'package:Dhyaa/screens/student/bookAppointment.dart';
-import 'package:Dhyaa/theme/theme.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart' as intl;
+import 'package:intl/intl.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/provider/firestore.dart';
@@ -25,78 +21,32 @@ class ShowTutorProfilePage extends StatefulWidget {
 
 class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   UserData userData = emptyUserData;
-  UserData myUserData = emptyUserData;
   List<Task> tasks = [];
-  int selectedTime = 1;
-  bool moreBool = false;
   final _taskController = Get.put(TaskController());
   DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
+  int selectedTime = 1;
+  bool moreBool = false;
+  UserData userData2 = emptyUserData;
+
+
 
   @override
   void initState() {
-    userData = widget.userData;
+    setState(() {
+      userData = widget.userData;
+    });
     FirestoreHelper.getTutorTasks(userData).then((value) {
-      tasks = value;
-      if (mounted) setState(() {});
+      setState(() {
+        tasks = value;
+      });
     });
     FirestoreHelper.getMyUserData().then((value) {
-      myUserData = value;
-      if (mounted) setState(() {});
+      setState(() {
+        userData2 = value;
+      });
     });
     super.initState();
-  }
 
-  Widget degreePipe() {
-    dynamic val = userData.degree;
-    List temp = [val];
-
-    if (val != '' && val != null) {
-      if (val[0] == '[' && val[val.length - 1] == ']') {
-        temp = [];
-        List arr = jsonDecode(val);
-        for (var element in arr) {
-          temp.add(element);
-        }
-      }
-    }
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      child: Wrap(
-        children: List.generate(temp.length, (index) {
-          var item = temp[index];
-          return Container(
-            height: 30,
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            child: TextButton(
-              onPressed: null,
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                side: BorderSide(color: kBlueColor),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: Text(item),
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
-  lessonTypePipe() {
-    String temp = '';
-    if (userData.isOnlineLesson) {
-      temp += 'أون لاين' + ' ';
-    }
-    if (userData.isStudentHomeLesson) {
-      temp += 'حضوري (مكان الطالب)' + ' ';
-    }
-    if (userData.isTutorHomeLesson) {
-      temp += 'حضوري (مكان المعلم)';
-    }
-    return temp;
   }
 
   @override
@@ -118,487 +68,405 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
           ),
         ],
       ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Divider(color: Colors.black, thickness: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          userData.username,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        RatingBar.builder(
-                          initialRating: 4,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemSize: 25,
-                          itemPadding: EdgeInsets.all(0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star_rate_rounded,
-                            color: kBlueColor,
-                          ),
-                          onRatingUpdate: (rating) {},
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Icon(Icons.location_on, size: 18),
-                        SizedBox(width: 5),
-                        Text(
-                          userData.location + ', ' + userData.address,
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.broadcast_on_personal, size: 18),
-                        SizedBox(width: 5),
-                        Text(
-                          lessonTypePipe(),
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ],
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'التخصص: ',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          TextSpan(text: userData.majorSubjects),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'نبذه عني: ',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          TextSpan(text: userData.bio),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Divider(
-                color: Colors.black,
-                thickness: 1,
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'المواعيد المتاحة:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                    ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: _showTasks(),
-              ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'المواد:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              degreePipe(),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'التقييم:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.accents[6].withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'سارة',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              RatingBar.builder(
-                                initialRating: 4,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 10,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 0.5),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star_rate_rounded,
-                                  color: kBlueColor,
-                                ),
-                                onRatingUpdate: (rating) {},
-                              ),
-                            ],
-                          ),
-                          Text(
-                            ' ممتاز و تعامل جيد',
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.accents[6].withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'فهد',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              RatingBar.builder(
-                                initialRating: 4,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 10,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 0.5),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star_rate_rounded,
-                                  color: kBlueColor,
-                                ),
-                                onRatingUpdate: (rating) {},
-                              ),
-                            ],
-                          ),
-                          Text(
-                            ' ممتاز',
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: moreBool,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.accents[6].withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'جميل',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    RatingBar.builder(
-                                      initialRating: 4,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemSize: 10,
-                                      itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 0.5),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star_rate_rounded,
-                                        color: kBlueColor,
-                                      ),
-                                      onRatingUpdate: (rating) {},
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'جميل',
-                                  textAlign: TextAlign.right,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.accents[6].withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'محمد',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    RatingBar.builder(
-                                      initialRating: 4,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemSize: 10,
-                                      itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 0.5),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star_rate_rounded,
-                                        color: kBlueColor,
-                                      ),
-                                      onRatingUpdate: (rating) {},
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'اوصي به',
-                                  textAlign: TextAlign.right,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: !moreBool,
-                      child: TextButton(
-                        onPressed: () {
-                          moreBool = !moreBool;
-                          setState(() {});
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      RatingBar.builder(
+                        initialRating: 4,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 20,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 0.5),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: kBlueColor,
+                        ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
                         },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          side: BorderSide(color: kBlueColor),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Text('..المزيد'),
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        userData.username,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'التخصص: ' + userData.majorSubjects,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'الموقع: ' + userData.location,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'المادة: ' + userData.degree,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Divider(
+              color: Colors.black,
+              thickness: 1,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  ': المواعيد المتاحة ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-
-              Center(
-                child: Container(
-                  width: 150,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatScreen(
-                            friendId: userData.userId,
-                            friendName: userData.username,
-                            userData: myUserData,
-                          ),
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      side: BorderSide(color: kBlueColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Divider(color: Colors.black, thickness: 1),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: _showTasks(),
+            ),
+            SizedBox(height: 20),
+            Divider(color: Colors.black, thickness: 1),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  ':التقييم',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.accents[6].withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Row(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Column(
                       children: [
-                        Icon(Icons.chat_rounded, size: 18),
-                        SizedBox(width: 10),
-                        Text("تواصل مع المعلم"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RatingBar.builder(
+                              initialRating: 4,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemSize: 10,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 0.5),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: kBlueColor,
+                              ),
+                              onRatingUpdate: (rating) {
+                                print(rating);
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'سارة',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          ' ممتاز و تعامل جيد',
+                          textAlign: TextAlign.right,
+                        ),
                       ],
                     ),
                   ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.accents[6].withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RatingBar.builder(
+                              initialRating: 4,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemSize: 10,
+                              itemPadding:
+                                  EdgeInsets.symmetric(horizontal: 0.5),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: kBlueColor,
+                              ),
+                              onRatingUpdate: (rating) {
+                                print(rating);
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'فهد',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          ' ممتاز',
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: moreBool,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.accents[6].withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  RatingBar.builder(
+                                    initialRating: 4,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemSize: 10,
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 0.5),
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: kBlueColor,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'نورة',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'جميل',
+                                textAlign: TextAlign.right,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.accents[6].withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  RatingBar.builder(
+                                    initialRating: 4,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemSize: 10,
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 0.5),
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: kBlueColor,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating);
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'محمد',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'اوصي به',
+                                textAlign: TextAlign.right,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: !moreBool,
+                    child: GestureDetector(
+                      onTap: (() {
+                        setState(() {
+                          moreBool = !moreBool;
+                        });
+                      }),
+                      child: Text(
+                        '..المزيد',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+
+            TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                backgroundColor:Color(0xff1E1C61),
+                side: BorderSide(
+                  color: Color(0xff1E1C61),
                 ),
               ),
 
-              // Container(
-              //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              //   decoration: BoxDecoration(
-              //     color: Color(0xff1E1C61),
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: Text(
-              //     'احجز موعد مع المعلم',
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //       color: Color(0xffF2F2F2),
-              //     ),
-              //   ),
-              // ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 50),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-          decoration: BoxDecoration(
-            color: kSearchBackgroundColor,
-            border: Border(
-              top: BorderSide(width: 0.8, color: Colors.black),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookAppointment(
-                        userData: userData,
-                        myUserData: myUserData,
-                      ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      friendId: userData.userId, friendName: userData.username,userData: userData2,
                     ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  side: BorderSide(color: kBlueColor),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
                   ),
-                ),
-                child: Text('احجز موعد مع المعلم'),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: userData.onlineLessonPrice,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' ريال/ساعة',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ],
+                );
+              },
+
+              child: const Text(
+                "تواصل مع المعلم",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xffF2F2F2),
                 ),
               ),
-            ],
-          ),
+            ),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //   decoration: BoxDecoration(
+            //     color: Color(0xff1E1C61),
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: Text(
+            //     'احجز موعد مع المعلم',
+            //     style: TextStyle(
+            //       fontWeight: FontWeight.bold,
+            //       color: Color(0xffF2F2F2),
+            //     ),
+            //   ),
+            // ),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(
+              color: Colors.black,
+              thickness: 1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
         ),
       ),
     );
@@ -629,7 +497,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
 
   _showTasks() {
     String selectedDateString =
-        intl.DateFormat('EEEE').format(_selectedDate).toLowerCase();
+        DateFormat('EEEE').format(_selectedDate).toLowerCase();
 
     // List<Task> selectedTasks =
     //     tasks.where((element) => element.day == selectedDateString).toList();
@@ -642,6 +510,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
           scrollDirection: Axis.horizontal,
           itemCount: selectedTasks.length,
           itemBuilder: (BuildContext ctx, index) {
+            print(selectedTasks[index].color);
             return Container(
                 height: 60,
                 width: 100,

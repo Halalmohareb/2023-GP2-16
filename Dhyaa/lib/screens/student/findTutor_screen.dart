@@ -16,7 +16,7 @@ class FindTutorScreen extends StatefulWidget {
 class _FindTutorScreenState extends State<FindTutorScreen> {
   int count = 0;
   TextEditingController searchTextController = new TextEditingController();
-  UserData emptyTutor = emptyUserData;
+  UserData emptyTutor = UserData('', '', '', '', '', '', '', '');
   List<UserData> tutors = [];
   List<UserData> foundUsers = [];
 
