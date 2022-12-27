@@ -1,11 +1,12 @@
+import 'package:Dhyaa/models/appointment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:Dhyaa/models/bookedLesson.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
 
-UserData emptyUserData = UserData('', '', '', '', '', '', '', '', '', '', '');
+UserData emptyUserData = UserData(
+    '', '', '', '', '', '', '', '', '', false, false, false, '', '', '', '');
 
 class FirestoreHelper {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -137,9 +138,14 @@ class FirestoreHelper {
             element.data()['userId'],
             element.data()['username'],
             element.data()['type'],
-            element.data()['address'],
-            element.data()['price'],
-            element.data()['lessonType'],
+            element.data()['address'] ?? '',
+            element.data()['isOnlineLesson'] ?? false,
+            element.data()['isStudentHomeLesson'] ?? false,
+            element.data()['isTutorHomeLesson'] ?? false,
+            element.data()['onlineLessonPrice'] ?? '',
+            element.data()['studentsHomeLessonPrice'] ?? '',
+            element.data()['tutorsHomeLessonPrice'] ?? '',
+            element.data()['bio'] ?? '',
           ),
         );
       });
@@ -165,9 +171,14 @@ class FirestoreHelper {
             element.data()['userId'],
             element.data()['username'],
             element.data()['type'],
-            element.data()['address'],
-            element.data()['price'],
-            element.data()['lessonType'],
+            element.data()['address'] ?? '',
+            element.data()['isOnlineLesson'] ?? false,
+            element.data()['isStudentHomeLesson'] ?? false,
+            element.data()['isTutorHomeLesson'] ?? false,
+            element.data()['onlineLessonPrice'] ?? '',
+            element.data()['studentsHomeLessonPrice'] ?? '',
+            element.data()['tutorsHomeLessonPrice'] ?? '',
+            element.data()['bio'] ?? '',
           ),
         );
       });
@@ -175,45 +186,91 @@ class FirestoreHelper {
     return Future.value(tutors);
   }
 
-  static Future<List<BookedLesson>> getMyBookedList() async {
-    List<BookedLesson> details = [];
-    var data = await db
-        .collection('bookedLessons')
-        .where('tutorMail', isEqualTo: 'tutor@gmail.com')
-        .orderBy("time", descending: true)
-        .get();
-    if (data != null) {
-      details =
-          data.docs.map((document) => BookedLesson.fromMap(document)).toList();
-    }
-    int i = 0;
-    details.forEach((detail) {
-      detail.id = data.docs[i].id;
-      i++;
-    });
+  // ===============================================
+  // Appointment Booking ===== By Hasnain Elahi ====
+  // ===============================================
 
-    return details;
+  static Future<Appointment> bookAppointment(Appointment appointment) async {
+    var data = await db.collection('appointments').add({
+      'tutorId': appointment.tutorId,
+      'tutorName': appointment.tutorName,
+      'studentId': appointment.studentId,
+      'studentName': appointment.studentName,
+      'degree': appointment.degree,
+      'lessonType': appointment.lessonType,
+      'date': appointment.date,
+      'time': appointment.time,
+      'amount': appointment.amount,
+      'createdAt':
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(appointment.createdAt),
+      'status': appointment.status,
+      'paymentId': appointment.paymentId,
+    });
+    return appointment;
   }
 
-  static Future<bool> changeBookedLessonStatus(String id, String status) async {
-    var data = await db.collection('bookedLessons').doc(id).update({
+  static Future getUpcomingAppointmentList(_key, _value) async {
+    List<Appointment> myAppointmentList = [];
+    QuerySnapshot<Map<String, dynamic>> value = await db
+        .collection('appointments')
+        .where(_key, isEqualTo: _value)
+        .where('status', isEqualTo: 'مؤكد')
+        .get();
+    value.docs.forEach((element) {
+      myAppointmentList.add(
+        Appointment(
+          element.id,
+          element.data()['tutorId'],
+          element.data()['tutorName'],
+          element.data()['studentId'],
+          element.data()['studentName'],
+          element.data()['degree'],
+          element.data()['lessonType'],
+          element.data()['date'],
+          element.data()['time'],
+          element.data()['amount'],
+          DateTime.parse(element.data()['createdAt']),
+          element.data()['status'],
+          element.data()['paymentId'],
+        ),
+      );
+    });
+    return myAppointmentList;
+  }
+
+  static Future getPreviousAppointmentList(_key, _value) async {
+    List<Appointment> myAppointmentList = [];
+    QuerySnapshot<Map<String, dynamic>> value = await db
+        .collection('appointments')
+        .where(_key, isEqualTo: _value)
+        .where('status', isNotEqualTo: 'مؤكد')
+        .get();
+    value.docs.forEach((element) {
+      myAppointmentList.add(
+        Appointment(
+          element.id,
+          element.data()['tutorId'],
+          element.data()['tutorName'],
+          element.data()['studentId'],
+          element.data()['studentName'],
+          element.data()['degree'],
+          element.data()['lessonType'],
+          element.data()['date'],
+          element.data()['time'],
+          element.data()['amount'],
+          DateTime.parse(element.data()['createdAt']),
+          element.data()['status'],
+          element.data()['paymentId'],
+        ),
+      );
+    });
+    return myAppointmentList;
+  }
+
+  static Future<bool> changeAppointmentStatus(String id, String status) async {
+    var data = await db.collection('appointments').doc(id).update({
       'status': status,
     });
     return true;
-  }
-
-  static Future<BookedLesson> addNewBookedLesson(
-      BookedLesson bookedLesson) async {
-    var data = await db.collection('bookedLessons').add({
-      'tutorMail': bookedLesson.tutorMail,
-      'studentMail': bookedLesson.studentMail,
-      'subject': bookedLesson.subject,
-      'time': bookedLesson.time,
-      'level': bookedLesson.level,
-      'status': bookedLesson.status,
-      'studentName': bookedLesson.studentName,
-      'tutorName': bookedLesson.tutorName,
-    });
-    return bookedLesson;
   }
 }

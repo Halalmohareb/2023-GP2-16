@@ -23,13 +23,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   DateTime _selectedDate = DateTime.now();
   // String? _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
-  // String? _endTime = "9:30 AM";
+  //int endday= DateFormat.MMMMEEEEd().format(DateTime.now()).indexOf(",");
   int _selectedColor = 0;
   String? _selectedTimeStart = "1:00";
   String? _selectedTimeEnd = "3:00";
   String? _selectedrepeat = "كل يوم";
-  String? _selectedRepeat = DateTime.now().toString().substring(0,10);
-  String? _selecteddaystart = 'PM';
+  String? _selectedRepeat = DateTime.now().toString().substring(0, 10);
+  var _selectedday = DateFormat.MMMMEEEEd()
+      .format(DateTime.now())
+      .substring(0, DateFormat.MMMMEEEEd().format(DateTime.now()).indexOf(','))
+      .toLowerCase();
+
   String? _selecteddayend = 'PM';
 
   List<String> repeatList = [
@@ -84,12 +88,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   ];
 
   List<String> repeatdayList = [
-  'كل يوم',
-  'كل اسبوع',
-  'كل شهر',
-  'كل سنه',
- ];
-
+    ' اسبوعين',
+    'مطلقا',
+    ' ثلاث اسابيع',
+    ' شهر',
+    ' سنه',
+  ];
+  // String? _selectedday = repeatList[(repeatList1.indexOf(DateFormat.MMMMEEEEd().format(DateTime.now()).substring(0,DateFormat.MMMMEEEEd()
+  //  .format(DateTime.now()).indexOf(',')).toLowerCase()))];
   @override
   Widget build(BuildContext context) {
     //Below shows the time like Sep 15, 2021
@@ -172,7 +178,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     );
                                   }).toList()),
                             ),
-
                             const SizedBox(width: 6),
                           ],
                         ),
@@ -265,64 +270,70 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   //     ],
                   //   ),
                   // ),
-      Container(
-        margin: const EdgeInsets.only(top: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              "اليوم",
-              style: titleTextStle,
-            ),
-        Container(
-          padding: const EdgeInsets.only(left: 14.0),
-          height: 52,
-
-          decoration: BoxDecoration(
-              border: Border.all(
-                width: 0.6,
-                color: Colors.grey,
-              ),
-              borderRadius: BorderRadius.circular(24)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child:
-                  TextField(
-                   // textDirection:TextDirection.RTL,
-                    readOnly: true,
-                    controller: dateController,
-                    decoration: InputDecoration(
-                     // hintTextDirection:TextDirection.RTL,
-                    hintText:_selectedRepeat ,
-                      icon: const Icon(
-                      Icons.calendar_month,
-                      color: Colors.black54,
-                        //  hintTextDirection:TextDirection.RTL,
+                  Container(
+                    margin: const EdgeInsets.only(top: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "اليوم",
+                          style: titleTextStle,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(left: 14.0),
+                          height: 52,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 0.6,
+                                color: Colors.grey,
+                              ),
+                              borderRadius: BorderRadius.circular(24)),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  // textDirection:TextDirection.RTL,
+                                  readOnly: true,
+                                  controller: dateController,
+                                  decoration: InputDecoration(
+                                    // hintTextDirection:TextDirection.RTL,
+                                    hintText: _selectedRepeat,
+                                    icon: const Icon(
+                                      Icons.calendar_month,
+                                      color: Colors.black54,
+                                      //  hintTextDirection:TextDirection.RTL,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    var date = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(2100),
+                                      locale: Locale('ar', ''),
+                                    );
+                                    dateController.text =
+                                        date.toString().substring(0, 10);
+                                    print(dateController.text);
+                                    _selectedRepeat = dateController.text;
+                                    print("remaz" + _selectedday);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-
-                    ),
-                    onTap: () async {
-                      var date =  await showDatePicker(
-                          context: context,
-                          initialDate:DateTime.now(),
-                          firstDate:DateTime.now(),
-                          lastDate: DateTime(2100),
-                          locale: Locale('ar', ''),
-
-                      );
-                      dateController.text = date.toString().substring(0,10);
-                      print(dateController.text);
-                      _selectedRepeat=dateController.text;
-                    },),),],),),],),),
+                  ),
                   Row(children: [
                     Expanded(
                       child: InputField(
                         textDirection: TextDirection.RTL,
-                        title: "تكرار",
+                        title: "تكرار كل يوم" + _selectedday,
                         hint: _selectedrepeat,
                         widget: Row(
                           children: [
@@ -345,17 +356,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                       _selectedrepeat = newValue;
                                     });
                                   },
-                                  items: repeatdayList.map<DropdownMenuItem<String>>(
+                                  items: repeatdayList
+                                      .map<DropdownMenuItem<String>>(
                                           (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: const TextStyle(
-                                                color: Colors.black54),
-                                          ),
-                                        );
-                                      }).toList()),
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: const TextStyle(
+                                            color: Colors.black54),
+                                      ),
+                                    );
+                                  }).toList()),
                             ),
                             const SizedBox(width: 6),
                           ],
