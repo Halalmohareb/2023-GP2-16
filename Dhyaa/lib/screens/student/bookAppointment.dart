@@ -129,7 +129,7 @@ class _BookAppointmentState extends State<BookAppointment> {
     appointmentData.time = time;
     appointmentData.amount = calculateTotalPrice();
     appointmentData.createdAt = DateTime.now();
-    appointmentData.status = 'مؤكد';
+    appointmentData.status = 'Confirmed';
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -430,25 +430,7 @@ class _BookAppointmentState extends State<BookAppointment> {
         itemBuilder: (BuildContext ctx, index) {
           return GestureDetector(
             onTap: () {
-              selectedDateIndex = index;
-              session = [];
-              selectedTime = [];
-              if (selectedDateIndex > -1) {
-                int s = int.parse(
-                    tasks[selectedDateIndex].endTime.toString().split(':')[0]);
-                int e = int.parse(tasks[selectedDateIndex]
-                    .startTime
-                    .toString()
-                    .split(':')[0]);
-                int counter = s - e;
-                for (var i = 0; i < counter; i++) {
-                  session.add({
-                    'start': (s + i).toString() + ':00',
-                    'end': (s + i + 1).toString() + ':00',
-                  });
-                }
-              }
-              if (mounted) setState(() {});
+              onDateSelect(index);
             },
             child: Container(
               height: 35,
@@ -475,6 +457,25 @@ class _BookAppointmentState extends State<BookAppointment> {
         },
       ),
     );
+  }
+
+  onDateSelect(index) {
+    selectedDateIndex = index;
+    var date = tasks[selectedDateIndex];
+    session = [];
+    selectedTime = [];
+    if (selectedDateIndex > -1) {
+      int s = int.parse(date.startTime.split(':')[0]);
+      int e = int.parse(date.endTime.split(':')[0]);
+      int counter = e - s;
+      for (var i = 0; i < counter.abs(); i++) {
+        session.add({
+          'start': (s + i).toString() + ':00',
+          'end': ((s + i) + 1).toString() + ':00',
+        });
+      }
+    }
+    if (mounted) setState(() {});
   }
 
   _showTime() {

@@ -97,7 +97,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
               size: 70,
             ),
             SizedBox(height: 10),
-            Text('هل انت متأكد من إلغاء موعدك ؟'),
+            Text('هل انت متأكد من إلغاء موعدك مع المعلم ؟'),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -127,7 +127,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text('نعم'),
+                  child: Text('نعم، إلغاء'),
                 ),
               ],
             ),
@@ -145,7 +145,8 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   }
 
   doCancel(index) {
-    FirestoreHelper.changeAppointmentStatus(allAppointments[index].id, 'ملغى')
+    FirestoreHelper.changeAppointmentStatus(
+            allAppointments[index].id, 'Canceled')
         .then((value) => loadData());
   }
 
@@ -196,7 +197,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text('نعم'),
+                  child: Text('نعم، إلغاء'),
                 ),
               ],
             ),
@@ -214,7 +215,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   }
 
   doComplete(index) {
-    FirestoreHelper.changeAppointmentStatus(allAppointments[index].id, 'انتهى')
+    FirestoreHelper.changeAppointmentStatus(allAppointments[index].id, 'Done')
         .then((value) => loadData());
   }
 
@@ -359,9 +360,10 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                               Text(
                                                 item.status,
                                                 style: TextStyle(
-                                                  color: item.status == 'ملغى'
-                                                      ? Colors.red[700]
-                                                      : Colors.green[700],
+                                                  color:
+                                                      item.status == 'Canceled'
+                                                          ? Colors.red[700]
+                                                          : Colors.green[700],
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -406,7 +408,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                   ),
                                   SizedBox(height: 10),
                                   Visibility(
-                                    visible: item.status == '',
+                                    visible: item.status == 'Confirmed',
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
@@ -476,7 +478,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: item.status != 'مؤكد',
+                                    visible: item.status != 'Confirmed',
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [

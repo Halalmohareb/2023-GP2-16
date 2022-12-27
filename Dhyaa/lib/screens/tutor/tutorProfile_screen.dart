@@ -6,10 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/provider/firestore.dart';
-import 'package:Dhyaa/screens/tutor/editTutorialPage.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
-import 'package:Dhyaa/theme/tutorTopBarNavigator.dart';
 import 'package:get/get.dart';
 
 class TutorProfileScreen extends StatefulWidget {

@@ -46,24 +46,18 @@ void initState() {
       color: Colors.white,
       padding: EdgeInsetsDirectional.all(8),
       child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.end ,
-        textDirection: TextDirection.rtl,
         children: [
           Expanded(child: TextField(
-            textAlign: TextAlign.right,
             controller: _controller,
-            textDirection: TextDirection.rtl,
             decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 0),
-                  gapPadding: 10,
-                  borderRadius: BorderRadius.circular(25)
-              ),
-              labelText:"                                                           ....اكتب",
-              hintTextDirection: TextDirection.rtl,
+              labelText:"text now",
               fillColor: Colors.grey[100],
               filled: true,
-
+              border: OutlineInputBorder(
+                borderSide: BorderSide(width: 0),
+                gapPadding: 10,
+                borderRadius: BorderRadius.circular(25)
+              )
             ),
           )),
           SizedBox(width: 20,),
@@ -82,7 +76,6 @@ void initState() {
               }).then((value) {
 FirebaseFirestore.instance.collection('Users').doc(userData.userId).collection('message').doc(widget.friendId).set({
 'last_msg':message,
-  "time":DateTime.now().toString().substring(11, 16),
 });
               });
               await FirebaseFirestore.instance.collection('Users').doc(widget.friendId).collection('message').doc(userData.userId).collection('chats').add({
@@ -103,10 +96,7 @@ FirebaseFirestore.instance.collection('Users').doc(userData.userId).collection('
                 shape: BoxShape.circle,
                 color: Colors.blue,
               ),
-              child: Icon(Icons.send,
-                color: Colors.white,
-                textDirection: TextDirection.rtl,
-              ),
+              child: Icon(Icons.send,color: Colors.white,),
             ),
           )
         ],

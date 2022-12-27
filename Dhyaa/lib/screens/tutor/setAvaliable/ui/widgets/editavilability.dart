@@ -93,13 +93,9 @@ class _EditAvilability extends State<EditAvilability> {
   @override
   Widget build(BuildContext context) {
     //Below shows the time like Sep 15, 2021
-    //print(new DateFormat.yMMMd().format(new DateTime.now()));
-    // print(" starttime " + _startTime!);
     final now = new DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, now.minute, now.second);
     final format = DateFormat.jm();
-    print(format.format(dt));
-    print("add Task date: " + DateFormat.yMd().format(_selectedDate));
     // _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -136,7 +132,7 @@ class _EditAvilability extends State<EditAvilability> {
                     hint: _selectedTimeStart,
                     widget: Row(
                       children: [
-                        Container(
+                        DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                               dropdownColor: Colors.white,
                               icon: const Icon(
@@ -150,7 +146,6 @@ class _EditAvilability extends State<EditAvilability> {
                                 height: 6,
                               ),
                               onChanged: (String? newValue) {
-                                print(newValue);
                                 setState(() {
                                   _selectedTimeStart = newValue;
                                 });
@@ -225,7 +220,7 @@ class _EditAvilability extends State<EditAvilability> {
                     hint: _selectedTimeEnd,
                     widget: Row(
                       children: [
-                        Container(
+                        DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                               dropdownColor: Colors.white,
                               icon: const Icon(
@@ -239,7 +234,6 @@ class _EditAvilability extends State<EditAvilability> {
                                 height: 6,
                               ),
                               onChanged: (String? newValue) {
-                                print(newValue);
                                 setState(() {
                                   _selectedTimeEnd = newValue;
                                 });
@@ -391,8 +385,6 @@ class _EditAvilability extends State<EditAvilability> {
                 element.day == _selectedRepeat.toString()) {
               sameDatExist = true;
             } else {
-              print(element.id == widget.editTask!.id);
-              print(widget.editTask!.id);
               if ((timeList.indexOf(element.startTime)) <=
                       (timeList.indexOf(_selectedTimeStart.toString())) &&
                   (timeList.indexOf(element.endTime)) >=

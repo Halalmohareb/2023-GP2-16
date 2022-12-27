@@ -145,7 +145,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         } else if (!onlineLessonPriceValid ||
             !studentsHomeLessonPriceValid ||
             !tutorsHomeLessonPriceValid) {
-          showToast(tutorErrorTextOnlineLessonPrice);
+          showToast('نوع الدروس ريال/ساعة المدخل غير صحيح');
         }
       }
     }
@@ -359,7 +359,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: 'اسم المستخدم',
+                hintText: 'Hala',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: Colors.white24,
@@ -1176,6 +1176,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             ],
           ),
+          onlineLessonPriceValid
+              ? sizedBox()
+              : Padding(
+                  padding: EdgeInsets.only(
+                      left: screenWidth * 1, top: screenWidth * 1),
+                  child: Row(
+                    children: [
+                      text(
+                        tutorErrorTextOnlineLessonPrice,
+                        screenWidth * 2.7,
+                        theme.redColor,
+                      ),
+                    ],
+                  ),
+                ),
           SizedBox(height: 5),
           Row(
             children: [
@@ -1317,6 +1332,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             ],
           ),
+          studentsHomeLessonPriceValid
+              ? sizedBox()
+              : Padding(
+                  padding: EdgeInsets.only(
+                      left: screenWidth * 1, top: screenWidth * 1),
+                  child: Row(
+                    children: [
+                      text(
+                        tutorErrorTextStudentsHomeLessonPrice,
+                        screenWidth * 2.7,
+                        theme.redColor,
+                      ),
+                    ],
+                  ),
+                ),
           SizedBox(height: 5),
           Row(
             children: [
@@ -1458,6 +1488,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             ],
           ),
+          tutorsHomeLessonPriceValid
+              ? sizedBox()
+              : Padding(
+                  padding: EdgeInsets.only(
+                      left: screenWidth * 1, top: screenWidth * 1),
+                  child: Row(
+                    children: [
+                      text(
+                        tutorErrorTextTutorsHomeLessonPrice,
+                        screenWidth * 2.7,
+                        theme.redColor,
+                      ),
+                    ],
+                  ),
+                ),
         ],
       ),
     );
@@ -1511,7 +1556,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: 'اسم المستخدم',
+              hintText: 'Hala',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,

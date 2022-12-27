@@ -71,13 +71,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   custom_navigator:
     dependency: "direct main"
     description:
@@ -169,15 +162,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_cupertino_date_picker:
+  flutter_credit_card:
     dependency: "direct main"
     description:
-      name: flutter_cupertino_date_picker
+      name: flutter_credit_card
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.26+2"
-  flutter_localizations:
+    version: "3.0.4"
+  flutter_localization:
     dependency: "direct main"
+    description:
+      name: flutter_localization
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.9"
+  flutter_localizations:
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -317,6 +317,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
+  material_tag_editor:
+    dependency: "direct main"
+    description:
+      name: material_tag_editor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   meta:
     dependency: transitive
     description:
@@ -324,6 +331,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  moyasar_payment:
+    dependency: "direct main"
+    description:
+      name: moyasar_payment
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   nested:
     dependency: transitive
     description:
@@ -588,6 +602,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.4"
+  webview_flutter_android:
+    dependency: transitive
+    description:
+      name: webview_flutter_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.10.4"
+  webview_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: webview_flutter_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.5"
+  webview_flutter_wkwebview:
+    dependency: transitive
+    description:
+      name: webview_flutter_wkwebview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.9.5"
   win32:
     dependency: transitive
     description:

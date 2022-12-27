@@ -1,3 +1,4 @@
+import 'package:Dhyaa/screens/myAppointments.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/screens/tutor/tutor_home_screen.dart';
@@ -16,9 +17,9 @@ class _TutorHomepageState extends State<TutorHomepage> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   final List _children = [
-     ChatPage(),
+    ChatPage(),
     TutorHomeScreen(),
-    Center(child: Icon(Icons.list, size: 40)),
+    MyAppointmentPage(),
   ];
 
   void onTabTapped(int index) {
