@@ -10,4 +10,4 @@ var kSearchBackgroundColor = Color(0xffF2F2F2);
 var kSearchTextColor = Color(0xffC0C0C0);
 var kCategoryTextColor = Color(0xff292685);
 
-String moyasarAPIKey = 'pk_test_jaE2Rpd4o8BJNJBnyvRf7ocJYsYXJUJUQ5aG1NZi';
+String moyasarAPIKey = 'pk_test_J5DLZVGe579PKmeXYK5v4rdBFK5YQwusMFFtyMiD';
