@@ -638,45 +638,50 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       height: 60,
       // width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(horizontal: 10),
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: selectedTasks.length,
-          itemBuilder: (BuildContext ctx, index) {
-            return Container(
-                height: 60,
-                width: 100,
-                margin: EdgeInsets.only(right: 10),
-                padding: EdgeInsets.all(5),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.accents[6].withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      selectedTasks[index].day.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+      child: tasks.length == 0
+          ? Align(
+              alignment: Alignment.topRight,
+              child: Text('المعلم غير متوفر لتحديد موعد'),
+            )
+          : ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: selectedTasks.length,
+              itemBuilder: (BuildContext ctx, index) {
+                return Container(
+                    height: 60,
+                    width: 100,
+                    margin: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.accents[6].withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    Text(
-                      selectedTasks[index].startTime +
-                          ' - ' +
-                          selectedTasks[index].endTime,
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ));
-          }),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          selectedTasks[index].day.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          selectedTasks[index].startTime +
+                              ' - ' +
+                              selectedTasks[index].endTime,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ));
+              }),
     );
   }
 

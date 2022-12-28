@@ -273,4 +273,15 @@ class FirestoreHelper {
     });
     return true;
   }
+
+  static Future<bool> isAppointmentExist(timeObj, date, tutorId) async {
+    QuerySnapshot<Map<String, dynamic>> value = await db
+        .collection('appointments')
+        .where('tutorId', isEqualTo: tutorId)
+        .where('status', isEqualTo: 'Confirmed')
+        .where('date', isEqualTo: date)
+        .where('time', arrayContains: timeObj)
+        .get();
+    return value.docs.isEmpty;
+  }
 }

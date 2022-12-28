@@ -4,6 +4,7 @@ import 'package:Dhyaa/globalWidgets/toast.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/appointment.dart';
 import 'package:Dhyaa/models/task.dart';
+import 'package:Dhyaa/provider/auth_provider.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/student/paymentPage.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
@@ -424,39 +425,55 @@ class _BookAppointmentState extends State<BookAppointment> {
     return Container(
       height: 35,
       margin: EdgeInsets.symmetric(horizontal: 5),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return GestureDetector(
-            onTap: () {
-              onDateSelect(index);
-            },
-            child: Container(
-              height: 35,
-              width: 100,
-              margin: EdgeInsets.only(right: 10),
-              padding: EdgeInsets.all(5),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: selectedDateIndex == index
-                    ? Colors.accents[6].withOpacity(0.2)
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Text(
-                tasks[index].day.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
+      child: tasks.length == 0
+          ? Text('المعلم غير متوفر لتحديد موعد')
+          : ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: tasks.length,
+              itemBuilder: (BuildContext ctx, index) {
+                return GestureDetector(
+                  onTap: () {
+                    onDateSelect(index);
+                  },
+                  child: Container(
+                    height: 35,
+                    width: 100,
+                    margin: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: selectedDateIndex == index
+                          ? Colors.accents[6].withOpacity(0.2)
+                          : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      tasks[index].day.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
+  }
+
+  bool isChecking = false;
+  isAppointmentExist(timeObj, date, tutorId) {
+    isChecking = true;
+    if (mounted) setState(() {});
+    FirestoreHelper.isAppointmentExist(timeObj, date, tutorId)
+        .then((isAvailableForAppointment) {
+      if (isAvailableForAppointment) {
+        isChecking = false;
+        session.add(timeObj);
+        if (mounted) setState(() {});
+      }
+    });
   }
 
   onDateSelect(index) {
@@ -469,10 +486,14 @@ class _BookAppointmentState extends State<BookAppointment> {
       int e = int.parse(date.endTime.split(':')[0]);
       int counter = e - s;
       for (var i = 0; i < counter.abs(); i++) {
-        session.add({
-          'start': (s + i).toString() + ':00',
-          'end': ((s + i) + 1).toString() + ':00',
-        });
+        isAppointmentExist(
+          {
+            'start': (s + i).toString() + ':00',
+            'end': ((s + i) + 1).toString() + ':00'
+          },
+          tasks[selectedDateIndex].day,
+          userData.userId,
+        );
       }
     }
     if (mounted) setState(() {});
@@ -481,40 +502,42 @@ class _BookAppointmentState extends State<BookAppointment> {
   _showTime() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5),
-      child: Wrap(
-        children: List.generate(session.length, (index) {
-          var temp = session[index];
-          return GestureDetector(
-            onTap: () {
-              (selectedTime.contains(index))
-                  ? selectedTime.remove(index)
-                  : selectedTime.add(index);
-              if (mounted) setState(() {});
-            },
-            child: Container(
-              height: 35,
-              width: 100,
-              margin: EdgeInsets.all(5),
-              padding: EdgeInsets.all(5),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: selectedTime.contains(index)
-                    ? Colors.accents[6].withOpacity(0.2)
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Text(
-                temp['start'] + ' - ' + temp['end'],
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
+      child: session.length == 0 && !isChecking
+          ? Text('المعلم محجوز في هذا الوقت ،الرجاء تحديد وقت اخر')
+          : Wrap(
+              children: List.generate(session.length, (index) {
+                var temp = session[index];
+                return GestureDetector(
+                  onTap: () {
+                    (selectedTime.contains(index))
+                        ? selectedTime.remove(index)
+                        : selectedTime.add(index);
+                    if (mounted) setState(() {});
+                  },
+                  child: Container(
+                    height: 35,
+                    width: 100,
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: selectedTime.contains(index)
+                          ? Colors.accents[6].withOpacity(0.2)
+                          : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      temp['start'] + ' - ' + temp['end'],
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                );
+              }),
             ),
-          );
-        }),
-      ),
     );
   }
 }
