@@ -145,7 +145,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         } else if (!onlineLessonPriceValid ||
             !studentsHomeLessonPriceValid ||
             !tutorsHomeLessonPriceValid) {
-          showToast('نوع الدروس ريال/ساعة المدخل غير صحيح');
+          showToast('تأكد من إدخال السعر بشكل صحيح');
         }
       }
     }
@@ -359,7 +359,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: 'Hala',
+                hintText: 'اسم المستخدم',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: Colors.white24,
@@ -1070,7 +1070,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           }
                         } else {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           onlineLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1079,7 +1079,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           onlineLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1225,7 +1225,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           }
                         } else {
                           tutorErrorTextStudentsHomeLessonPrice =
-                              'حضوري ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           studentsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1234,7 +1234,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           studentsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1291,7 +1291,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           studentsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1381,7 +1381,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           }
                         } else {
                           tutorErrorTextTutorsHomeLessonPrice =
-                              'حضوري ريال/ساعة المدخل غير صحيح';
+                              ' تأكد من إدخال السعر بشكل صحيح';
                           tutorsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1438,7 +1438,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           }
                         } else {
                           tutorErrorTextTutorsHomeLessonPrice =
-                              'حضوري ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           tutorsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1447,7 +1447,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              'تأكد من إدخال السعر بشكل صحيح';
                           tutorsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1556,7 +1556,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: 'Hala',
+              hintText: 'اسم المستخدم',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,

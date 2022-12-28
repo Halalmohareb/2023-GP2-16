@@ -162,7 +162,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       showToast('التخصص المدخل غير صحيح');
       allValid = false;
     } else if (degree.text.isEmpty && type == 'Tutor') {
-      showToast('المادة  الذي تم إدخاله غير صحيح');
+      showToast('المادة  الذي تم إدخالها غير صحيح');
       allValid = false;
     } else if (address.text.isEmpty && type == 'Tutor') {
       showToast('العنوان / الحي  المدخل غير صحيح');
@@ -173,15 +173,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
             type == 'Tutor') ||
         ((isTutorHomeLesson && tutorsHomeLessonPrice.text.isEmpty) &&
             type == 'Tutor')) {
-      showToast('نوع الدروس ريال/ساعة المدخل غير صحيح');
+      showToast('تأكد من إدخال السعر بشكل صحيح');
       allValid = false;
     } else if ((!isOnlineLesson && type == 'Tutor') &&
         (!isStudentHomeLesson && type == 'Tutor') &&
         (!isTutorHomeLesson && type == 'Tutor')) {
-      showToast('نوع الدروس ريال/ساعة المدخل غير صحيح');
+      showToast('تأكد من إدخال السعر بشكل صحيح');
       allValid = false;
     } else if (bio.text.isEmpty && type == 'Tutor') {
-      showToast('نبذه عني المدخل غير صحيح');
+      showToast(' المدخل غير صحيح');
       allValid = false;
     } else {
       allValid = true;

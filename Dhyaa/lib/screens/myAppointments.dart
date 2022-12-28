@@ -97,7 +97,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
               size: 70,
             ),
             SizedBox(height: 10),
-            Text('هل انت متأكد من إلغاء موعدك مع المعلم ؟'),
+            Text('هل انت متأكد من إلغاء موعدك  ؟'),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -145,8 +145,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   }
 
   doCancel(index) {
-    FirestoreHelper.changeAppointmentStatus(
-            allAppointments[index].id, 'Canceled')
+    FirestoreHelper.changeAppointmentStatus(allAppointments[index].id, 'ملغي')
         .then((value) => loadData());
   }
 
@@ -215,7 +214,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   }
 
   doComplete(index) {
-    FirestoreHelper.changeAppointmentStatus(allAppointments[index].id, 'Done')
+    FirestoreHelper.changeAppointmentStatus(allAppointments[index].id, 'انتهى')
         .then((value) => loadData());
   }
 
@@ -360,10 +359,9 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                               Text(
                                                 item.status,
                                                 style: TextStyle(
-                                                  color:
-                                                      item.status == 'Canceled'
-                                                          ? Colors.red[700]
-                                                          : Colors.green[700],
+                                                  color: item.status == 'ملغي'
+                                                      ? Colors.red[700]
+                                                      : Colors.green[700],
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -408,7 +406,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                   ),
                                   SizedBox(height: 10),
                                   Visibility(
-                                    visible: item.status == 'Confirmed',
+                                    visible: item.status == 'مؤكد',
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
@@ -478,7 +476,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: item.status != 'Confirmed',
+                                    visible: item.status != 'مؤكد',
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [

@@ -214,7 +214,7 @@ class FirestoreHelper {
     QuerySnapshot<Map<String, dynamic>> value = await db
         .collection('appointments')
         .where(_key, isEqualTo: _value)
-        .where('status', isEqualTo: 'Confirmed')
+        .where('status', isEqualTo: 'مؤكد')
         .get();
     value.docs.forEach((element) {
       myAppointmentList.add(
@@ -243,7 +243,7 @@ class FirestoreHelper {
     QuerySnapshot<Map<String, dynamic>> value = await db
         .collection('appointments')
         .where(_key, isEqualTo: _value)
-        .where('status', isNotEqualTo: 'Confirmed')
+        .where('status', isNotEqualTo: 'مؤكد')
         .get();
     value.docs.forEach((element) {
       myAppointmentList.add(
@@ -278,7 +278,7 @@ class FirestoreHelper {
     QuerySnapshot<Map<String, dynamic>> value = await db
         .collection('appointments')
         .where('tutorId', isEqualTo: tutorId)
-        .where('status', isEqualTo: 'Confirmed')
+        .where('status', isEqualTo: 'مؤكد')
         .where('date', isEqualTo: date)
         .where('time', arrayContains: timeObj)
         .get();

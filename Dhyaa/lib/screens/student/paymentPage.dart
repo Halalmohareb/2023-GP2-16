@@ -31,7 +31,7 @@ class _PaymentPageState extends State<PaymentPage> {
   // Functions
   byCard() async {
     PayModel res = await MoyasarPayment().creditCard(
-      description: 'حجز موعد',
+      description: ' درس',
       amount: double.parse(widget.appointmentData.amount),
       publishableKey: moyasarAPIKey,
       cardHolderName: cardHolderName,

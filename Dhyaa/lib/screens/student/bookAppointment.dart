@@ -130,7 +130,7 @@ class _BookAppointmentState extends State<BookAppointment> {
     appointmentData.time = time;
     appointmentData.amount = calculateTotalPrice();
     appointmentData.createdAt = DateTime.now();
-    appointmentData.status = 'Confirmed';
+    appointmentData.status = 'مؤكد';
     Navigator.push(
       context,
       MaterialPageRoute(
