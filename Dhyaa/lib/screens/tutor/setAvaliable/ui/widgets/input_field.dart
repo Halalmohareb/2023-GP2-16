@@ -44,6 +44,7 @@ class InputField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Expanded(
                     child: TextFormField(
@@ -56,6 +57,7 @@ class InputField extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: hint,
                         hintStyle: subTitleTextStle,
+                        hintTextDirection: TextDirection.rtl,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: context.theme.backgroundColor,
