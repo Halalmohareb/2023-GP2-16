@@ -35,6 +35,8 @@ dependencies:
   webview_flutter: ^3.0.4
   flutter_credit_card: ^3.0.4
   table_calendar: ^3.0.8
+  event_calendar: ^0.0.14
+  syncfusion_flutter_calendar: ^20.4.38
 
 
 dev_dependencies:
