@@ -28,6 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
+  DateTime _focusedDay= DateTime.now();
   // DateTime jHijri = DateTime.parse(JHijri.now().toString());
 
 
@@ -111,8 +112,9 @@ class _HomePageState extends State<HomePage> {
         locale: "ar",
         firstDay: DateTime.now(),
         lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
-          calendarFormat: format ,
+        focusedDay: _focusedDay,
+        calendarFormat: format ,
+        availableGestures: AvailableGestures.all,
 
         onFormatChanged: (CalendarFormat _format){
          setState(() {
@@ -125,8 +127,11 @@ class _HomePageState extends State<HomePage> {
         onDaySelected: (selectedDay, _focusedDay) {
           setState(() {
             _selectedDate = selectedDay;
-            _selectedDate = _focusedDay; // update `_focusedDay` here as well
+            _focusedDay = _focusedDay; // update `_focusedDay` here as well
           });
+        },
+        onPageChanged: (focusedDay) {
+          _focusedDay = focusedDay;
         },
       ),
       // DatePicker(
@@ -186,7 +191,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddTaskPage(),
+                  builder: (context) =>  AddTaskPage(),
                 ),
               );
               _taskController.getTasks();

@@ -57,6 +57,12 @@
       <excludeFolder url="file://$MODULE_DIR$/moyasar_testing/build" />
       <excludeFolder url="file://$MODULE_DIR$/moyasar_testing/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/moyasar_testing/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Dhyaa/linux/flutter/ephemeral/.plugin_symlinks/flutter_localization/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/Dhyaa/linux/flutter/ephemeral/.plugin_symlinks/flutter_localization/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Dhyaa/linux/flutter/ephemeral/.plugin_symlinks/flutter_localization/build" />
+      <excludeFolder url="file://$MODULE_DIR$/Dhyaa/linux/flutter/ephemeral/.plugin_symlinks/flutter_localization/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Dhyaa/linux/flutter/ephemeral/.plugin_symlinks/flutter_localization/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/Dhyaa/linux/flutter/ephemeral/.plugin_symlinks/flutter_localization/example/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
