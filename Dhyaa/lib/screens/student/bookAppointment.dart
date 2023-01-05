@@ -4,7 +4,6 @@ import 'package:Dhyaa/globalWidgets/toast.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/appointment.dart';
 import 'package:Dhyaa/models/task.dart';
-import 'package:Dhyaa/provider/auth_provider.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/student/paymentPage.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
@@ -40,7 +39,14 @@ class _BookAppointmentState extends State<BookAppointment> {
     myUserData = widget.myUserData;
     selectedDegree = degreePipe().first;
     FirestoreHelper.getTutorTasks(userData).then((value) {
-      tasks = value;
+      for (var task in value) {
+        var d = task.day.split('-');
+        DateTime _d =
+            DateTime(int.parse(d[0]), int.parse(d[1]), int.parse(d[2]));
+        bool isNotPassed =
+            _d.isAfter(DateTime.now().subtract(Duration(days: 1)));
+        if (isNotPassed) tasks.add(task);
+      }
       if (mounted) setState(() {});
     });
     super.initState();
@@ -102,20 +108,7 @@ class _BookAppointmentState extends State<BookAppointment> {
 
   goNext() {
     Appointment appointmentData = Appointment(
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      [],
-      '',
-      DateTime.now(),
-      '',
-      '',
-    );
+        '', '', '', '', '', '', '', '', [], '', DateTime.now(), '', '');
     List time = [];
     for (var i in selectedTime) {
       time.add(session[i]);
@@ -262,15 +255,15 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: CheckboxListTile(
-                                            value: lessonType == 'online',
+                                          child: RadioListTile(
+                                            groupValue: lessonType,
+                                            value: 'online',
                                             controlAffinity:
                                                 ListTileControlAffinity.leading,
                                             contentPadding: EdgeInsets.all(0),
                                             shape: CircleBorder(),
-                                            onChanged: (value) {
-                                              lessonType =
-                                                  value! ? 'online' : '';
+                                            onChanged: (dynamic value) {
+                                              lessonType = value;
                                               if (mounted) setState(() {});
                                             },
                                             title: Text('أون لاين'),
@@ -296,15 +289,15 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: CheckboxListTile(
-                                            value: lessonType == 'studentSide',
+                                          child: RadioListTile(
+                                            groupValue: lessonType,
+                                            value: 'studentSide',
                                             controlAffinity:
                                                 ListTileControlAffinity.leading,
                                             contentPadding: EdgeInsets.all(0),
                                             shape: CircleBorder(),
-                                            onChanged: (value) {
-                                              lessonType =
-                                                  value! ? 'studentSide' : '';
+                                            onChanged: (dynamic value) {
+                                              lessonType = value;
                                               if (mounted) setState(() {});
                                             },
                                             title: Text('حضوري (مكان الطالب)'),
@@ -330,15 +323,15 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Expanded(
-                                          child: CheckboxListTile(
-                                            value: lessonType == 'tutorSide',
+                                          child: RadioListTile(
+                                            groupValue: lessonType,
+                                            value: 'tutorSide',
                                             controlAffinity:
                                                 ListTileControlAffinity.leading,
                                             contentPadding: EdgeInsets.all(0),
                                             shape: CircleBorder(),
-                                            onChanged: (value) {
-                                              lessonType =
-                                                  value! ? 'tutorSide' : '';
+                                            onChanged: (dynamic value) {
+                                              lessonType = value;
                                               if (mounted) setState(() {});
                                             },
                                             title: Text('حضوري (مكان المعلم)'),
@@ -365,6 +358,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                       'تاريخ الدرس:',
                       style: TextStyle(fontWeight: FontWeight.w900),
                     ),
+                    SizedBox(height: 10),
                     _showDate(),
                     SizedBox(height: 20),
                     Visibility(
