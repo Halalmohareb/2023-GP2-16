@@ -1,7 +1,12 @@
 import 'dart:convert';
 
+import 'package:Dhyaa/_helper/areas.dart';
+import 'package:Dhyaa/_helper/cities.dart';
+import 'package:Dhyaa/_helper/subject.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart'
     show Fluttertoast, Toast, ToastGravity;
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -37,6 +42,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   String tutorErrorTextDegree = '';
   String tutorErrorTextMajor = '';
   String tutorErrorTextLocation = '';
+  final GlobalKey<FormFieldState> _tutorAddressKey =
+      GlobalKey<FormFieldState>();
   String tutorErrorTextAddress = '';
   String tutorErrorTextOnlineLessonPrice = '';
   String tutorErrorTextStudentsHomeLessonPrice = '';
@@ -62,6 +69,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   String studentErrorTextPhoneNumber = '';
   String studentErrorTextLocation = '';
   String studentErrorTextAddress = '';
+  final GlobalKey<FormFieldState> _studentAddressKey =
+      GlobalKey<FormFieldState>();
 
   bool studentUsernameValid = false;
   bool studentEmailValid = false;
@@ -72,7 +81,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
   bool studentAllFieldsValid = false;
 
-  var itemsList = [
+  List values = [];
+  var citiesList = [
     "الرياض",
     "جدة",
     "مكة",
@@ -99,7 +109,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     "الرس",
     "الشفا",
   ];
-  List values = [];
+  List areasList = [];
 
   fieldValidation(AuthProvider authProvider) {
     if (studentSelected) {
@@ -689,39 +699,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           Container(
             padding: EdgeInsets.only(right: 5),
             width: double.infinity,
-            child: TagEditor(
-              length: values.length,
-              hasAddButton: true,
-              inputDecoration: InputDecoration(
-                isDense: true,
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 4,
-                  vertical: screenWidth * 2,
-                ),
-                hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
-                hintText: 'إضافة مادة أخرى',
-                filled: true,
-                fillColor: Colors.white24,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                    width: .3,
-                    color: theme.lightTextColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                    width: .6,
-                    color:
-                        !tutorDegreeValid ? theme.redColor : theme.yellowColor,
-                  ),
-                ),
+            child: DropdownSearch<String>.multiSelection(
+              items: subjects,
+              popupProps: PopupPropsMultiSelection.menu(
+                showSelectedItems: true,
+                disabledItemFn: (String s) => s.startsWith('I'),
               ),
-              textStyle: textStyle(screenWidth * 3.7, theme.mainColor),
-              onTagChanged: (newValue) {
-                values.add(newValue);
+              onChanged: (value) {
+                values = value;
                 if (values.isNotEmpty) {
                   tutorDegreeValid = true;
                   authProvider.tutorDegree.text = jsonEncode(values);
@@ -746,24 +731,37 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 }
                 if (mounted) setState(() {});
               },
-              tagBuilder: (context, index) => _Chip(
-                index: index,
-                label: values[index],
-                onDeleted: (i) {
-                  values.removeAt(i);
-                  if (mounted) setState(() {});
-                },
+              dropdownDecoratorProps: DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+                  isDense: true,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 4,
+                    vertical: screenWidth * 2,
+                  ),
+                  hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
+                  hintText: 'إضافة مادة أخرى',
+                  filled: true,
+                  fillColor: Colors.white24,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderSide: BorderSide(
+                      width: .3,
+                      color: theme.lightTextColor,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderSide: BorderSide(
+                      width: .6,
+                      color: !tutorDegreeValid
+                          ? theme.redColor
+                          : theme.yellowColor,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          Row(
-            children: [
-              text(
-                'انقر فوق + للإضافة المادة',
-                screenWidth * 2.7,
-                kSearchTextColor,
-              ),
-            ],
           ),
           values.length == 0 || tutorDegreeValid
               ? sizedBox()
@@ -868,38 +866,44 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             height: screenWidth * 12.5,
             width: double.infinity,
             child: DropdownButtonFormField(
-              items: itemsList.map((value) {
+              key: _tutorAddressKey,
+              items: citiesList.map((value) {
                 return DropdownMenuItem(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  authProvider.tutorLocation.text = value.toString();
-                  if (authProvider.tutorLocation.text.isNotEmpty) {
-                    tutorLocationValid = true;
-                    tutorErrorTextLocation = '';
-                    if (tutorPasswordValid &&
-                        tutorEmailValid &&
-                        tutorUsernameValid &&
-                        tutorPhoneNumberValid &&
-                        tutorDegreeValid &&
-                        tutorLocationValid &&
-                        tutorMajorValid &&
-                        tutorAddressValid &&
-                        onlineLessonPriceValid &&
-                        studentsHomeLessonPriceValid &&
-                        tutorsHomeLessonPriceValid) {
-                      tutorAllFieldsValid = true;
-                    }
-                  } else {
-                    tutorErrorTextLocation =
-                        "المدينة التي تم إدخالها غير صحيحة";
-                    tutorLocationValid = false;
-                    tutorAllFieldsValid = false;
+              onChanged: (value) async {
+                var tempCity = await cities
+                    .where((element) => (element['name_ar'] == value));
+                var tempArea = await areas.where((element) =>
+                    (element['city_id'] == tempCity.first['city_id']));
+                _tutorAddressKey.currentState?.reset();
+                areasList.clear();
+                areasList.addAll(tempArea);
+                authProvider.tutorLocation.text = value.toString();
+                if (authProvider.tutorLocation.text.isNotEmpty) {
+                  tutorLocationValid = true;
+                  tutorErrorTextLocation = '';
+                  if (tutorPasswordValid &&
+                      tutorEmailValid &&
+                      tutorUsernameValid &&
+                      tutorPhoneNumberValid &&
+                      tutorDegreeValid &&
+                      tutorLocationValid &&
+                      tutorMajorValid &&
+                      tutorAddressValid &&
+                      onlineLessonPriceValid &&
+                      studentsHomeLessonPriceValid &&
+                      tutorsHomeLessonPriceValid) {
+                    tutorAllFieldsValid = true;
                   }
-                });
+                } else {
+                  tutorErrorTextLocation = "المدينة التي تم إدخالها غير صحيحة";
+                  tutorLocationValid = false;
+                  tutorAllFieldsValid = false;
+                }
+                if (mounted) setState(() {});
               },
               style: textStyle(screenWidth * 3.7, theme.mainColor),
               decoration: InputDecoration(
@@ -957,12 +961,18 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           ),
           sizedBox(height: screenWidth * 3),
           SizedBox(
-            height: screenWidth * 12.5,
+            height: screenWidth * 16,
             width: double.infinity,
-            child: TextFormField(
-              controller: authProvider.tutorAddress,
-              onChanged: (value) {
+            child: DropdownButtonFormField(
+              items: areasList.map((value) {
+                return DropdownMenuItem(
+                  value: value,
+                  child: Text(value['name_ar']),
+                );
+              }).toList(),
+              onChanged: (dynamic value) {
                 setState(() {
+                  authProvider.tutorAddress.text = value['name_ar'];
                   if (authProvider.tutorAddress.text.isNotEmpty) {
                     tutorAddressValid = true;
                     tutorErrorTextAddress = '';
@@ -992,23 +1002,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: 'الياسمين',
+                hintText: "حي العمل",
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: Colors.white24,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide:
-                      BorderSide(width: .3, color: theme.lightTextColor),
-                ),
+                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderSide:
+                        BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                    width: .6,
-                    color:
-                        !tutorAddressValid ? theme.redColor : theme.yellowColor,
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderSide: BorderSide(
+                        width: .6,
+                        color: !tutorAddressValid
+                            ? theme.redColor
+                            : theme.yellowColor)),
               ),
             ),
           ),
@@ -1105,6 +1113,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 width: 110,
                 child: TextFormField(
                   controller: authProvider.onlineLessonPrice,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   onChanged: (value) {
                     setState(() {
                       if (authProvider.isOnlineLesson) {
@@ -1260,6 +1272,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 width: 110,
                 child: TextFormField(
                   controller: authProvider.studentsHomeLessonPrice,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   onChanged: (value) {
                     setState(() {
                       if (authProvider.isStudentHomeLesson) {
@@ -1416,6 +1432,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 width: 110,
                 child: TextFormField(
                   controller: authProvider.tutorsHomeLessonPrice,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   onChanged: (value) {
                     setState(() {
                       if (authProvider.isTutorHomeLesson) {
@@ -1874,35 +1894,41 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
         sizedBox(height: screenWidth * 3),
         SizedBox(
-          height: screenWidth * 12.5,
+          height: screenWidth * 16,
           width: double.infinity,
           child: DropdownButtonFormField(
-            items: itemsList.map((value) {
+            key: _studentAddressKey,
+            items: citiesList.map((value) {
               return DropdownMenuItem(
                 value: value,
                 child: Text(value),
               );
             }).toList(),
-            onChanged: (value) {
-              setState(() {
-                authProvider.studentLocation.text = value.toString();
-                if (authProvider.studentLocation.text.isNotEmpty) {
-                  studentLocationValid = true;
-                  studentErrorTextLocation = '';
-                  if (studentPasswordValid &&
-                      studentEmailValid &&
-                      studentPhoneNumberValid &&
-                      studentLocationValid &&
-                      studentAddressValid) {
-                    studentAllFieldsValid = true;
-                  }
-                } else {
-                  studentErrorTextLocation =
-                      "المدينة التي تم إدخالها غير صحيحة";
-                  studentLocationValid = false;
-                  studentAllFieldsValid = false;
+            onChanged: (dynamic value) async {
+              var tempCity = await cities
+                  .where((element) => (element['name_ar'] == value));
+              var tempArea = await areas.where((element) =>
+                  (element['city_id'] == tempCity.first['city_id']));
+              _studentAddressKey.currentState?.reset();
+              areasList.clear();
+              areasList.addAll(tempArea);
+              authProvider.studentLocation.text = value.toString();
+              if (authProvider.studentLocation.text.isNotEmpty) {
+                studentLocationValid = true;
+                studentErrorTextLocation = '';
+                if (studentPasswordValid &&
+                    studentEmailValid &&
+                    studentPhoneNumberValid &&
+                    studentLocationValid &&
+                    studentAddressValid) {
+                  studentAllFieldsValid = true;
                 }
-              });
+              } else {
+                studentErrorTextLocation = "المدينة التي تم إدخالها غير صحيحة";
+                studentLocationValid = false;
+                studentAllFieldsValid = false;
+              }
+              if (mounted) setState(() {});
             },
             style: textStyle(screenWidth * 3.7, theme.mainColor),
             decoration: InputDecoration(
@@ -1949,24 +1975,31 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
         sizedBox(height: screenWidth * 3),
         SizedBox(
-          height: screenWidth * 12.5,
+          height: screenWidth * 16,
           width: double.infinity,
-          child: TextFormField(
-            controller: authProvider.studentAddress,
-            onChanged: (value) {
+          child: DropdownButtonFormField(
+            items: areasList.map((value) {
+              return DropdownMenuItem(
+                value: value,
+                child: Text(value['name_ar']),
+              );
+            }).toList(),
+            onChanged: (dynamic value) {
               setState(() {
+                authProvider.studentAddress.text = value['name_ar'];
                 if (authProvider.studentAddress.text.isNotEmpty) {
                   studentAddressValid = true;
-                  studentErrorTextAddress = '';
+                  studentErrorTextLocation = '';
                   if (studentPasswordValid &&
                       studentEmailValid &&
                       studentPhoneNumberValid &&
-                      studentLocationValid &&
+                      studentAddressValid &&
                       studentAddressValid) {
                     studentAllFieldsValid = true;
                   }
                 } else {
-                  studentErrorTextAddress = 'العنوان / الحي المدخل غير صحيح';
+                  studentErrorTextLocation =
+                      "المدينة التي تم إدخالها غير صحيحة";
                   studentAddressValid = false;
                   studentAllFieldsValid = false;
                 }
@@ -1978,7 +2011,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: 'الياسمين',
+              hintText: "حي العمل",
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,
@@ -1987,12 +2020,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                      width: .6,
-                      color: !studentAddressValid
-                          ? theme.redColor
-                          : theme.yellowColor)),
+                borderRadius: BorderRadius.circular(screenWidth * 200),
+                borderSide: BorderSide(
+                  width: .6,
+                  color:
+                      !studentAddressValid ? theme.redColor : theme.yellowColor,
+                ),
+              ),
             ),
           ),
         ),
@@ -2008,7 +2042,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   ],
                 ),
               ),
-        sizedBox(height: screenWidth * 4),
       ]),
     );
   }

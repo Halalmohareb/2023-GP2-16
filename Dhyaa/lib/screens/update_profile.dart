@@ -1,12 +1,15 @@
 import 'dart:convert';
 
-import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
+import 'package:Dhyaa/_helper/areas.dart';
+import 'package:Dhyaa/_helper/cities.dart';
+import 'package:Dhyaa/_helper/subject.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/theme/theme.dart';
-import 'package:material_tag_editor/tag_editor.dart';
 import '../models/UserData.dart';
 import '../responsiveBloc/size_config.dart';
 import 'package:fluttertoast/fluttertoast.dart'
@@ -24,8 +27,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
   // Variables
   var screenWidth = SizeConfig.widthMultiplier;
   UserData userData = emptyUserData;
-
   var type = '';
+  final GlobalKey<FormFieldState> _addressKey = GlobalKey<FormFieldState>();
+
   var citiesList = [
     "الرياض",
     "جدة",
@@ -70,7 +74,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
   TextEditingController tutorsHomeLessonPrice = TextEditingController();
   TextEditingController bio = TextEditingController();
 
-  List values = [];
+  List<String> values = [];
+  List areasList = [];
 
   // Functions
   @override
@@ -90,23 +95,40 @@ class _UpdateProfileState extends State<UpdateProfile> {
     });
   }
 
-  setter() {
+  setter() async {
+    areasList = [];
+    values = [];
     type = widget.userData.type;
     phone.text = userData.phone.replaceAll('+966', '');
     location.text = userData.location;
-    subject.text = userData.majorSubjects;
-    degree.text = userData.degree;
-    if (userData.degree != '' && userData.degree != null) {
-      values = jsonDecode(userData.degree);
-    }
     address.text = userData.address;
-    isOnlineLesson = userData.isOnlineLesson;
-    isStudentHomeLesson = userData.isStudentHomeLesson;
-    isTutorHomeLesson = userData.isTutorHomeLesson;
-    onlineLessonPrice.text = userData.onlineLessonPrice;
-    studentsHomeLessonPrice.text = userData.studentsHomeLessonPrice;
-    tutorsHomeLessonPrice.text = userData.tutorsHomeLessonPrice;
-    bio.text = userData.bio;
+
+    if (userData.type == 'Tutor') {
+      subject.text = userData.majorSubjects;
+      degree.text = userData.degree;
+      if (userData.degree != '' &&
+          userData.degree != null &&
+          userData.degree != 'null') {
+        for (var element in jsonDecode(userData.degree)) {
+          values.add(element);
+          setState(() {});
+        }
+      }
+      isOnlineLesson = userData.isOnlineLesson;
+      isStudentHomeLesson = userData.isStudentHomeLesson;
+      isTutorHomeLesson = userData.isTutorHomeLesson;
+      onlineLessonPrice.text = userData.onlineLessonPrice;
+      studentsHomeLessonPrice.text = userData.studentsHomeLessonPrice;
+      tutorsHomeLessonPrice.text = userData.tutorsHomeLessonPrice;
+      bio.text = userData.bio;
+    }
+    var tempCity =
+        await cities.where((element) => (element['name_ar'] == location.text));
+    var tempArea = await areas
+        .where((element) => (element['city_id'] == tempCity.first['city_id']));
+    areasList.clear();
+    areasList.addAll(tempArea);
+    if (mounted) setState(() {});
   }
 
   update() {
@@ -129,7 +151,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         'phone': phone.text,
         'location': location.text,
         'majorSubjects': subject.text,
-        'degree': degree.text,
+        'degree': userData.type == 'Student' ? [] : jsonDecode(degree.text),
         'address': address.text,
         "isOnlineLesson": isOnlineLesson,
         "isStudentHomeLesson": isStudentHomeLesson,
@@ -142,9 +164,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
       FirestoreHelper.updateUserData(userData.userId, form).then((value) {
         FirestoreHelper.getMyUserData().then((value) {
           isLoading = false;
-          if (mounted) setState(() {});
-          showToast('تم تحديث الملف الشخصي بنجاح');
           userData = value;
+          showToast('تم تحديث الملف الشخصي بنجاح');
           if (mounted) setState(() {});
         });
       });
@@ -325,7 +346,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           child: Text(value),
                         );
                       }).toList(),
-                      onChanged: (_selectedValue) {
+                      onChanged: (_selectedValue) async {
+                        var tempCity = await cities.where((element) =>
+                            (element['name_ar'] == _selectedValue));
+                        var tempArea = await areas.where((element) =>
+                            (element['city_id'] == tempCity.first['city_id']));
+                        _addressKey.currentState?.reset();
+                        areasList.clear();
+                        areasList.addAll(tempArea);
                         location.text = _selectedValue.toString();
                         if (mounted) setState(() {});
                       },
@@ -362,8 +390,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   SizedBox(
                     height: screenWidth * 12.5,
                     width: double.infinity,
-                    child: TextFormField(
-                      controller: address,
+                    child: DropdownButtonFormField(
+                      key: _addressKey,
+                      items: areasList.map((value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value['name_ar']),
+                        );
+                      }).toList(),
+                      onChanged: (dynamic _selectedValue) {
+                        address.text = _selectedValue['name_ar'].toString();
+                        print(address.text);
+                        if (mounted) setState(() {});
+                      },
                       style: textStyle(screenWidth * 3.7, theme.mainColor),
                       decoration: InputDecoration(
                         isDense: true,
@@ -371,17 +410,16 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         contentPadding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 4,
                             vertical: screenWidth * 3),
-                        hintText: 'الياسمين',
+                        hintText: address.text,
                         hintStyle:
                             textStyle(screenWidth * 3.3, theme.lightTextColor),
                         filled: true,
                         fillColor: Colors.white24,
                         enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(screenWidth * 200),
-                          borderSide: BorderSide(
-                              width: .3, color: theme.lightTextColor),
-                        ),
+                            borderRadius:
+                                BorderRadius.circular(screenWidth * 200),
+                            borderSide: BorderSide(
+                                width: .3, color: theme.lightTextColor)),
                         focusedBorder: OutlineInputBorder(
                           borderRadius:
                               BorderRadius.circular(screenWidth * 200),
@@ -438,59 +476,50 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         Text('المادة'),
                         Container(
                           width: double.infinity,
-                          child: TagEditor(
-                            length: values.length,
-                            hasAddButton: true,
-                            inputDecoration: InputDecoration(
-                              isDense: true,
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 4,
-                                vertical: screenWidth * 2,
-                              ),
-                              hintStyle: textStyle(
-                                  screenWidth * 3.3, theme.lightTextColor),
-                              hintText: 'إضافة مادة أخرى',
-                              filled: true,
-                              fillColor: Colors.white24,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
-                                borderSide: BorderSide(
-                                  width: .3,
-                                  color: theme.lightTextColor,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
-                                borderSide: BorderSide(
-                                  width: .6,
-                                  color: theme.yellowColor,
-                                ),
-                              ),
+                          child: DropdownSearch<String>.multiSelection(
+                            items: subjects,
+                            selectedItems: values,
+                            popupProps: PopupPropsMultiSelection.menu(
+                              showSelectedItems: true,
+                              disabledItemFn: (String s) => s.startsWith('I'),
                             ),
-                            textStyle:
-                                textStyle(screenWidth * 3.7, theme.mainColor),
-                            onTagChanged: (newValue) {
-                              values.add(newValue);
+                            onChanged: (value) {
+                              values = value;
                               degree.text = jsonEncode(values);
                               if (mounted) setState(() {});
                             },
-                            tagBuilder: (context, index) => _Chip(
-                              index: index,
-                              label: values[index],
-                              onDeleted: (i) {
-                                values.removeAt(i);
-                                if (mounted) setState(() {});
-                              },
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                isDense: true,
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: screenWidth * 4,
+                                  vertical: screenWidth * 2,
+                                ),
+                                hintStyle: textStyle(
+                                    screenWidth * 3.3, theme.lightTextColor),
+                                hintText: 'إضافة مادة أخرى',
+                                filled: true,
+                                fillColor: Colors.white24,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(screenWidth * 200),
+                                  borderSide: BorderSide(
+                                    width: .3,
+                                    color: theme.lightTextColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(screenWidth * 200),
+                                  borderSide: BorderSide(
+                                    width: .6,
+                                    color: theme.yellowColor,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        text(
-                          'انقر فوق + للإضافة المادة',
-                          screenWidth * 2.7,
-                          kSearchTextColor,
                         ),
                         SizedBox(height: 10),
                         Row(
@@ -534,6 +563,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               width: 110,
                               child: TextFormField(
                                 controller: onlineLessonPrice,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 style: textStyle(
                                     screenWidth * 3.7, theme.mainColor),
                                 decoration: InputDecoration(
@@ -598,6 +631,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               width: 110,
                               child: TextFormField(
                                 controller: studentsHomeLessonPrice,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 style: textStyle(
                                     screenWidth * 3.7, theme.mainColor),
                                 decoration: InputDecoration(
@@ -662,6 +699,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               width: 110,
                               child: TextFormField(
                                 controller: tutorsHomeLessonPrice,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
                                 style: textStyle(
                                     screenWidth * 3.7, theme.mainColor),
                                 decoration: InputDecoration(
