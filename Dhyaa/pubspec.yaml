@@ -37,6 +37,7 @@ dependencies:
   table_calendar: ^3.0.8
   event_calendar: ^0.0.14
   syncfusion_flutter_calendar: ^20.4.38
+  dropdown_search: ^5.0.5
 
 
 dev_dependencies:
