@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -393,7 +395,7 @@ class AuthProvider extends ChangeNotifier {
           "userId": user.uid,
           "type": 'Student',
           'majorSubjects': '',
-          'degree': '',
+          'degree': [],
           "isOnlineLesson": false,
           "isStudentHomeLesson": false,
           "isTutorHomeLesson": false,
@@ -421,7 +423,7 @@ class AuthProvider extends ChangeNotifier {
           "userId": user.uid,
           "type": 'Tutor',
           'majorSubjects': tutorMajor.text,
-          'degree': tutorDegree.text,
+          'degree': jsonDecode(tutorDegree.text),
           "location": tutorLocation.text,
           "address": tutorAddress.text,
           "isOnlineLesson": isOnlineLesson,
