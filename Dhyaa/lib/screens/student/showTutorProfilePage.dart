@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:Dhyaa/screens/student/bookAppointment.dart';
-import 'package:Dhyaa/theme/theme.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:Dhyaa/models/UserData.dart';
@@ -35,8 +36,16 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   @override
   void initState() {
     userData = widget.userData;
+    getRecommendedTutors();
     FirestoreHelper.getTutorTasks(userData).then((value) {
-      tasks = value;
+      for (var task in value) {
+        var d = task.day.split('-');
+        DateTime _d =
+            DateTime(int.parse(d[0]), int.parse(d[1]), int.parse(d[2]));
+        bool isNotPassed =
+            _d.isAfter(DateTime.now().subtract(Duration(days: 1)));
+        if (isNotPassed) tasks.add(task);
+      }
       if (mounted) setState(() {});
     });
     FirestoreHelper.getMyUserData().then((value) {
@@ -88,10 +97,10 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   lessonTypePipe() {
     String temp = '';
     if (userData.isOnlineLesson) {
-      temp += 'أون لاين' + ' ';
+      temp += 'أون لاين' + ' | ';
     }
     if (userData.isStudentHomeLesson) {
-      temp += 'حضوري (مكان الطالب)' + ' ';
+      temp += 'حضوري (مكان الطالب)' + ' | ';
     }
     if (userData.isTutorHomeLesson) {
       temp += 'حضوري (مكان المعلم)';
@@ -147,6 +156,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
+                          ignoreGestures: true,
                           itemCount: 5,
                           itemSize: 25,
                           itemPadding: EdgeInsets.all(0),
@@ -490,7 +500,6 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
               SizedBox(height: 10),
               Divider(color: Colors.black, thickness: 1),
               SizedBox(height: 10),
-
               Center(
                 child: Container(
                   width: 150,
@@ -524,21 +533,24 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                   ),
                 ),
               ),
-
-              // Container(
-              //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              //   decoration: BoxDecoration(
-              //     color: Color(0xff1E1C61),
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: Text(
-              //     'احجز موعد مع المعلم',
-              //     style: TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //       color: Color(0xffF2F2F2),
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    'قد يعجبك',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: recommendedWidget,
+              ),
               SizedBox(height: 10),
               Divider(color: Colors.black, thickness: 1),
               SizedBox(height: 50),
@@ -604,6 +616,158 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     );
   }
 
+  Widget recommendedWidget = Container();
+
+  degreeTextPipe(var val) {
+    var temp = val;
+    if (val != '' && val != null) {
+      if (val[0] == '[' && val[val.length - 1] == ']') {
+        temp = '';
+        List arr = jsonDecode(val);
+        int i = 0;
+        for (var item in arr) {
+          temp += item;
+          if (i != arr.length - 1) {
+            temp += ' | ';
+          }
+          i++;
+        }
+      }
+    }
+    return temp;
+  }
+
+  String priceTextPipe(UserData tutor) {
+    var userPriceStarts = [
+      int.parse(tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
+      int.parse(tutor.studentsHomeLessonPrice == ''
+          ? '0'
+          : tutor.studentsHomeLessonPrice),
+      int.parse(
+          tutor.tutorsHomeLessonPrice == '' ? '0' : tutor.tutorsHomeLessonPrice)
+    ].reduce(min);
+    return userPriceStarts.toString();
+  }
+
+  getRecommendedTutors() {
+    FirestoreHelper.getRecommendedTutors(userData).then((tutors) {
+      recommendedWidget = SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.generate(tutors.length, (index) {
+            UserData _tutor = tutors[(tutors.length - 1) - index];
+            return Container(
+              width: MediaQuery.of(context).size.width / 2.2,
+              margin: EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
+              constraints: BoxConstraints(
+                minHeight: 220,
+              ),
+              decoration: BoxDecoration(
+                color: kBlueColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _tutor.username,
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                          color: kTitleTextColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      RatingBar.builder(
+                        initialRating: 4,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        ignoreGestures: true,
+                        itemCount: 5,
+                        itemSize: 15,
+                        itemPadding: EdgeInsets.all(0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star_rate_rounded,
+                          color: kBlueColor,
+                        ),
+                        onRatingUpdate: (rating) {},
+                      ),
+                      SizedBox(height: 5),
+                      Wrap(
+                        children: [
+                          Icon(Icons.location_on, size: 15),
+                          SizedBox(width: 5),
+                          Text(
+                            _tutor.location + ', ' + _tutor.address,
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        children: [
+                          Icon(Icons.broadcast_on_personal, size: 15),
+                          SizedBox(width: 5),
+                          Text(
+                            lessonTypePipe(),
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        'المادة: ' + degreeTextPipe(_tutor.degree),
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      Text(
+                        'السعر يبدأ من: ' + priceTextPipe(_tutor),
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          side: BorderSide(color: kBlueColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ShowTutorProfilePage(
+                                userData: _tutor,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "عرض ملف المعلم",
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+          }),
+        ),
+      );
+      if (mounted) setState(() {});
+    });
+  }
+
   _getBGClr(int? no) {
     switch (no) {
       case 0:
@@ -636,7 +800,6 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     List<Task> selectedTasks = tasks;
     return Container(
       height: 60,
-      // width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: tasks.length == 0
           ? Align(
@@ -648,39 +811,40 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
               itemCount: selectedTasks.length,
               itemBuilder: (BuildContext ctx, index) {
                 return Container(
-                    height: 60,
-                    width: 100,
-                    margin: EdgeInsets.only(right: 10),
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.accents[6].withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          selectedTasks[index].day.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                  height: 60,
+                  width: 100,
+                  margin: EdgeInsets.only(right: 10),
+                  padding: EdgeInsets.all(5),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.accents[6].withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        selectedTasks[index].day.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        Text(
-                          selectedTasks[index].startTime +
-                              ' - ' +
-                              selectedTasks[index].endTime,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                      ),
+                      Text(
+                        selectedTasks[index].startTime +
+                            ' - ' +
+                            selectedTasks[index].endTime,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                      ],
-                    ));
+                      ),
+                    ],
+                  ),
+                );
               }),
     );
   }

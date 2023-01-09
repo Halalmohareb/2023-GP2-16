@@ -13,8 +13,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class AddTaskPage extends StatefulWidget {
-
- // const AddTaskPage(DateTime selectedDate, {Key? key}) : super(key: key);
+  const AddTaskPage({Key? key}) : super(key: key);
 
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
@@ -23,7 +22,7 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final TaskController _taskController = Get.put(TaskController());
 
-  //DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
   // String? _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
   //int endday= DateFormat.MMMMEEEEd().format(DateTime.now()).indexOf(",");
   int _selectedColor = 0;
@@ -113,14 +112,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     //Below shows the time like Sep 15, 2021
-
-
+    //print(new DateFormat.yMMMd().format(new DateTime.now()));
+     print( "today");
      print(days.add(Duration(days:1)));
     final now = new DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, now.minute, now.second);
     final format = DateFormat.jm();
     print(format.format(dt));
-   // print("add Task date: " + DateFormat.yMd().format(_selectedDate));
+    print("add Task date: " + DateFormat.yMd().format(_selectedDate));
     // _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
     return Scaffold(
       backgroundColor: Colors.white,

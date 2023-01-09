@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class UserData {
   late String id;
   late String email;
@@ -41,7 +43,7 @@ class UserData {
     email = obj['email'];
     phone = obj['phone'];
     majorSubjects = obj['majorSubjects'];
-    degree = obj['degree'];
+    degree = jsonEncode(obj['degree']);
     location = obj['location'];
     type = obj['type'];
     address = obj['address'] ?? '';
@@ -59,7 +61,7 @@ class UserData {
     if (id != null) {
       map['email'] = this.email;
       map['majorSubjects'] = this.majorSubjects;
-      map['degree'] = this.degree;
+      map['degree'] = jsonDecode(this.degree);
       map['location'] = this.location;
       map['phone'] = this.phone;
       map['userId'] = this.userId;
