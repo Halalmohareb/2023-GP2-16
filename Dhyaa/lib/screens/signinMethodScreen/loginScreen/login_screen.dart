@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ? theme.whiteColor
                                           : theme.blueColor)),
                             )),
-                            Expanded(
+                            /*Expanded(
                                 child: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       adminSelected
                                           ? theme.whiteColor
                                           : theme.blueColor)),
-                            ))
+                            ))*/
                           ])),
                       tutorSelected
                           ? tutorEmailPassword(screenWidth)

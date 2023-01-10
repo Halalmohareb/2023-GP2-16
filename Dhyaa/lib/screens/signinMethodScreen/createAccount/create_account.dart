@@ -335,7 +335,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               controller: authProvider.tutorUsername,
               onChanged: (value) {
                 setState(() {
-                  if (!authProvider.tutorUsername.text.contains(' ') &&
+                  if (//!authProvider.tutorUsername.text.contains(' ') &&
                       authProvider.tutorUsername.text.isNotEmpty) {
                     tutorUsernameValid = true;
                     tutorErrorTextUsername = '';
@@ -354,10 +354,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     }
                   } else {
                     tutorErrorTextUsername = 'اسم المستخدم غير صحيح';
-                    if (authProvider.tutorUsername.text.contains(' ')) {
-                      tutorErrorTextUsername =
-                          'اسم المستخدم يجب أن لايحتوي على مسافات';
-                    }
+                    //if (authProvider.tutorUsername.text.contains(' ')) {
+                      //tutorErrorTextUsername =
+                         // 'اسم المستخدم يجب أن لايحتوي على مسافات';
+                    //}
                     tutorUsernameValid = false;
                     tutorAllFieldsValid = false;
                   }
@@ -740,7 +740,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     vertical: screenWidth * 2,
                   ),
                   hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
-                  hintText: 'إضافة مادة أخرى',
+                  hintText: 'إضافة مادة ',
                   filled: true,
                   fillColor: Colors.white24,
                   enabledBorder: OutlineInputBorder(
@@ -824,7 +824,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: 'تقنية المعلومات',
+                hintText: 'مثال : تقنية المعلومات',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: Colors.white24,
@@ -911,7 +911,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: 'الرياض',
+                hintText: 'المدينة',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: Colors.white24,
@@ -1002,7 +1002,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: "حي العمل",
+                hintText: "الحي",
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: Colors.white24,
@@ -1138,7 +1138,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           }
                         } else {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              ' المدخل غير صحيح';
                           onlineLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1147,7 +1147,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              ' المدخل غير صحيح';
                           onlineLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1298,7 +1298,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           }
                         } else {
                           tutorErrorTextStudentsHomeLessonPrice =
-                              'حضوري ريال/ساعة المدخل غير صحيح';
+                              ' المدخل غير صحيح';
                           studentsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1406,7 +1406,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
                           tutorErrorTextOnlineLessonPrice =
-                              'أون لاين ريال/ساعة المدخل غير صحيح';
+                              ' المدخل غير صحيح';
                           tutorsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1561,10 +1561,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   }
                 } else {
                   studentErrorTextUserName = 'اسم المستخدم المدخل غير صحيح';
-                  if (authProvider.studentUserName.text.contains(' ')) {
-                    studentErrorTextUserName =
-                        'اسم المستخدم يجب أن لايحتوي على مسافات';
-                  }
+                  //if (authProvider.studentUserName.text.contains(' ')) {
+                    //studentErrorTextUserName =
+                        //'اسم المستخدم يجب أن لايحتوي على مسافات';
+                  //}
                   studentUsernameValid = false;
                   studentAllFieldsValid = false;
                 }
@@ -1936,7 +1936,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: 'الرياض',
+              hintText: 'المدينة',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,
@@ -2011,7 +2011,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: "حي العمل",
+              hintText: "الحي",
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,
