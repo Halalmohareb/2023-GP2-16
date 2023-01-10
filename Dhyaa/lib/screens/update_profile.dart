@@ -201,10 +201,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
         (!isTutorHomeLesson && type == 'Tutor')) {
       showToast('تأكد من إدخال السعر بشكل صحيح');
       allValid = false;
-    } else if (bio.text.isEmpty && type == 'Tutor') {
-      showToast(' المدخل غير صحيح');
-      allValid = false;
-    } else {
+    } //else if (bio.text.isEmpty && type == 'Tutor') {
+     // showToast(' المدخل غير صحيح');
+      //allValid = false;
+    //}
+     else {
       allValid = true;
     }
     if (mounted) setState(() {});
