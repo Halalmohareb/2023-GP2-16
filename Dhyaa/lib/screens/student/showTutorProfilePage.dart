@@ -84,7 +84,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     );
   }
 
-  lessonTypePipe() {
+  lessonTypePipe2() {
     String temp = '';
     if (userData.isOnlineLesson) {
       temp += 'أون لاين' + ' | ';
@@ -174,7 +174,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         Icon(Icons.broadcast_on_personal, size: 18),
                         SizedBox(width: 5),
                         Text(
-                          lessonTypePipe(),
+                          lessonTypePipe2(),
                           style: TextStyle(fontSize: 15),
                         ),
                       ],
@@ -607,6 +607,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   }
 
   Widget recommendedWidget = Container();
+  
 
   degreeTextPipe(var val) {
     var temp = val;
@@ -623,6 +624,20 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
           i++;
         }
       }
+    }
+    return temp;
+  }
+
+  lessonTypePipe(UserData tutor) {
+    String temp = '';
+    if (tutor.isOnlineLesson) {
+      temp += 'أون لاين' + ' | ';
+    }
+    if (tutor.isStudentHomeLesson) {
+      temp += 'حضوري (مكان الطالب)' + ' | ';
+    }
+    if (tutor.isTutorHomeLesson) {
+      temp += 'حضوري (مكان المعلم)';
     }
     return temp;
   }
@@ -705,7 +720,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           Icon(Icons.broadcast_on_personal, size: 15),
                           SizedBox(width: 5),
                           Text(
-                            lessonTypePipe(),
+                            lessonTypePipe(_tutor),
                             style: TextStyle(fontSize: 13),
                           ),
                         ],
@@ -716,7 +731,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         style: TextStyle(fontSize: 13),
                       ),
                       Text(
-                        'السعر يبدأ من: ' + getMinPrice(_tutor),
+                        'السعر يبدأ من:  ' + getMinPrice(_tutor) +' '+'ريال/ساعة',
                         textDirection: TextDirection.rtl,
                         style: TextStyle(fontSize: 13),
                       ),
