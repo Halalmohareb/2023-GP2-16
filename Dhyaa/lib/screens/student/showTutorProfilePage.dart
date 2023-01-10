@@ -15,6 +15,7 @@ import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 
+import '../../singlton.dart';
 import '../chat_screen.dart';
 
 class ShowTutorProfilePage extends StatefulWidget {
@@ -511,7 +512,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           builder: (context) => ChatScreen(
                             friendId: userData.userId,
                             friendName: userData.username,
-                            userData: myUserData,
+                            //userData:Singleton.instance.userData!,
                           ),
                         ),
                       );
