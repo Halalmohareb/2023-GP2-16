@@ -38,7 +38,7 @@ dependencies:
   event_calendar: ^0.0.14
   syncfusion_flutter_calendar: ^20.4.38
   dropdown_search: ^5.0.5
-
+  syncfusion_flutter_sliders: ^20.4.43
 
 dev_dependencies:
   flutter_test:

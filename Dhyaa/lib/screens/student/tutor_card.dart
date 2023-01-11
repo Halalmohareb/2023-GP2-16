@@ -40,7 +40,7 @@ class _TutorCardWidgetState extends State<TutorCardWidget> {
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
         child: Card(
-          elevation: 7,
+          elevation: 5,
           color: kBackgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),

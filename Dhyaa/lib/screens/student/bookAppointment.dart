@@ -8,7 +8,6 @@ import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/student/paymentPage.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as intl;
 
 class BookAppointment extends StatefulWidget {
   final dynamic userData;

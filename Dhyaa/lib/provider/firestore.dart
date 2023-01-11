@@ -250,7 +250,7 @@ class FirestoreHelper {
     });
     tutors.shuffle(); // To make tutors list random
     for (var tutor in tutors) {
-      var cosineSimilarity = 0.0;
+      dynamic cosineSimilarity = 0.0;
 
       double subjectCount = 0.0;
       double locationCount = 0.0;

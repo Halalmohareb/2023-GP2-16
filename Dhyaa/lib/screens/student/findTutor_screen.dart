@@ -1,3 +1,4 @@
+import 'package:Dhyaa/screens/student/filter_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:Dhyaa/constant.dart';
@@ -19,6 +20,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
   UserData emptyTutor = emptyUserData;
   List<UserData> tutors = [];
   List<UserData> foundUsers = [];
+  List<UserData> tutorList = [];
 
   @override
   void initState() {
@@ -26,10 +28,10 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
       tutors.add(emptyTutor);
     });
     FirestoreHelper.getTopTutors().then((value) {
-      setState(() {
-        tutors = value;
-        foundUsers = value;
-      });
+      tutors = value;
+      foundUsers = value;
+      tutorList = foundUsers;
+      if (mounted) setState(() {});
     });
     super.initState();
   }
@@ -70,15 +72,11 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Divider(),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 50,
-                        padding: EdgeInsets.only(
-                          left: 40,
-                        ),
+                        padding: EdgeInsets.only(left: 10),
                         decoration: BoxDecoration(
                           color: kBlueColor.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(30),
@@ -87,13 +85,42 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: TextField(
-                                onChanged: (value) => _runFilter(value),
+                              child: TextFormField(
                                 controller: searchTextController,
-                                // textDirection: TextDirection.rtl,
-                                decoration: InputDecoration.collapsed(
-                                  hintText: '... ابحث عن مادة',
-                                  // hintTextDirection: TextDirection.rtl,
+                                onChanged: (value) => _runFilter(value),
+                                textDirection: TextDirection.rtl,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  hintText: 'ابحث عن مادة...',
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
+                                  hintTextDirection: TextDirection.rtl,
+                                  prefixIcon: IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              FilterOptions(
+                                            tutorList: foundUsers,
+                                            onChange: (val) {
+                                              tutorList = val;
+                                              if (mounted) setState(() {});
+                                            },
+                                            onRest: (value) {
+                                              tutorList = foundUsers;
+                                              if (mounted) setState(() {});
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: Image.asset(
+                                      'assets/images/setting-lines.png',
+                                      width: 25,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -116,9 +143,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      SizedBox(height: 10),
                       Text(
                         'معلمين ضياء',
                         textDirection: TextDirection.rtl,
@@ -128,22 +153,21 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                           color: kTitleTextColor,
                         ),
                       ),
-                      SizedBox(height: 10),
                       Container(
                         height: 1,
                         width: MediaQuery.of(context).size.width,
                         color: kBlueColor,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       StreamBuilder(
                         builder: (context, snapshot) {
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: foundUsers.length,
+                            itemCount: tutorList.length,
                             itemBuilder: (context, index) {
                               return TutorCardWidget(
-                                tutor: foundUsers[index],
+                                tutor: tutorList[index],
                               );
                             },
                           );

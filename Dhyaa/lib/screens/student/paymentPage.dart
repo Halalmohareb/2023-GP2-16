@@ -1,6 +1,5 @@
 import 'package:Dhyaa/constant.dart';
 import 'package:Dhyaa/models/appointment.dart';
-import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/student/verifyPayment.dart';
 import 'package:Dhyaa/theme/theme.dart';
 import 'package:flutter/material.dart';
