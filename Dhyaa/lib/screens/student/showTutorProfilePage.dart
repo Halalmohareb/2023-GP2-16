@@ -1,20 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:Dhyaa/screens/student/bookAppointment.dart';
-import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/provider/firestore.dart';
-import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
-
 import '../../singlton.dart';
 import '../chat_screen.dart';
 
@@ -31,8 +23,6 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   List<Task> tasks = [];
   int selectedTime = 1;
   bool moreBool = false;
-  final _taskController = Get.put(TaskController());
-  DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
 
   @override
   void initState() {
@@ -95,7 +85,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     );
   }
 
-  lessonTypePipe() {
+  lessonTypePipe2() {
     String temp = '';
     if (userData.isOnlineLesson) {
       temp += 'أون لاين' + ' | ';
@@ -185,7 +175,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         Icon(Icons.broadcast_on_personal, size: 18),
                         SizedBox(width: 5),
                         Text(
-                          lessonTypePipe(),
+                          lessonTypePipe2(),
                           style: TextStyle(fontSize: 15),
                         ),
                       ],
@@ -598,7 +588,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                 TextSpan(
                   children: [
                     TextSpan(
-                      text: userData.onlineLessonPrice,
+                      text: getMinPrice(userData),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -618,6 +608,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   }
 
   Widget recommendedWidget = Container();
+  
 
   degreeTextPipe(var val) {
     var temp = val;
@@ -638,16 +629,32 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     return temp;
   }
 
-  String priceTextPipe(UserData tutor) {
-    var userPriceStarts = [
+  lessonTypePipe(UserData tutor) {
+    String temp = '';
+    if (tutor.isOnlineLesson) {
+      temp += 'أون لاين' + ' | ';
+    }
+    if (tutor.isStudentHomeLesson) {
+      temp += 'حضوري (مكان الطالب)' + ' | ';
+    }
+    if (tutor.isTutorHomeLesson) {
+      temp += 'حضوري (مكان المعلم)';
+    }
+    return temp;
+  }
+
+  String getMinPrice(UserData tutor) {
+    var priceList = [
       int.parse(tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
       int.parse(tutor.studentsHomeLessonPrice == ''
           ? '0'
           : tutor.studentsHomeLessonPrice),
       int.parse(
           tutor.tutorsHomeLessonPrice == '' ? '0' : tutor.tutorsHomeLessonPrice)
-    ].reduce(min);
-    return userPriceStarts.toString();
+    ];
+    // excluding (0) from the minimum comparison
+    priceList.removeWhere((element) => element == 0);
+    return priceList.length > 0 ? priceList.reduce(min).toString() : '-';
   }
 
   getRecommendedTutors() {
@@ -657,7 +664,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(tutors.length, (index) {
-            UserData _tutor = tutors[(tutors.length - 1) - index];
+            UserData _tutor = tutors[index];
             return Container(
               width: MediaQuery.of(context).size.width / 2.2,
               margin: EdgeInsets.symmetric(horizontal: 5),
@@ -714,7 +721,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           Icon(Icons.broadcast_on_personal, size: 15),
                           SizedBox(width: 5),
                           Text(
-                            lessonTypePipe(),
+                            lessonTypePipe(_tutor),
                             style: TextStyle(fontSize: 13),
                           ),
                         ],
@@ -725,7 +732,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         style: TextStyle(fontSize: 13),
                       ),
                       Text(
-                        'السعر يبدأ من: ' + priceTextPipe(_tutor),
+                        'السعر يبدأ من:  ' + getMinPrice(_tutor) +' '+'ريال/ساعة',
                         textDirection: TextDirection.rtl,
                         style: TextStyle(fontSize: 13),
                       ),
@@ -769,35 +776,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     });
   }
 
-  _getBGClr(int? no) {
-    switch (no) {
-      case 0:
-        return bluishClr;
-      case 1:
-        return pinkClr;
-      case 2:
-        return yellowClr;
-      default:
-        return bluishClr;
-    }
-  }
-
-  List<String> repeatList2 = [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-  ];
-
   _showTasks() {
-    String selectedDateString =
-        intl.DateFormat('EEEE').format(_selectedDate).toLowerCase();
-
-    // List<Task> selectedTasks =
-    //     tasks.where((element) => element.day == selectedDateString).toList();
     List<Task> selectedTasks = tasks;
     return Container(
       height: 60,
@@ -847,53 +826,6 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                   ),
                 );
               }),
-    );
-  }
-
-  _dateBar() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10, left: 20),
-      child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-        child: DatePicker(
-          DateTime.now(),
-          height: 100.0,
-          width: 80,
-          initialSelectedDate: DateTime.now(),
-          selectionColor: Color.fromARGB(255, 255, 222, 124),
-          //selectedTextColor: primaryClr,
-          selectedTextColor: Colors.black,
-          dateTextStyle: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
-          ),
-          dayTextStyle: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.grey,
-            ),
-          ),
-          monthTextStyle: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              fontSize: 10.0,
-              color: Colors.grey,
-            ),
-          ),
-
-          onDateChange: (date) {
-            // New date selected
-
-            setState(
-              () {
-                _selectedDate = date;
-              },
-            );
-          },
-        ),
-      ),
     );
   }
 }

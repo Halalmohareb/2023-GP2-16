@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:Dhyaa/models/appointment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,7 @@ class FirestoreHelper {
   static final Future<UserData> _userData = getUserData();
 
   static Future<UserData> getUserData() async {
-    UserData userDataa = emptyUserData;
+    UserData userData = emptyUserData;
     await SharedPreferences.getInstance().then((value) async {
       var data = value.getString('user');
       await db
@@ -27,12 +28,11 @@ class FirestoreHelper {
           .get()
           .then((value) {
         if (value.docs.isNotEmpty) {
-          UserData userrr = UserData.fromMap(value.docs.first.data());
-          userDataa = userrr;
+          userData = UserData.fromMap(value.docs.first.data());
         }
       });
     });
-    return userDataa;
+    return userData;
   }
 
   static Future<List<Task>> getMyTasks() async {
@@ -109,25 +109,9 @@ class FirestoreHelper {
 
     return userDataa;
   }
-  // static Future<UserData> getMyUserData() async {
-  //   UserData userDataa = emptyUserData;
-  //   SharedPreferences value = await SharedPreferences.getInstance();
-  //
-  //   var data = value.getString('user');
-  //   await db.collection('Users').where('email', isEqualTo: data).get().then(
-  //     (value) {
-  //       if (value.docs.isNotEmpty) {
-  //         UserData userrr = UserData.fromMap(value.docs.first.data());
-  //         userDataa = userrr;
-  //       }
-  //     },
-  //   );
-  //
-  //   return userDataa;
-  // }
 
   static Future<bool> updateUserData(id, updateData) async {
-    var data = await db.collection('Users').doc(id).update(updateData);
+    await db.collection('Users').doc(id).update(updateData);
     return true;
   }
 
@@ -235,10 +219,10 @@ class FirestoreHelper {
     List temp = [];
     await db
         .collection('Users')
-        .where("userId", isNotEqualTo: user.userId) // revoming the tutor its self from the recommendations 
-        .where("type", isEqualTo: "Tutor")
-        .where("location",
-            isEqualTo: user.location) // retreving tutors from same city 
+        .where("userId", isNotEqualTo: user.userId)
+        .where("type",
+            isEqualTo:
+                "Tutor") // revoming the tutor its self from the recommendations
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -264,56 +248,73 @@ class FirestoreHelper {
         );
       });
     });
-    tutors.shuffle(); // Randomly arrange tutors in the list
+    tutors.shuffle(); // To make tutors list random
     for (var tutor in tutors) {
       var cosineSimilarity = 0.0;
 
       double subjectCount = 0.0;
-      double locationCount = 0.2;
+      double locationCount = 0.0;
       double addressCount = 0.0;
       double sessionTypeCount = 0.0;
       double priceCount = 0.0;
 
-      // =============================== Subject  ======================
+      // =============================== Subject ======================
       List userDegree = jsonDecode(user.degree); // active profile tutor
       List itemDegree = jsonDecode(tutor.degree); // compared tutor
       for (var ud in userDegree) {
         for (var it in itemDegree) {
           if (it.toString().toLowerCase() == ud.toString().toLowerCase()) {
-            subjectCount = 0.2;
+            subjectCount = 0.175;
           }
         }
       }
 
-      // =============================== Location 'City' ======================
+      // =============================== Location/City, Address/Area  ======================
+      if (tutor.location == user.location) {
+        locationCount = 0.175;
+      }
 
       if (tutor.address == user.address) {
-        addressCount = 0.2;
+        addressCount = 0.175;
       }
 
-      // =============================== Session Type  ================================
-      if (tutor.isOnlineLesson == user.isOnlineLesson) {
-        sessionTypeCount = 0.2;
-      }
-      if (tutor.isStudentHomeLesson == user.isStudentHomeLesson) {
-        sessionTypeCount = 0.2;
-      }
-      if (tutor.isTutorHomeLesson == user.isTutorHomeLesson) {
-        sessionTypeCount = 0.2;
+      // =============================== Session type ================================
+      if (locationCount == 0.175) {
+        if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
+            tutor.isOnlineLesson) {
+          sessionTypeCount += 0.058;
+        } // we want to show the tutors in same city only , if not they give online lessons
+        if ((tutor.isStudentHomeLesson == user.isStudentHomeLesson) &&
+            tutor.isStudentHomeLesson) {
+          sessionTypeCount += 0.058;
+        }
+        if ((tutor.isTutorHomeLesson == user.isTutorHomeLesson) &&
+            tutor.isTutorHomeLesson) {
+          sessionTypeCount += 0.058;
+        }
+      } else {
+        if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
+            tutor.isOnlineLesson) {
+          sessionTypeCount = 0.058;
+        }
       }
 
-      // =============================== Price  =================================
-      // find the minumm price for the current tutor 
-      var userPriceStarts = [
+      // =============================== Price =================================
+      // minimum price rates for the current tutor
+
+      var userPriceList = [
         int.parse(user.onlineLessonPrice == '' ? '0' : user.onlineLessonPrice),
         int.parse(user.studentsHomeLessonPrice == ''
             ? '0'
             : user.studentsHomeLessonPrice),
         int.parse(
             user.tutorsHomeLessonPrice == '' ? '0' : user.tutorsHomeLessonPrice)
-      ].reduce(min);
-      // find the minumm price of compared tutor 
-      var tutorPriceStarts = [
+      ];
+      // excluding (0)
+      userPriceList.removeWhere((element) => element == 0);
+
+      // minimum price rates of compared tutor
+      var tutorPriceList = [
         int.parse(
             tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
         int.parse(tutor.studentsHomeLessonPrice == ''
@@ -322,30 +323,36 @@ class FirestoreHelper {
         int.parse(tutor.tutorsHomeLessonPrice == ''
             ? '0'
             : tutor.tutorsHomeLessonPrice)
-      ].reduce(min);
+      ];
+      // excluding (0)
+      tutorPriceList.removeWhere((element) => element == 0);
 
-      // matching the price rates
-      if (userPriceStarts == tutorPriceStarts) {
-        priceCount = 0.2;
+      // matching minimum price rates
+      if (userPriceList.length > 0 && tutorPriceList.length > 0) {
+        if (userPriceList.reduce(min) == tutorPriceList.reduce(min)) {
+          priceCount = 0.175;
+        }
       }
 
       // =============================== Cosine Similarity =========================
       // Levels list
-      List<double> currentTutor = [0.2, 0.2, 0.2, 0.2, 0.2]; //Vector1
+      List<double> currentTutor = [0.3, 0.175, 0.175, 0.175, 0.175]; //Vector1
       List<double> iterationTutor = [
         subjectCount,
         locationCount,
         addressCount,
         sessionTypeCount,
-        priceCount
-      ];// Vector2
+        priceCount,
+      ]; // Vector2
 
       // Cosine Similarity algorithm
-      cosineSimilarity = await cosineAlgorithm(currentTutor, iterationTutor); // sending cs param
+      cosineSimilarity = await cosineAlgorithm(
+          currentTutor, iterationTutor); // sending cs param
 
-      print("UserName is: ${tutor.username} - and - CosineSimilarity is: $cosineSimilarity"); // Testing similarty for each tutor 
+      print(
+          "UserName is: ${tutor.username} - and - CosineSimilarity is: $cosineSimilarity"); // Testing similarty for each tutor
 
-      // unsorted array of tutors with their similarty levels 
+      // unsorted array
       temp.add({
         'cosineSimilarity': cosineSimilarity,
         'tutor': tutor,
@@ -353,8 +360,10 @@ class FirestoreHelper {
     }
     // sorting based on Similarity Level
     //https://api.flutter.dev/flutter/dart-core/List/sort.html
-    temp.sort((a, b) => a['cosineSimilarity'].compareTo(b['cosineSimilarity']));
-    return temp;
+    temp.sort((b, a) => a['cosineSimilarity'].compareTo(b['cosineSimilarity'])); // sorting is from most similar (max similarty (1)) to less similar (0)
+
+    // Returning top 5 most similar tutors
+    return temp.take(5);
   }
 
   // Cosine Similarity algorithm
@@ -370,15 +379,15 @@ class FirestoreHelper {
       bottomB += b[i] * b[i];
     }
     double divisor = sqrt(bottomA) * sqrt(bottomB);
-    return 1.0 - (divisor != 0 ? (top / divisor) : 0);
+    return (divisor != 0 ? (top / divisor) : 0);
   }
 
   // ===============================================
-  // Booking Lessons 
+  //  Booking Lessons 
   // ===============================================
 
   static Future<Appointment> bookAppointment(Appointment appointment) async {
-    var data = await db.collection('appointments').add({
+    await db.collection('appointments').add({
       'tutorId': appointment.tutorId,
       'tutorName': appointment.tutorName,
       'studentId': appointment.studentId,
@@ -455,7 +464,7 @@ class FirestoreHelper {
   }
 
   static Future<bool> changeAppointmentStatus(String id, String status) async {
-    var data = await db.collection('appointments').doc(id).update({
+    await db.collection('appointments').doc(id).update({
       'status': status,
     });
     return true;
