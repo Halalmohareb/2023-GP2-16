@@ -355,9 +355,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   } else {
                     tutorErrorTextUsername = 'اسم المستخدم غير صحيح';
                     //if (authProvider.tutorUsername.text.contains(' ')) {
-                      //tutorErrorTextUsername =
-                         // 'اسم المستخدم يجب أن لايحتوي على مسافات';
-                    //}
+                     // tutorErrorTextUsername =
+                        //  'اسم المستخدم يجب أن لايحتوي على مسافات';
+                   // }
                     tutorUsernameValid = false;
                     tutorAllFieldsValid = false;
                   }
@@ -1561,13 +1561,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   }
                 } else {
                   studentErrorTextUserName = 'اسم المستخدم المدخل غير صحيح';
-                  //if (authProvider.studentUserName.text.contains(' ')) {
-                    //studentErrorTextUserName =
-                        //'اسم المستخدم يجب أن لايحتوي على مسافات';
-                  //}
+                 /* if (authProvider.studentUserName.text.contains(' ')) {
+                    studentErrorTextUserName =
+                        'اسم المستخدم يجب أن لايحتوي على مسافات';
+                  }*/ 
                   studentUsernameValid = false;
                   studentAllFieldsValid = false;
-                }
+               }
               });
             },
             style: textStyle(screenWidth * 3.7, theme.blueColor),
@@ -2011,7 +2011,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: "الحي",
+              hintText: "حي العمل",
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: Colors.white24,

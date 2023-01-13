@@ -9,7 +9,6 @@ import 'package:Dhyaa/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 import '../responsiveBloc/size_config.dart';
-import '../singlton.dart';
 
 class MyAppointmentPage extends StatefulWidget {
   const MyAppointmentPage({super.key});
@@ -442,7 +441,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                       userData.type == 'Student'
                                                           ? item.tutorName
                                                           : item.studentName,
-                                                        // userData: Singleton.instance.userData!,
+                                                 // userData: userData,(i dont know why this line is causing an error )
                                                 ),
                                               ),
                                             );

@@ -106,9 +106,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     if (userData.type == 'Tutor') {
       subject.text = userData.majorSubjects;
       degree.text = userData.degree;
-      if (userData.degree != '' &&
-          userData.degree != null &&
-          userData.degree != 'null') {
+      if (userData.degree != '' && userData.degree != 'null') {
         for (var element in jsonDecode(userData.degree)) {
           values.add(element);
           setState(() {});
@@ -203,9 +201,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
       allValid = false;
     } //else if (bio.text.isEmpty && type == 'Tutor') {
      // showToast(' المدخل غير صحيح');
-      //allValid = false;
-    //}
-     else {
+     // allValid = false;
+    //} 
+  else {
       allValid = true;
     }
     if (mounted) setState(() {});
@@ -533,206 +531,213 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                           ],
                         ),
-                        Row(
+                        Column(
                           children: [
-                            Expanded(
-                              child: Container(
-                                height: 35,
-                                child: CheckboxListTile(
-                                  value: isOnlineLesson,
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  contentPadding: EdgeInsets.all(0),
-                                  shape: CircleBorder(),
-                                  onChanged: (value) {
-                                    isOnlineLesson = value!;
-                                    if (mounted) setState(() {});
-                                  },
-                                  title: Text(
-                                    'أون لاين',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 3,
-                                      color: theme.lightTextColor,
-                                      fontWeight: FontWeight.w500,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 35,
+                                    child: CheckboxListTile(
+                                      value: isOnlineLesson,
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      contentPadding: EdgeInsets.all(0),
+                                      shape: CircleBorder(),
+                                      onChanged: (value) {
+                                        isOnlineLesson = value!;
+                                        if (mounted) setState(() {});
+                                      },
+                                      title: Text(
+                                        'أون لاين',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 3,
+                                          color: theme.lightTextColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                Container(
+                                  height: 35,
+                                  width: 110,
+                                  child: TextFormField(
+                                    controller: onlineLessonPrice,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    style: textStyle(
+                                        screenWidth * 3.7, theme.mainColor),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: screenWidth * 4,
+                                          vertical: screenWidth * 1.5),
+                                      hintText: 'ريال/ساعة',
+                                      hintStyle: textStyle(screenWidth * 3.3,
+                                          theme.lightTextColor),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 200),
+                                        borderSide: BorderSide(
+                                            width: .3,
+                                            color: theme.lightTextColor),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 200),
+                                        borderSide: BorderSide(
+                                          width: .6,
+                                          color: theme.yellowColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            Container(
-                              height: 35,
-                              width: 110,
-                              child: TextFormField(
-                                controller: onlineLessonPrice,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: textStyle(
-                                    screenWidth * 3.7, theme.mainColor),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: screenWidth * 4,
-                                      vertical: screenWidth * 1.5),
-                                  hintText: 'ريال/ساعة',
-                                  hintStyle: textStyle(
-                                      screenWidth * 3.3, theme.lightTextColor),
-                                  filled: true,
-                                  fillColor: Colors.white24,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        screenWidth * 200),
-                                    borderSide: BorderSide(
-                                        width: .3, color: theme.lightTextColor),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        screenWidth * 200),
-                                    borderSide: BorderSide(
-                                      width: .6,
-                                      color: theme.yellowColor,
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 35,
+                                    child: CheckboxListTile(
+                                      value: isStudentHomeLesson,
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      contentPadding: EdgeInsets.all(0),
+                                      shape: CircleBorder(),
+                                      onChanged: (value) {
+                                        isStudentHomeLesson = value!;
+                                        if (mounted) setState(() {});
+                                      },
+                                      title: Text(
+                                        'حضوري (مكان الطالب)',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 3,
+                                          color: theme.lightTextColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                                Container(
+                                  height: 35,
+                                  width: 110,
+                                  child: TextFormField(
+                                    controller: studentsHomeLessonPrice,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    style: textStyle(
+                                        screenWidth * 3.7, theme.mainColor),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: screenWidth * 4,
+                                          vertical: screenWidth * 1.5),
+                                      hintText: 'ريال/ساعة',
+                                      hintStyle: textStyle(screenWidth * 3.3,
+                                          theme.lightTextColor),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 200),
+                                        borderSide: BorderSide(
+                                            width: .3,
+                                            color: theme.lightTextColor),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 200),
+                                        borderSide: BorderSide(
+                                          width: .6,
+                                          color: theme.yellowColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 35,
-                                child: CheckboxListTile(
-                                  value: isStudentHomeLesson,
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  contentPadding: EdgeInsets.all(0),
-                                  shape: CircleBorder(),
-                                  onChanged: (value) {
-                                    isStudentHomeLesson = value!;
-                                    if (mounted) setState(() {});
-                                  },
-                                  title: Text(
-                                    'حضوري (مكان الطالب)',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 3,
-                                      color: theme.lightTextColor,
-                                      fontWeight: FontWeight.w500,
+                            SizedBox(height: 5),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 35,
+                                    child: CheckboxListTile(
+                                      value: isTutorHomeLesson,
+                                      controlAffinity:
+                                          ListTileControlAffinity.leading,
+                                      contentPadding: EdgeInsets.all(0),
+                                      shape: CircleBorder(),
+                                      onChanged: (value) {
+                                        isTutorHomeLesson = value!;
+                                        if (mounted) setState(() {});
+                                      },
+                                      title: Text(
+                                        'حضوري (مكان المعلم)',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 3,
+                                          color: theme.lightTextColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Container(
-                              height: 35,
-                              width: 110,
-                              child: TextFormField(
-                                controller: studentsHomeLessonPrice,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: textStyle(
-                                    screenWidth * 3.7, theme.mainColor),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: screenWidth * 4,
-                                      vertical: screenWidth * 1.5),
-                                  hintText: 'ريال/ساعة',
-                                  hintStyle: textStyle(
-                                      screenWidth * 3.3, theme.lightTextColor),
-                                  filled: true,
-                                  fillColor: Colors.white24,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        screenWidth * 200),
-                                    borderSide: BorderSide(
-                                        width: .3, color: theme.lightTextColor),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        screenWidth * 200),
-                                    borderSide: BorderSide(
-                                      width: .6,
-                                      color: theme.yellowColor,
+                                Container(
+                                  height: 35,
+                                  width: 110,
+                                  child: TextFormField(
+                                    controller: tutorsHomeLessonPrice,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    style: textStyle(
+                                        screenWidth * 3.7, theme.mainColor),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: screenWidth * 4,
+                                          vertical: screenWidth * 1.5),
+                                      hintText: 'ريال/ساعة',
+                                      hintStyle: textStyle(screenWidth * 3.3,
+                                          theme.lightTextColor),
+                                      filled: true,
+                                      fillColor: Colors.white24,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 200),
+                                        borderSide: BorderSide(
+                                            width: .3,
+                                            color: theme.lightTextColor),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            screenWidth * 200),
+                                        borderSide: BorderSide(
+                                          width: .6,
+                                          color: theme.yellowColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: 35,
-                                child: CheckboxListTile(
-                                  value: isTutorHomeLesson,
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  contentPadding: EdgeInsets.all(0),
-                                  shape: CircleBorder(),
-                                  onChanged: (value) {
-                                    isTutorHomeLesson = value!;
-                                    if (mounted) setState(() {});
-                                  },
-                                  title: Text(
-                                    'حضوري (مكان المعلم)',
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 3,
-                                      color: theme.lightTextColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 35,
-                              width: 110,
-                              child: TextFormField(
-                                controller: tutorsHomeLessonPrice,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                style: textStyle(
-                                    screenWidth * 3.7, theme.mainColor),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: screenWidth * 4,
-                                      vertical: screenWidth * 1.5),
-                                  hintText: 'ريال/ساعة',
-                                  hintStyle: textStyle(
-                                      screenWidth * 3.3, theme.lightTextColor),
-                                  filled: true,
-                                  fillColor: Colors.white24,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        screenWidth * 200),
-                                    borderSide: BorderSide(
-                                        width: .3, color: theme.lightTextColor),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        screenWidth * 200),
-                                    borderSide: BorderSide(
-                                      width: .6,
-                                      color: theme.yellowColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
@@ -821,32 +826,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  final String label;
-  final ValueChanged<int> onDeleted;
-  final int index;
-  const _Chip({
-    required this.label,
-    required this.onDeleted,
-    required this.index,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      backgroundColor: theme.blueColor,
-      labelPadding: const EdgeInsets.only(right: 10, top: 6, bottom: 6),
-      label: Text(
-        label,
-        style: TextStyle(color: theme.whiteColor),
-      ),
-      deleteIcon: Icon(Icons.close, size: 18, color: theme.whiteColor),
-      onDeleted: () {
-        onDeleted(index);
-      },
     );
   }
 }
