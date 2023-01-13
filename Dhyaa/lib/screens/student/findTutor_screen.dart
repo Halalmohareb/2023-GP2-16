@@ -167,18 +167,18 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                 child: Column(
                                   children: [
                                     Image.asset(
-                                      'assets/images/doctor1.png',
+                                      'assets/images/cant-find.png',
                                       height: 150,
                                     ),
                                     Spacer(),
                                     Text(
-                                      'لم يتم العثور على مدرسين!',
+                                      'لم يتم العثور على معلمين!',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      'حاول كلمات مختلفة أو إزالة عوامل تصفية البحث',
+                                      'حاول البحث بكلمات مختلفة أو إزالة خيارات تصفية البحث',
                                       style: TextStyle(fontSize: 12),
                                     ),
                                   ],

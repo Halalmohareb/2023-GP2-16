@@ -81,37 +81,19 @@ class FirestoreHelper {
   }
 
   static Future<UserData> getMyUserData() async {
-    UserData userDataa = emptyUserData;
+    UserData userData = emptyUserData;
     SharedPreferences value = await SharedPreferences.getInstance();
 
-    final User? user = FirebaseAuth.instance.currentUser;
-    final uid = user!.uid;
-
     var data = value.getString('user');
-    var data1 = await db
-        .collection('Users')
-        .where('userId', isEqualTo: uid)
-        .snapshots();
-//     .then(
-// (value) {
-    data1.first.then(
+    await db.collection('Users').where('email', isEqualTo: data).get().then(
       (value) {
-        print("i am inside data get value");
-        print("i am inside data get value${uid}");
-        print("i am inside data get value${value.docs.length}");
-        print("i am inside data get value");
-        // });
-
         if (value.docs.isNotEmpty) {
-          UserData userrr = UserData.fromMap(value.docs.first.data());
-          Singleton.instance.userData = userrr;
-          Singleton.instance.userId = uid;
-          userDataa = userrr;
+          userData = UserData.fromMap(value.docs.first.data());
         }
       },
     );
 
-    return userDataa;
+    return userData;
   }
 
   static Future<bool> updateUserData(id, updateData) async {

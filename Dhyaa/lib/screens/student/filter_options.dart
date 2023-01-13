@@ -227,7 +227,7 @@ class _FilterOptionsState extends State<FilterOptions> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Text('نطاق سعر الساعة'),
+                Text('نطاق السعر للساعة'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -243,7 +243,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                 ),
                 SfRangeSlider(
                   min: 1,
-                  max: 1000,
+                  max: 500,
                   stepSize: 1,
                   interval: 20,
                   showTicks: false,
@@ -452,7 +452,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                     SizedBox(width: 20),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('4 نجوم أو أعلى'),
+                      child: const Text('4 اقل  نجوم أو '),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         side: BorderSide(color: kBlueColor),
