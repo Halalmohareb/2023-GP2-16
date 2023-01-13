@@ -28,9 +28,10 @@ class _FilterOptionsState extends State<FilterOptions> {
   // Variables
   var screenWidth = SizeConfig.widthMultiplier;
   SfRangeValues priceRange = SfRangeValues(1.0, 100.0);
-  TextEditingController address = TextEditingController();
-  GlobalKey<FormFieldState> _addressKey = GlobalKey<FormFieldState>();
   TextEditingController location = TextEditingController();
+  GlobalKey<FormFieldState> locationKey = GlobalKey<FormFieldState>();
+  TextEditingController address = TextEditingController();
+  GlobalKey<FormFieldState> addressKey = GlobalKey<FormFieldState>();
 
   bool isOnlineLesson = true;
   bool isStudentHomeLesson = false;
@@ -170,8 +171,17 @@ class _FilterOptionsState extends State<FilterOptions> {
   }
 
   reset() {
+    priceRange = SfRangeValues(1.0, 100.0);
+    locationKey.currentState?.reset();
+    addressKey.currentState?.reset();
+    location.clear();
+    address.clear();
+    areasList.clear();
+    isOnlineLesson = true;
+    isStudentHomeLesson = false;
+    isTutorHomeLesson = false;
     widget.onRest('reset');
-    Navigator.pop(context);
+    if (mounted) setState(() {});
   }
 
   @override
@@ -217,16 +227,29 @@ class _FilterOptionsState extends State<FilterOptions> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Text('نطاق السعر للساعة'),
-              
+                Text('نطاق سعر الساعة'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      priceRange.start.toStringAsFixed(0) +
+                          ' ريال/ساعة' +
+                          ' - ' +
+                          priceRange.end.toStringAsFixed(0) +
+                          ' ريال/ساعة',
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
                 SfRangeSlider(
-                  min: 0.0,
-                  max: 500.0,
-                  values: priceRange,
+                  min: 1,
+                  max: 1000,
+                  stepSize: 1,
                   interval: 20,
                   showTicks: false,
                   showLabels: false,
                   enableTooltip: true,
+                  values: priceRange,
                   minorTicksPerInterval: 1,
                   onChanged: (SfRangeValues values) {
                     priceRange = values;
@@ -240,6 +263,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                   width: double.infinity,
                   child: DropdownButtonFormField(
                     value: oldVal(),
+                    key: locationKey,
                     items: citiesList.map((value) {
                       return DropdownMenuItem(
                         value: value,
@@ -251,7 +275,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                           (element) => (element['name_ar'] == _selectedValue));
                       var tempArea = await areas.where((element) =>
                           (element['city_id'] == tempCity.first['city_id']));
-                      _addressKey.currentState?.reset();
+                      addressKey.currentState?.reset();
                       address.clear();
                       areasList.clear();
                       areasList.addAll(tempArea);
@@ -291,7 +315,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                   height: screenWidth * 12.5,
                   width: double.infinity,
                   child: DropdownButtonFormField(
-                    key: _addressKey,
+                    key: addressKey,
                     items: areasList.map((value) {
                       return DropdownMenuItem(
                         value: value,
@@ -418,7 +442,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                       onPressed: () {},
                       child: const Text('الكل'),
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 35),
+                        padding: EdgeInsets.symmetric(horizontal: 15),
                         side: BorderSide(color: kBlueColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -428,7 +452,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                     SizedBox(width: 20),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('4  نجوم أو أقل  '),
+                      child: const Text('4 نجوم أو أعلى'),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         side: BorderSide(color: kBlueColor),

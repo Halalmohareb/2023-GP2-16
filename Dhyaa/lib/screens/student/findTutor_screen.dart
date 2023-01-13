@@ -117,7 +117,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                       );
                                     },
                                     icon: Image.asset(
-                                      'assets/images/setting-lines.png',
+                                      'assets/images/setting.png',
                                       width: 25,
                                     ),
                                   ),
@@ -159,20 +159,42 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                         color: kBlueColor,
                       ),
                       SizedBox(height: 10),
-                      StreamBuilder(
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: tutorList.length,
-                            itemBuilder: (context, index) {
-                              return TutorCardWidget(
-                                tutor: tutorList[index],
-                              );
-                            },
-                          );
-                        },
-                      ),
+                      tutorList.length == 0
+                          ? Center(
+                              child: Container(
+                                height: 270,
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/doctor1.png',
+                                      height: 150,
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      'لم يتم العثور على مدرسين!',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      'حاول كلمات مختلفة أو إزالة عوامل تصفية البحث',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: tutorList.length,
+                              itemBuilder: (context, index) {
+                                return TutorCardWidget(
+                                  tutor: tutorList[index],
+                                );
+                              },
+                            ),
                     ],
                   ),
                 ),

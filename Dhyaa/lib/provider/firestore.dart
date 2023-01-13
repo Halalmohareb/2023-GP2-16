@@ -88,23 +88,27 @@ class FirestoreHelper {
     final uid = user!.uid;
 
     var data = value.getString('user');
-    var data1 = await db.collection('Users').where('userId', isEqualTo: uid).snapshots();
+    var data1 = await db
+        .collection('Users')
+        .where('userId', isEqualTo: uid)
+        .snapshots();
 //     .then(
 // (value) {
-    data1.first.then((value) {
-      print("i am inside data get value");
-      print("i am inside data get value${uid}");
-      print("i am inside data get value${value.docs.length}");
-      print("i am inside data get value");
-      // });
+    data1.first.then(
+      (value) {
+        print("i am inside data get value");
+        print("i am inside data get value${uid}");
+        print("i am inside data get value${value.docs.length}");
+        print("i am inside data get value");
+        // });
 
-      if (value.docs.isNotEmpty) {
-        UserData userrr = UserData.fromMap(value.docs.first.data());
-        Singleton.instance.userData = userrr;
-        Singleton.instance.userId = uid;
-        userDataa = userrr;
-      }
-    },
+        if (value.docs.isNotEmpty) {
+          UserData userrr = UserData.fromMap(value.docs.first.data());
+          Singleton.instance.userData = userrr;
+          Singleton.instance.userId = uid;
+          userDataa = userrr;
+        }
+      },
     );
 
     return userDataa;
@@ -264,103 +268,108 @@ class FirestoreHelper {
       for (var ud in userDegree) {
         for (var it in itemDegree) {
           if (it.toString().toLowerCase() == ud.toString().toLowerCase()) {
-            subjectCount = 0.175;
+            subjectCount = 0.3;
           }
         }
       }
-
-      // =============================== Location/City, Address/Area  ======================
-      if (tutor.location == user.location) {
-        locationCount = 0.175;
-      }
-
-      if (tutor.address == user.address) {
-        addressCount = 0.175;
-      }
-
-      // =============================== Session type ================================
-      if (locationCount == 0.175) {
-        if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
-            tutor.isOnlineLesson) {
-          sessionTypeCount += 0.058;
-        } // we want to show the tutors in same city only , if not they give online lessons
-        if ((tutor.isStudentHomeLesson == user.isStudentHomeLesson) &&
-            tutor.isStudentHomeLesson) {
-          sessionTypeCount += 0.058;
+      if (subjectCount != 0.0) {
+        // at least one subject has to match
+        // =============================== Location/City, Address/Area  ======================
+        if (tutor.location == user.location) {
+          locationCount = 0.175;
         }
-        if ((tutor.isTutorHomeLesson == user.isTutorHomeLesson) &&
-            tutor.isTutorHomeLesson) {
-          sessionTypeCount += 0.058;
+
+        if (tutor.address == user.address) {
+          addressCount = 0.175;
         }
-      } else {
-        if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
-            tutor.isOnlineLesson) {
-          sessionTypeCount = 0.058;
+
+        // =============================== Session type ================================
+        if (locationCount == 0.175) {
+          if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
+              tutor.isOnlineLesson) {
+            sessionTypeCount += 0.058;
+          } // we want to show the tutors in same city only , if not they give online lessons
+          if ((tutor.isStudentHomeLesson == user.isStudentHomeLesson) &&
+              tutor.isStudentHomeLesson) {
+            sessionTypeCount += 0.058;
+          }
+          if ((tutor.isTutorHomeLesson == user.isTutorHomeLesson) &&
+              tutor.isTutorHomeLesson) {
+            sessionTypeCount += 0.058;
+          }
+        } else {
+          if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
+              tutor.isOnlineLesson) {
+            sessionTypeCount = 0.058;
+          }
         }
-      }
 
-      // =============================== Price =================================
-      // minimum price rates for the current tutor
+        // =============================== Price =================================
+        // minimum price rates for the current tutor
 
-      var userPriceList = [
-        int.parse(user.onlineLessonPrice == '' ? '0' : user.onlineLessonPrice),
-        int.parse(user.studentsHomeLessonPrice == ''
-            ? '0'
-            : user.studentsHomeLessonPrice),
-        int.parse(
-            user.tutorsHomeLessonPrice == '' ? '0' : user.tutorsHomeLessonPrice)
-      ];
-      // excluding (0)
-      userPriceList.removeWhere((element) => element == 0);
+        var userPriceList = [
+          int.parse(
+              user.onlineLessonPrice == '' ? '0' : user.onlineLessonPrice),
+          int.parse(user.studentsHomeLessonPrice == ''
+              ? '0'
+              : user.studentsHomeLessonPrice),
+          int.parse(user.tutorsHomeLessonPrice == ''
+              ? '0'
+              : user.tutorsHomeLessonPrice)
+        ];
+        // excluding (0)
+        userPriceList.removeWhere((element) => element == 0);
 
-      // minimum price rates of compared tutor
-      var tutorPriceList = [
-        int.parse(
-            tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
-        int.parse(tutor.studentsHomeLessonPrice == ''
-            ? '0'
-            : tutor.studentsHomeLessonPrice),
-        int.parse(tutor.tutorsHomeLessonPrice == ''
-            ? '0'
-            : tutor.tutorsHomeLessonPrice)
-      ];
-      // excluding (0)
-      tutorPriceList.removeWhere((element) => element == 0);
+        // minimum price rates of compared tutor
+        var tutorPriceList = [
+          int.parse(
+              tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
+          int.parse(tutor.studentsHomeLessonPrice == ''
+              ? '0'
+              : tutor.studentsHomeLessonPrice),
+          int.parse(tutor.tutorsHomeLessonPrice == ''
+              ? '0'
+              : tutor.tutorsHomeLessonPrice)
+        ];
+        // excluding (0)
+        tutorPriceList.removeWhere((element) => element == 0);
 
-      // matching minimum price rates
-      if (userPriceList.length > 0 && tutorPriceList.length > 0) {
-        if (userPriceList.reduce(min) == tutorPriceList.reduce(min)) {
-          priceCount = 0.175;
+        // matching minimum price rates
+        if (userPriceList.length > 0 && tutorPriceList.length > 0) {
+          if (userPriceList.reduce(min) == tutorPriceList.reduce(min)) {
+            priceCount = 0.175;
+          }
         }
-      }
 
-      // =============================== Cosine Similarity =========================
-      // Levels list
-      List<double> currentTutor = [0.3, 0.175, 0.175, 0.175, 0.175]; //Vector1
-      List<double> iterationTutor = [
-        subjectCount,
-        locationCount,
-        addressCount,
-        sessionTypeCount,
-        priceCount,
-      ]; // Vector2
+        // =============================== Cosine Similarity =========================
+        // Levels list
+        List<double> currentTutor = [0.3, 0.175, 0.175, 0.175, 0.175]; //Vector1
+        List<double> iterationTutor = [
+          subjectCount,
+          locationCount,
+          addressCount,
+          sessionTypeCount,
+          priceCount,
+        ]; // Vector2
 
-      // Cosine Similarity algorithm
-      cosineSimilarity = await cosineAlgorithm(
-          currentTutor, iterationTutor); // sending cs param
+        // Cosine Similarity algorithm
+        cosineSimilarity = await cosineAlgorithm(
+            currentTutor, iterationTutor); // sending cs param
 
-      print(
-          "UserName is: ${tutor.username} - and - CosineSimilarity is: $cosineSimilarity"); // Testing similarty for each tutor
+        print(
+            "UserName is: ${tutor.username} - and - CosineSimilarity is: $cosineSimilarity"); // Testing similarty for each tutor
 
-      // unsorted array
-      temp.add({
-        'cosineSimilarity': cosineSimilarity,
-        'tutor': tutor,
-      });
-    }
+        // unsorted array
+        temp.add({
+          'cosineSimilarity': cosineSimilarity,
+          'tutor': tutor,
+        });
+      } 
+    } //loop ends 
     // sorting based on Similarity Level
     //https://api.flutter.dev/flutter/dart-core/List/sort.html
-    temp.sort((b, a) => a['cosineSimilarity'].compareTo(b['cosineSimilarity'])); // sorting is from most similar (max similarty (1)) to less similar (0)
+    temp.sort((b, a) => a['cosineSimilarity'].compareTo(b[
+        'cosineSimilarity'])); // sorting is from most similar (max similarty (1)) to less similar (0)
 
     // Returning top 5 most similar tutors
     return temp.take(5);
@@ -383,10 +392,10 @@ class FirestoreHelper {
   }
 
   // ===============================================
-  //  Booking Lessons 
+  //  Booking Lessons
   // ===============================================
 
-  static Future<Appointment> bookAppointment(Appointment appointment) async {
+ static Future<Appointment> bookAppointment(Appointment appointment) async {
     await db.collection('appointments').add({
       'tutorId': appointment.tutorId,
       'tutorName': appointment.tutorName,
@@ -481,3 +490,4 @@ class FirestoreHelper {
     return value.docs.isEmpty;
   }
 }
+

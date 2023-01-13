@@ -479,14 +479,30 @@ class _BookAppointmentState extends State<BookAppointment> {
       int e = int.parse(date.endTime.split(':')[0]);
       int counter = e - s;
       for (var i = 0; i < counter.abs(); i++) {
-        isAppointmentExist(
-          {
-            'start': (s + i).toString() + ':00',
-            'end': ((s + i) + 1).toString() + ':00'
-          },
-          tasks[selectedDateIndex].day,
-          userData.userId,
-        );
+        var d = tasks[selectedDateIndex].day.split('-');
+        if (int.parse(d[0]) == DateTime.now().year &&
+            int.parse(d[1]) == DateTime.now().month &&
+            int.parse(d[2]) == DateTime.now().day) {
+          if (((s + i) + 1) > DateTime.now().hour) {
+            isAppointmentExist(
+              {
+                'start': (s + i).toString() + ':00',
+                'end': ((s + i) + 1).toString() + ':00'
+              },
+              tasks[selectedDateIndex].day,
+              userData.userId,
+            );
+          }
+        } else {
+          isAppointmentExist(
+            {
+              'start': (s + i).toString() + ':00',
+              'end': ((s + i) + 1).toString() + ':00'
+            },
+            tasks[selectedDateIndex].day,
+            userData.userId,
+          );
+        }
       }
     }
     if (mounted) setState(() {});
