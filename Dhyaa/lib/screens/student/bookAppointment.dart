@@ -456,6 +456,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   bool isChecking = false;
+  
   isAppointmentExist(timeObj, date, tutorId) {
     isChecking = true;
     if (mounted) setState(() {});

@@ -200,10 +200,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
       showToast('تأكد من إدخال السعر بشكل صحيح');
       allValid = false;
     } //else if (bio.text.isEmpty && type == 'Tutor') {
-     // showToast(' المدخل غير صحيح');
-     // allValid = false;
-    //} 
-  else {
+    // showToast(' المدخل غير صحيح');
+    // allValid = false;
+    //}
+    else {
       allValid = true;
     }
     if (mounted) setState(() {});
@@ -478,43 +478,37 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           child: DropdownSearch<String>.multiSelection(
                             items: subjects,
                             selectedItems: values,
-                            popupProps: PopupPropsMultiSelection.menu(
-                              showSelectedItems: true,
-                              disabledItemFn: (String s) => s.startsWith('I'),
-                            ),
                             onChanged: (value) {
                               values = value;
                               degree.text = jsonEncode(values);
                               if (mounted) setState(() {});
                             },
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 4,
-                                  vertical: screenWidth * 2,
+                            dropdownSearchDecoration: InputDecoration(
+                              isDense: true,
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 4,
+                                vertical: screenWidth * 2,
+                              ),
+                              hintStyle: textStyle(
+                                  screenWidth * 3.3, theme.lightTextColor),
+                              hintText: 'إضافة مادة أخرى',
+                              filled: true,
+                              fillColor: Colors.white24,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(screenWidth * 200),
+                                borderSide: BorderSide(
+                                  width: .3,
+                                  color: theme.lightTextColor,
                                 ),
-                                hintStyle: textStyle(
-                                    screenWidth * 3.3, theme.lightTextColor),
-                                hintText: 'إضافة مادة أخرى',
-                                filled: true,
-                                fillColor: Colors.white24,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(screenWidth * 200),
-                                  borderSide: BorderSide(
-                                    width: .3,
-                                    color: theme.lightTextColor,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(screenWidth * 200),
-                                  borderSide: BorderSide(
-                                    width: .6,
-                                    color: theme.yellowColor,
-                                  ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.circular(screenWidth * 200),
+                                borderSide: BorderSide(
+                                  width: .6,
+                                  color: theme.yellowColor,
                                 ),
                               ),
                             ),

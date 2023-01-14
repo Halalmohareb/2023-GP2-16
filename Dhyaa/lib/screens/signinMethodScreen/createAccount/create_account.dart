@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:Dhyaa/_helper/areas.dart';
 import 'package:Dhyaa/_helper/cities.dart';
 import 'package:Dhyaa/_helper/subject.dart';
-import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart'
     show Fluttertoast, Toast, ToastGravity;
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:material_tag_editor/tag_editor.dart';
 import 'package:provider/provider.dart';
 import 'package:Dhyaa/globalWidgets/appbars/appbar1.dart';
 import 'package:Dhyaa/globalWidgets/common_functions/common_function.dart';
@@ -335,7 +333,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               controller: authProvider.tutorUsername,
               onChanged: (value) {
                 setState(() {
-                  if (//!authProvider.tutorUsername.text.contains(' ') &&
+                  if ( //!authProvider.tutorUsername.text.contains(' ') &&
                       authProvider.tutorUsername.text.isNotEmpty) {
                     tutorUsernameValid = true;
                     tutorErrorTextUsername = '';
@@ -355,9 +353,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   } else {
                     tutorErrorTextUsername = 'اسم المستخدم غير صحيح';
                     //if (authProvider.tutorUsername.text.contains(' ')) {
-                     // tutorErrorTextUsername =
-                        //  'اسم المستخدم يجب أن لايحتوي على مسافات';
-                   // }
+                    // tutorErrorTextUsername =
+                    //  'اسم المستخدم يجب أن لايحتوي على مسافات';
+                    // }
                     tutorUsernameValid = false;
                     tutorAllFieldsValid = false;
                   }
@@ -701,10 +699,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             width: double.infinity,
             child: DropdownSearch<String>.multiSelection(
               items: subjects,
-              popupProps: PopupPropsMultiSelection.menu(
-                showSelectedItems: true,
-                disabledItemFn: (String s) => s.startsWith('I'),
-              ),
               onChanged: (value) {
                 values = value;
                 if (values.isNotEmpty) {
@@ -731,33 +725,30 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 }
                 if (mounted) setState(() {});
               },
-              dropdownDecoratorProps: DropDownDecoratorProps(
-                dropdownSearchDecoration: InputDecoration(
-                  isDense: true,
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 4,
-                    vertical: screenWidth * 2,
+              dropdownSearchDecoration: InputDecoration(
+                isDense: true,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 4,
+                  vertical: screenWidth * 2,
+                ),
+                hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
+                hintText: 'إضافة مادة ',
+                filled: true,
+                fillColor: Colors.white24,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderSide: BorderSide(
+                    width: .3,
+                    color: theme.lightTextColor,
                   ),
-                  hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
-                  hintText: 'إضافة مادة ',
-                  filled: true,
-                  fillColor: Colors.white24,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
-                    borderSide: BorderSide(
-                      width: .3,
-                      color: theme.lightTextColor,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
-                    borderSide: BorderSide(
-                      width: .6,
-                      color: !tutorDegreeValid
-                          ? theme.redColor
-                          : theme.yellowColor,
-                    ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderSide: BorderSide(
+                    width: .6,
+                    color:
+                        !tutorDegreeValid ? theme.redColor : theme.yellowColor,
                   ),
                 ),
               ),
@@ -1137,8 +1128,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             tutorAllFieldsValid = true;
                           }
                         } else {
-                          tutorErrorTextOnlineLessonPrice =
-                              ' المدخل غير صحيح';
+                          tutorErrorTextOnlineLessonPrice = ' المدخل غير صحيح';
                           onlineLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         }
@@ -1146,8 +1136,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         if (!authProvider.isOnlineLesson &&
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
-                          tutorErrorTextOnlineLessonPrice =
-                              ' المدخل غير صحيح';
+                          tutorErrorTextOnlineLessonPrice = ' المدخل غير صحيح';
                           onlineLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1405,8 +1394,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         if (!authProvider.isOnlineLesson &&
                             !authProvider.isStudentHomeLesson &&
                             !authProvider.isTutorHomeLesson) {
-                          tutorErrorTextOnlineLessonPrice =
-                              ' المدخل غير صحيح';
+                          tutorErrorTextOnlineLessonPrice = ' المدخل غير صحيح';
                           tutorsHomeLessonPriceValid = false;
                           tutorAllFieldsValid = false;
                         } else {
@@ -1561,13 +1549,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   }
                 } else {
                   studentErrorTextUserName = 'اسم المستخدم المدخل غير صحيح';
-                 /* if (authProvider.studentUserName.text.contains(' ')) {
+                  /* if (authProvider.studentUserName.text.contains(' ')) {
                     studentErrorTextUserName =
                         'اسم المستخدم يجب أن لايحتوي على مسافات';
-                  }*/ 
+                  }*/
                   studentUsernameValid = false;
                   studentAllFieldsValid = false;
-               }
+                }
               });
             },
             style: textStyle(screenWidth * 3.7, theme.blueColor),

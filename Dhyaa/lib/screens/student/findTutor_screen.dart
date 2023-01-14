@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:Dhyaa/_helper/subject.dart';
 import 'package:Dhyaa/screens/student/filter_options.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:Dhyaa/constant.dart';
@@ -20,7 +23,8 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
   UserData emptyTutor = emptyUserData;
   List<UserData> tutors = [];
   List<UserData> foundUsers = [];
-  List<UserData> tutorList = [];
+  List<UserData> filterTutors = [];
+  List<UserData> searchTutorList = [];
 
   @override
   void initState() {
@@ -30,7 +34,8 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
     FirestoreHelper.getTopTutors().then((value) {
       tutors = value;
       foundUsers = value;
-      tutorList = foundUsers;
+      filterTutors = value;
+      searchTutorList = value;
       if (mounted) setState(() {});
     });
     super.initState();
@@ -85,16 +90,19 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: TextFormField(
-                                controller: searchTextController,
-                                onChanged: (value) => _runFilter(value),
-                                textDirection: TextDirection.rtl,
-                                decoration: InputDecoration(
+                              child: DropdownSearch<String>(
+                                mode: Mode.BOTTOM_SHEET,
+                                showSearchBox: true,
+                                showClearButton: true,
+                                items: subjects,
+                                dropdownSearchDecoration: InputDecoration(
                                   isDense: true,
                                   border: InputBorder.none,
                                   hintText: 'ابحث عن مادة...',
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 5),
+                                    vertical: 10,
+                                    horizontal: 5,
+                                  ),
                                   hintTextDirection: TextDirection.rtl,
                                   prefixIcon: IconButton(
                                     onPressed: () {
@@ -105,11 +113,13 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                               FilterOptions(
                                             tutorList: foundUsers,
                                             onChange: (val) {
-                                              tutorList = val;
+                                              filterTutors = val;
+                                              searchTutorList = val;
                                               if (mounted) setState(() {});
                                             },
                                             onRest: (value) {
-                                              tutorList = foundUsers;
+                                              filterTutors = foundUsers;
+                                              searchTutorList = foundUsers;
                                               if (mounted) setState(() {});
                                             },
                                           ),
@@ -122,6 +132,21 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                     ),
                                   ),
                                 ),
+                                onChanged: (value) {
+                                  if (value == null) {
+                                    searchTutorList = filterTutors;
+                                  } else {
+                                    List<UserData> temp = [];
+                                    for (var item in filterTutors) {
+                                      List arr = jsonDecode(item.degree);
+                                      if (arr.contains(value)) {
+                                        temp.add(item);
+                                      }
+                                    }
+                                    searchTutorList = temp;
+                                  }
+                                  if (mounted) setState(() {});
+                                },
                               ),
                             ),
                             Container(
@@ -159,7 +184,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                         color: kBlueColor,
                       ),
                       SizedBox(height: 10),
-                      tutorList.length == 0
+                      searchTutorList.length == 0
                           ? Center(
                               child: Container(
                                 height: 270,
@@ -188,10 +213,10 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                           : ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: tutorList.length,
+                              itemCount: searchTutorList.length,
                               itemBuilder: (context, index) {
                                 return TutorCardWidget(
-                                  tutor: tutorList[index],
+                                  tutor: searchTutorList[index],
                                 );
                               },
                             ),
