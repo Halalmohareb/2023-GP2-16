@@ -222,28 +222,33 @@ class AuthProvider extends ChangeNotifier {
       print(userData["type"]);
       print(type);
       print('lll');
-
-      if (userData["type"] == type) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('type', type);
-        await prefs.setString('user', email);
-        print(prefs.getString('type'));
-        print(prefs.getString('user'));
-        if (type == "Student") {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => StudentHomepage(),
-              ),
-              (Route<dynamic> route) => false);
-        } else if (type == "Tutor") {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => TutorHomepage(),
-              ),
-              (Route<dynamic> route) => false);
+      
+      if (userData["active_status"] == "unsuspended") {
+        if (userData["type"] == type) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('type', type);
+          await prefs.setString('user', email);
+          print(prefs.getString('type'));
+          print(prefs.getString('user'));
+          if (type == "Student") {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => StudentHomepage(),
+                ),
+                (Route<dynamic> route) => false);
+          } else if (type == "Tutor") {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => TutorHomepage(),
+                ),
+                (Route<dynamic> route) => false);
+          }
+        } else {
+          showToast("نوع المستخدم غير صحيح", isSuccess: false);
         }
       } else {
-        showToast("نوع المستخدم غير صحيح", isSuccess: false);
+         showToast("حسابك متوقف", isSuccess: false);
+
       }
 
       isLoading = false;
@@ -258,6 +263,8 @@ class AuthProvider extends ChangeNotifier {
       print(e.message);
       if (e.code == "user-not-found") {
         showToast("لم يتم العثور على المستخدم", isSuccess: false);
+      } else if (e.code == "suspended") {
+        showToast("", isSuccess: false);
       } else {
         showToast("تأكد من إدخال كلمة المرور صحيحة");
       }
@@ -513,7 +520,7 @@ class AuthProvider extends ChangeNotifier {
     return data;
   }
 
-  //get user by username
+  //get user by username // do we still need it ?
   Future<List<DocumentSnapshot>> doesUserNameAlreadyExist(
       String username, collection) async {
     final QuerySnapshot result = await db
