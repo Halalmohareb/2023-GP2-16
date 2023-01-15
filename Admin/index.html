@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <title>Firebase</title>
+  </head>
+  <body>
+  <script>
+      if(!sessionStorage.getItem('is_logged_in')){
+          window.location.assign("login.html");
+      }
+  </script>
+  <div class="container"  style="margin-top:20px;">
+    <div class="row mt-5">
+      <div class="col-md-9">
+        <h2 class="text-left">ادراة المستخدمين</h2>
+      </div>
+      <div class="col-md-3">
+        <button type="button" class="btn btn-danger logout_btn" style="margin-top:20px;">تسجيل الخروج</button>
+      </div>
+    </div>
+    <ul class="nav nav-pills nav-justified"  style="margin-top:20px;">
+      <li class="active"><a data-toggle="pill" href="#tutors">ءمعلمين ضيا</a></li>
+      <li><a data-toggle="pill" href="#students">ءطلاب ضيا</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="tutors" class="tab-pane fade in active">
+        <table class="table table-hover" style="margin-top: 20px;">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">اسم المستخدم</th>
+            <th scope="col">الحالة</th>
+            <th scope="col">الاجراء</th>
+          </tr>
+          </thead>
+          <tbody id="t_records">
+          </tbody>
+        </table>
+      </div>
+      <div id="students" class="tab-pane fade">
+        <table class="table table-hover" style="margin-top: 20px;">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ماسم المستخد</th>
+            <th scope="col">الحالة</th>
+            <th scope="col">الاجراء</th>
+          </tr>
+          </thead>
+          <tbody id="s_records">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+    <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>-->
+    <!--<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>-->
+
+
+
+
+  <script type="module">
+      // Import the functions needed from the SDKs
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+      import { getFirestore, doc, updateDoc, getDocs, collection  } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      //  web app's Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyCIOE8npA7gk-1QzUcsMi2OhbZFUyV1AQw",
+          authDomain: "dhyaa-application-87f85.firebaseapp.com",
+          databaseURL: "https://dhyaa-application-87f85-default-rtdb.firebaseio.com",
+          projectId: "dhyaa-application-87f85",
+          storageBucket: "dhyaa-application-87f85.appspot.com",
+          messagingSenderId: "143138479208",
+          appId: "1:143138479208:web:914a26a824c6edbcaf6fdd"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      const db = getFirestore(app); // initialize Firestore
+
+      const colRef = collection(db, "Users");
+
+      const docsSnap = await getDocs(colRef);
+
+      $("#t_records").html('');
+      var t_count = 1;
+      var s_count = 1;
+
+      docsSnap.forEach(row => {
+          var username = row.data().username;
+          var current_status = row.data().active_status;
+          var action_btn = '';
+          action_btn = '<button type="button" class="btn btn-danger sus_btn" data-user_id="'+row.id+'">ايقاف المستخدم</button>';
+          if (row.data().active_status){
+              if (row.data().active_status == 'suspended'){
+                  action_btn = '<button type="button" class="btn btn-primary unsus_btn" data-user_id="'+row.id+'">تفعيل المستخدم</button>';
+              }
+          } else{
+              const docRef = doc(db, "Users", row.id);
+
+              const data = {
+                  active_status: "unsuspended"
+              };
+
+              updateDoc(docRef, data)
+                  .then(docRef => {
+                      console.log("A New Document Field has been added to an existing document");
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  })
+              current_status = "unsuspended";
+          }
+          if (row.data().type == 'Tutor'){
+              $('#t_records').append('<tr></tr><th>'+t_count+'</th>\n' +
+                  '            <td>'+username+'</td>\n' +
+                  '            <td>'+current_status+'</td>\n' +
+                  '            <td>'+action_btn+'</td></tr>');
+              t_count++;
+          } else{
+              $('#s_records').append('<tr></tr><th>'+s_count+'</th>\n' +
+                  '            <td>'+username+'</td>\n' +
+                  '            <td>'+current_status+'</td>\n' +
+                  '            <td>'+action_btn+'</td></tr>');
+              s_count++;
+          }
+
+      });
+
+      $(".sus_btn").on('click',function () {
+          $('.btn').attr('disabled',true);
+          $(this).text("Please Wait");
+          var user_id = $(this).data('user_id');
+          const docRef = doc(db, "Users", user_id);
+
+          const data = {
+              active_status: "suspended"
+          };
+
+          updateDoc(docRef, data)
+              .then(docRef => {
+                  window.location.reload();
+              })
+              .catch(error => {
+                  console.log(error);
+              })
+      });
+
+
+
+      $(".unsus_btn").on('click',function () {
+          $('.btn').attr('disabled',true);
+          $(this).text("Please Wait");
+          var user_id = $(this).data('user_id');
+          const docRef = doc(db, "Users", user_id);
+
+          const data = {
+              active_status: "unsuspended"
+          };
+
+          updateDoc(docRef, data)
+              .then(docRef => {
+                  window.location.reload();
+              })
+              .catch(error => {
+                  console.log(error);
+              })
+      });
+
+      $('.logout_btn').on('click',function () {
+          sessionStorage.removeItem('is_logged_in');
+          window.location.assign("login.html");
+      });
+
+  </script>
+
+
+
+
+  </body>
+</html>
