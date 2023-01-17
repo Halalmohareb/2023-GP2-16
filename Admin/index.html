@@ -20,15 +20,15 @@
   <div class="container"  style="margin-top:20px;">
     <div class="row mt-5">
       <div class="col-md-9">
-        <h2 class="text-left">ادراة المستخدمين</h2>
+        <h2 class="text-left">إدارة المستخدمين</h2>
       </div>
       <div class="col-md-3">
         <button type="button" class="btn btn-danger logout_btn" style="margin-top:20px;">تسجيل الخروج</button>
       </div>
     </div>
     <ul class="nav nav-pills nav-justified"  style="margin-top:20px;">
-      <li class="active"><a data-toggle="pill" href="#tutors">ءمعلمين ضيا</a></li>
-      <li><a data-toggle="pill" href="#students">ءطلاب ضيا</a></li>
+      <li class="active"><a data-toggle="pill" href="#tutors">معلمين</a></li>
+      <li><a data-toggle="pill" href="#students">طلاب</a></li>
     </ul>
 
     <div class="tab-content">
@@ -38,6 +38,7 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">اسم المستخدم</th>
+            <th scope="col">email</th>
             <th scope="col">الحالة</th>
             <th scope="col">الاجراء</th>
           </tr>
@@ -51,7 +52,8 @@
           <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">ماسم المستخد</th>
+            <th scope="col">اسم المستخدم</th>
+            <th scope="col">email</th>
             <th scope="col">الحالة</th>
             <th scope="col">الاجراء</th>
           </tr>
@@ -103,6 +105,7 @@
 
       docsSnap.forEach(row => {
           var username = row.data().username;
+          var email = row.data().email;
           var current_status = row.data().active_status;
           var action_btn = '';
           action_btn = '<button type="button" class="btn btn-danger sus_btn" data-user_id="'+row.id+'">ايقاف المستخدم</button>';
@@ -129,12 +132,14 @@
           if (row.data().type == 'Tutor'){
               $('#t_records').append('<tr></tr><th>'+t_count+'</th>\n' +
                   '            <td>'+username+'</td>\n' +
+                  '            <td>'+email+'</td>\n' +
                   '            <td>'+current_status+'</td>\n' +
                   '            <td>'+action_btn+'</td></tr>');
               t_count++;
           } else{
               $('#s_records').append('<tr></tr><th>'+s_count+'</th>\n' +
                   '            <td>'+username+'</td>\n' +
+                  '            <td>'+email+'</td>\n' +
                   '            <td>'+current_status+'</td>\n' +
                   '            <td>'+action_btn+'</td></tr>');
               s_count++;
