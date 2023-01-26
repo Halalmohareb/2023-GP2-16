@@ -20,13 +20,13 @@
   <div class="container"  style="margin-top:20px;">
     <div class="row mt-5">
       <div class="col-md-9">
-        <h2 class="text-left">إدارة المستخدمين</h2>
+        <h2 class="text-left">ادراة المستخدمين</h2>
       </div>
       <div class="col-md-3">
         <button type="button" class="btn btn-danger logout_btn" style="margin-top:20px;">تسجيل الخروج</button>
       </div>
     </div>
-    <ul class="nav nav-pills nav-justified"  style="margin-top:20px;">
+    <ul class="nav nav-pills nav-justified"  style="margin-top:20px; border:2px solid black">
       <li class="active"><a data-toggle="pill" href="#tutors">معلمين</a></li>
       <li><a data-toggle="pill" href="#students">طلاب</a></li>
     </ul>
@@ -39,6 +39,8 @@
             <th scope="col">#</th>
             <th scope="col">اسم المستخدم</th>
             <th scope="col">email</th>
+            <th scope="col">اخر تحديث</th>
+            <th scope="col">السبب</th>
             <th scope="col">الحالة</th>
             <th scope="col">الاجراء</th>
           </tr>
@@ -52,8 +54,10 @@
           <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">اسم المستخدم</th>
+            <th scope="col">ماسم المستخد</th>
             <th scope="col">email</th>
+            <th scope="col">اخر تحديث</th>
+            <th scope="col">السبب</th>
             <th scope="col">الحالة</th>
             <th scope="col">الاجراء</th>
           </tr>
@@ -104,14 +108,20 @@
       var s_count = 1;
 
       docsSnap.forEach(row => {
+        var options = {  year: 'numeric', month: 'long', day: 'numeric' };
+        var today  = new Date();
+        var current_updated_at = today.toLocaleString("en-US");
           var username = row.data().username;
           var email = row.data().email;
           var current_status = row.data().active_status;
+          var status_reason = row.data().status_reason;
+          var updated_at = row.data().updated_at;
           var action_btn = '';
-          action_btn = '<button type="button" class="btn btn-danger sus_btn" data-user_id="'+row.id+'">ايقاف المستخدم</button>';
+          action_btn = '<select class="form-select form-select-lg change_status" style="font-size:16px" data-user_id="'+row.id+'" aria-label="Default select example"> <option selected>Suspend ( Select Reason )</option> <option value="did not attend a class">did not attend a class</option> <option value="reported">reported</option> <option value="inappropriate behavior or use of words">inappropriate behavior or use of words</option> <option value="else">else</option> </select>';
+                  
           if (row.data().active_status){
               if (row.data().active_status == 'suspended'){
-                  action_btn = '<button type="button" class="btn btn-primary unsus_btn" data-user_id="'+row.id+'">تفعيل المستخدم</button>';
+                  action_btn = '<button type="button" class="btn btn-primary unsus_btn" data-user_id="'+row.id+'">unsuspended</button>';
               }
           } else{
               const docRef = doc(db, "Users", row.id);
@@ -129,10 +139,46 @@
                   })
               current_status = "unsuspended";
           }
+          if (row.data().updated_at) {
+          }else{
+            const docRef = doc(db, "Users", row.id);
+
+              const data = {
+                  updated_at : current_updated_at
+              };
+
+              updateDoc(docRef, data)
+                  .then(docRef => {
+                      console.log("A New Document Field has been added to an existing document");
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  })
+              updated_at = current_updated_at;
+          }
+          if (row.data().status_reason) {
+          }else{
+              const docRef = doc(db, "Users", row.id);
+
+              const data = {
+                  status_reason : ""
+              };
+
+              updateDoc(docRef, data)
+                  .then(docRef => {
+                      console.log("A New Document Field has been added to an existing document");
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  })
+              status_reason = "";
+          }
           if (row.data().type == 'Tutor'){
               $('#t_records').append('<tr></tr><th>'+t_count+'</th>\n' +
                   '            <td>'+username+'</td>\n' +
                   '            <td>'+email+'</td>\n' +
+                  '            <td>'+updated_at+'</td>\n' +
+                  '            <td>'+status_reason+'</td>\n' +
                   '            <td>'+current_status+'</td>\n' +
                   '            <td>'+action_btn+'</td></tr>');
               t_count++;
@@ -140,6 +186,8 @@
               $('#s_records').append('<tr></tr><th>'+s_count+'</th>\n' +
                   '            <td>'+username+'</td>\n' +
                   '            <td>'+email+'</td>\n' +
+                  '            <td>'+updated_at+'</td>\n' +
+                  '            <td>'+status_reason+'</td>\n' +
                   '            <td>'+current_status+'</td>\n' +
                   '            <td>'+action_btn+'</td></tr>');
               s_count++;
@@ -172,10 +220,37 @@
           $('.btn').attr('disabled',true);
           $(this).text("Please Wait");
           var user_id = $(this).data('user_id');
+          var today  = new Date();
+          var current_updated_at = today.toLocaleString("en-US");
           const docRef = doc(db, "Users", user_id);
 
           const data = {
-              active_status: "unsuspended"
+              active_status: "unsuspended",
+              status_reason : "",
+              updated_at : current_updated_at
+          };
+
+          updateDoc(docRef, data)
+              .then(docRef => {
+                  window.location.reload();
+              })
+              .catch(error => {
+                  console.log(error);
+              })
+      });
+
+      $('.change_status').on('change',function () {
+          $(this).attr('disabled',true);
+          var user_id = $(this).data('user_id');
+          var update_status = $(this).val();
+          var today  = new Date();
+          var current_updated_at = today.toLocaleString("en-US");
+          const docRef = doc(db, "Users", user_id);
+
+          const data = {
+              active_status: "suspended",
+              updated_at : current_updated_at,
+              status_reason : update_status
           };
 
           updateDoc(docRef, data)

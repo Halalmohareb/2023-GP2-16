@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,9 @@ import 'package:Dhyaa/screens/student/studentProfile_screen.dart';
 import 'package:Dhyaa/screens/tutor/tutorProfile_screen.dart';
 import 'package:Dhyaa/screens/update_profile.dart';
 import 'package:Dhyaa/theme/theme.dart';
+import 'package:Dhyaa/screens/contactPage.dart';
+
+import '../singlton.dart';
 
 class Menu extends StatefulWidget {
   final UserData userData;
@@ -20,16 +24,27 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   // Variables
   UserData userData = emptyUserData;
-
+String email = "";
   // Functions
   @override
   void initState() {
     userData = widget.userData;
     getUserData();
-
+    user();
     super.initState();
   }
+  user() async {
 
+    var document = await FirebaseFirestore.instance.collection('Users')
+        .doc((Singleton.instance.userId));
+    document.get().then((document) {
+      print("hiiiiiiiiiiiiiiiiii");
+      //print(document.data()!['numberOfRead']);
+      email = document.data()!['email'];
+      print(email);
+    });
+
+  }
   getUserData() {
     FirestoreHelper.getMyUserData().then((value) {
       userData = value;
@@ -130,7 +145,15 @@ class _MenuState extends State<Menu> {
                 shape: Border(),
                 title: Text('تواصل معنا'),
                 leading: Icon(Icons.call),
-                onTap: () {},
+                 onTap: () {
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+        builder: (BuildContext context) =>
+        contactPage(emil:email),
+        ),
+        );
+        },
               ),
               SizedBox(height: 30),
               Center(
