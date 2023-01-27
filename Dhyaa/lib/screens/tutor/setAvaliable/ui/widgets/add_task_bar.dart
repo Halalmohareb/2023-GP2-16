@@ -13,7 +13,8 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({Key? key}) : super(key: key);
+  const AddTaskPage({Key? key, required this.userdate}) : super(key: key);
+  final DateTime userdate;
 
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
@@ -23,19 +24,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final TaskController _taskController = Get.put(TaskController());
 
   DateTime _selectedDate = DateTime.now();
-  // String? _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
-  //int endday= DateFormat.MMMMEEEEd().format(DateTime.now()).indexOf(",");
   int _selectedColor = 0;
   String? _selectedTimeStart = "1:00";
   String? _selectedTimeEnd = "3:00";
   String? _selectedrepeatday = " مطلقا";
- // String? _selectedRepeat = DateTime.now().toString().substring(0,10);
   DateTime _selectedRepeat = DateTime.now();
-  // String? _selectedday = DateFormat.MMMMEEEEd().format(DateTime.now()).substring(0,DateFormat.MMMMEEEEd()
-  //  .format(DateTime.now()).indexOf(',')).toLowerCase();
   String? _selectedday = DateFormat.MMMMEEEEd().format(DateTime.now()).substring(0,DateFormat.MMMMEEEEd()
       .format(DateTime.now()).indexOf(',')).toLowerCase();
- // String? _selectedday =  repeatList[(repeatList1.indexOf(_selectedday!))];
+
+
   List<String> repeatList = [
     'الاحد',
     'الاثنين',
@@ -55,7 +52,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
     'friday',
     'saturday',
   ];
+
   final dateController = TextEditingController();
+   late List<int> timeList2 = [];
   List<String> timeList = [
     "1:00",
     "2:00",
@@ -86,7 +85,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
     "PM",
     "AM",
   ];
-
   List<String> repeatdayList = [
     'مطلقا',
    ' اسبوعين',
@@ -103,24 +101,38 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   DateTime days = DateTime.now();
   int day = DateTime.now().weekday;
-
-  // for (int i= 0; i<7;i++){
-  // print(today.add(Duration(days:i)));
-  // }
- //int repeatTime = repeattimeList[(repeatdayList.indexOf(_selectedrepeatday))];
   int repeatTime = 1;
+  int hour = DateTime.now().hour;
+  setHours(){
+    //.substring(0,(timeList2.indexOf(':')))
+    int j=0;
+    for(int i=hour; i<25 ; i++){
+      setState(() {
+        timeList2.add(i);
+       // print(timeList2[j]);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //Below shows the time like Sep 15, 2021
-    //print(new DateFormat.yMMMd().format(new DateTime.now()));
+
+    _selectedRepeat = widget.userdate;
+    day = widget.userdate.weekday;
+    _selectedday = DateFormat.MMMMEEEEd().format( _selectedRepeat!).substring(0,DateFormat.MMMMEEEEd()
+                              .format( _selectedRepeat).indexOf(',')).toLowerCase();
      print( "today");
      print(days.add(Duration(days:1)));
+    setHours();
+    // _selectedTimeStart = timeList2[0].toString()+":00";
+    // _selectedTimeEnd =timeList2[2].toString()+":00";
     final now = new DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, now.minute, now.second);
     final format = DateFormat.jm();
     print(format.format(dt));
     print("add Task date: " + DateFormat.yMd().format(_selectedDate));
-    // _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
+    // _selectedTimeStart = timeList2[0].toString()+":00";
+    // _selectedTimeEnd =timeList2[2].toString()+":00";
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -162,7 +174,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         widget: Row(
                           children: [
                             Container(
-                              child: DropdownButton<String>(
+                              child: DropdownButton<int>(
                                   dropdownColor: Colors.white,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
@@ -174,18 +186,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   underline: Container(
                                     height: 6,
                                   ),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (int? newValue) {
                                     print(newValue);
                                     setState(() {
-                                      _selectedTimeStart = newValue;
+                                      _selectedTimeStart = newValue.toString()+":00";
+                                      print(_selectedTimeStart);
                                     });
                                   },
-                                  items: timeList.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
+                                  items: timeList2.map<DropdownMenuItem<int>>(
+                                      (int value) {
+                                    return DropdownMenuItem<int>(
                                       value: value,
                                       child: Text(
-                                        value,
+                                        value.toString()+":00",
                                         style: const TextStyle(
                                             color: Colors.black54),
                                       ),
@@ -208,7 +221,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         widget: Row(
                           children: [
                             Container(
-                              child: DropdownButton<String>(
+                              child: DropdownButton<int>(
                                   dropdownColor: Colors.white,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
@@ -220,18 +233,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   underline: Container(
                                     height: 6,
                                   ),
-                                  onChanged: (String? newValue) {
+                                  onChanged: (int? newValue) {
                                     print(newValue);
                                     setState(() {
-                                      _selectedTimeEnd = newValue;
+                                      _selectedTimeEnd = newValue.toString()+":00";
+                                      print(_selectedTimeEnd);
                                     });
                                   },
-                                  items: timeList.map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
+                                  items: timeList2.map<DropdownMenuItem<int>>(
+                                      (int value) {
+                                    return DropdownMenuItem<int>(
                                       value: value,
                                       child: Text(
-                                        value,
+                                        value.toString()+":00",
                                         style: const TextStyle(
                                             color: Colors.black54),
                                       ),
@@ -285,70 +299,70 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   //     ],
                   //   ),
                   // ),
-      Container(
-        margin: const EdgeInsets.only(top: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              "اليوم",
-              style: titleTextStle,
-            ),
-        Container(
-          padding: const EdgeInsets.only(left: 14.0),
-          height: 52,
-
-          decoration: BoxDecoration(
-              border: Border.all(
-                width: 0.6,
-                color: Colors.grey,
-              ),
-              borderRadius: BorderRadius.circular(24)),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child:
-                  TextField(
-                   // textDirection:TextDirection.RTL,
-                    readOnly: true,
-                    controller: dateController,
-                    decoration: InputDecoration(
-                     // hintTextDirection:TextDirection.RTL,
-                    hintText:_selectedRepeat.toString().substring(0,10) ,
-                      icon: const Icon(
-                      Icons.calendar_month,
-                      color: Colors.black54,
-                        //  hintTextDirection:TextDirection.RTL,
-                    ),
-
-                    ),
-                    onTap: () async {
-                      var date =  await
-                      showDatePicker(
-                          context: context,
-                          initialDate:DateTime.now(),
-                          firstDate:DateTime.now(),
-                          lastDate: DateTime(2100),
-                          locale: Locale('ar', ''),
-
-                      );
-                      dateController.text = date.toString().substring(0,10);
-                     // _selectedRepeat = date.toString().substring(0,10);
-                      _selectedRepeat = date!;
-                      day = _selectedRepeat.weekday;
-                      print("it" );
-                      print(repeatTime);
-                      print(_selectedRepeat.weekday);
-                      setState(() {
-                        _selectedday = DateFormat.MMMMEEEEd().format( date!).substring(0,DateFormat.MMMMEEEEd()
-                            .format( date).indexOf(',')).toLowerCase();
-
-                      });
-
-                    },),),],),),],),),
+      // Container(
+      //   margin: const EdgeInsets.only(top: 16.0),
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.end,
+      //     mainAxisAlignment: MainAxisAlignment.end,
+      //     children: [
+      //       Text(
+      //         "اليوم",
+      //         style: titleTextStle,
+      //       ),
+      //   Container(
+      //     padding: const EdgeInsets.only(left: 14.0),
+      //     height: 52,
+      //
+      //     decoration: BoxDecoration(
+      //         border: Border.all(
+      //           width: 0.6,
+      //           color: Colors.grey,
+      //         ),
+      //         borderRadius: BorderRadius.circular(24)),
+      //     child: Row(
+      //       crossAxisAlignment: CrossAxisAlignment.end,
+      //       mainAxisAlignment: MainAxisAlignment.end,
+      //       children: [
+      //         Expanded(
+      //           child:
+      //             TextField(
+      //              // textDirection:TextDirection.RTL,
+      //               readOnly: true,
+      //               controller: dateController,
+      //               decoration: InputDecoration(
+      //                // hintTextDirection:TextDirection.RTL,
+      //               hintText:_selectedRepeat.toString().substring(0,10) ,
+      //                 icon: const Icon(
+      //                 Icons.calendar_month,
+      //                 color: Colors.black54,
+      //                   //  hintTextDirection:TextDirection.RTL,
+      //               ),
+      //
+      //               ),
+      //               onTap: () async {
+      //                 var date =  await
+      //                 showDatePicker(
+      //                     context: context,
+      //                     initialDate:DateTime.now(),
+      //                     firstDate:DateTime.now(),
+      //                     lastDate: DateTime(2100),
+      //                     locale: Locale('ar', ''),
+      //
+      //                 );
+      //                 dateController.text = date.toString().substring(0,10);
+      //                // _selectedRepeat = date.toString().substring(0,10);
+      //                 _selectedRepeat = date!;
+      //                 day = _selectedRepeat.weekday;
+      //                 print("it" );
+      //                 print(repeatTime);
+      //                 print(_selectedRepeat.weekday);
+      //                 setState(() {
+      //                   _selectedday = DateFormat.MMMMEEEEd().format( date!).substring(0,DateFormat.MMMMEEEEd()
+      //                       .format( date).indexOf(',')).toLowerCase();
+      //
+      //                 });
+      //
+      //               },),),],),),],),),
                   Row(children: [
                     Expanded (
                       child: InputField (
@@ -439,68 +453,128 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   _validateInputs() async {
-    //int repeatTime = repeattimeList[(repeatdayList.indexOf(_selectedrepeatday))];
+var isoklarger = false;
+var isokequal = false;
+var isoksameday = false;
+for (int i = 0; i < repeatTime; i++) {
+  if (i > 0) {
+    _selectedRepeat = _selectedRepeat.add(Duration(days: 1));
+    print(_selectedRepeat);
+  }
+  var sameDatExist = false;
+  if (day == _selectedRepeat.weekday) {
+    if (timeList.indexOf(_selectedTimeStart.toString()) >
+        timeList.indexOf(_selectedTimeEnd.toString())) {
+      isoklarger = true;
+      // _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+    } else {
+      if (timeList
+          .indexOf(_selectedTimeStart.toString())
+          .isEqual(timeList.indexOf(_selectedTimeEnd.toString()))) {
+        isokequal = true;
+        // _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+      } else {
+        await FirestoreHelper.getMyTasks().then((value) {
+          value.forEach((element) async {
+            if (element.startTime == _selectedTimeStart.toString() &&
+                element.endTime == _selectedTimeEnd.toString() &&
+                element.day == _selectedRepeat.toString().substring(0,10)) {
+              sameDatExist = true;
+              isoksameday = true;
+            } else {
+              //  (timeList.indexOf(_selectedTimeEnd.toString())
+              if ((timeList.indexOf(element.startTime)) <=
+                  (timeList.indexOf(_selectedTimeStart.toString())) &&
+                  (timeList.indexOf(element.endTime)) >=
+                      (timeList.indexOf(_selectedTimeEnd.toString())) &&
+                  element.day == _selectedRepeat.toString().substring(0,10)) {
+                sameDatExist = true;
+                isoksameday = true;
 
-    for (int i = 0; i < repeatTime; i++) {
-      //  print(_selectedRepeat.add(Duration(days: i)));
-      print("repeatTime");
-      print(repeatTime);
-      print(_selectedRepeat.weekday);
-      if (i > 0) {
-        _selectedRepeat = _selectedRepeat.add(Duration(days: 1));
-        print(_selectedRepeat);
+              } else {
+                //  sameDatExist = false;
+              }
+            }
+          });
+        });
       }
-      var sameDatExist = false;
-      if (day == _selectedRepeat.weekday) {
-        if (timeList.indexOf(_selectedTimeStart.toString()) >
-            timeList.indexOf(_selectedTimeEnd.toString())) {
-          _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
-        } else {
-          if (timeList
-              .indexOf(_selectedTimeStart.toString())
-              .isEqual(timeList.indexOf(_selectedTimeEnd.toString()))) {
-            _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+    }
+  }
+}
+if(isoklarger){
+  _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+}else {
+  if (isokequal) {
+    _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+  } else {
+    if (isoksameday) {
+      _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+    }else{
+      _selectedRepeat = widget.userdate;
+      for (int i = 0; i < repeatTime; i++) {
+        //  print(_selectedRepeat.add(Duration(days: i)));
+        print("repeatTime");
+        print(repeatTime);
+        print(_selectedRepeat.weekday);
+        if (i > 0) {
+          _selectedRepeat = _selectedRepeat.add(Duration(days: 1));
+          print(_selectedRepeat);
+        }
+        var sameDatExist = false;
+        if (day == _selectedRepeat.weekday) {
+          if (timeList.indexOf(_selectedTimeStart.toString()) >
+              timeList.indexOf(_selectedTimeEnd.toString())) {
+            _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
           } else {
-            await FirestoreHelper.getMyTasks().then((value) {
-              value.forEach((element) async {
-                if (element.startTime == _selectedTimeStart.toString() &&
-                    element.endTime == _selectedTimeEnd.toString() &&
-                    element.day == _selectedRepeat.toString().substring(0,10)) {
-                  sameDatExist = true;
-                } else {
-                  //  (timeList.indexOf(_selectedTimeEnd.toString())
-                  if ((timeList.indexOf(element.startTime)) <=
-                      (timeList.indexOf(_selectedTimeStart.toString())) &&
-                      (timeList.indexOf(element.endTime)) >=
-                          (timeList.indexOf(_selectedTimeEnd.toString())) &&
+            if (timeList
+                .indexOf(_selectedTimeStart.toString())
+                .isEqual(timeList.indexOf(_selectedTimeEnd.toString()))) {
+              _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+            } else {
+              await FirestoreHelper.getMyTasks().then((value) {
+                value.forEach((element) async {
+                  if (element.startTime == _selectedTimeStart.toString() &&
+                      element.endTime == _selectedTimeEnd.toString() &&
                       element.day == _selectedRepeat.toString().substring(0,10)) {
                     sameDatExist = true;
-                    // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-                    // Navigator.pop(context);
-
                   } else {
-                    //  sameDatExist = false;
-                  }
-                }
-              });
-            });
-            if (sameDatExist == true) {
-              _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              //   content: const Text('تمت اضافه الوقت مسبقا'),
-              // ));
+                    //  (timeList.indexOf(_selectedTimeEnd.toString())
+                    if ((timeList.indexOf(element.startTime)) <=
+                        (timeList.indexOf(_selectedTimeStart.toString())) &&
+                        (timeList.indexOf(element.endTime)) >=
+                            (timeList.indexOf(_selectedTimeEnd.toString())) &&
+                        element.day == _selectedRepeat.toString().substring(0,10)) {
+                      sameDatExist = true;
+                      // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+                      // Navigator.pop(context);
 
-            } else {
-              _addTaskToDB();
-              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              // content: const Text('Data updated successfully'),
-              // ));
-              // Navigator.pop(context);
+                    } else {
+                      //  sameDatExist = false;
+                    }
+                  }
+                });
+              });
+              if (sameDatExist == true) {
+                _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //   content: const Text('تمت اضافه الوقت مسبقا'),
+                // ));
+
+              } else {
+                _addTaskToDB();
+                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                // content: const Text('Data updated successfully'),
+                // ));
+                // Navigator.pop(context);
+              }
             }
           }
         }
       }
+      Navigator.pop(context);
     }
+  }
+}
   }
   _showBottomwarnning(BuildContext context, String massage) {
     Get.bottomSheet(
@@ -601,7 +675,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     //   content: const Text('Time edited Successfully.'),
     // ));
-    Navigator.pop(context);
+   // Navigator.pop(context);
   }
 
   //   var sameDatExist = false;
