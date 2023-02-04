@@ -222,7 +222,6 @@ class AuthProvider extends ChangeNotifier {
       print(userData["type"]);
       print(type);
       print('lll');
-      
       if (userData["active_status"] == "unsuspended") {
         if (userData["type"] == type) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -247,8 +246,7 @@ class AuthProvider extends ChangeNotifier {
           showToast("نوع المستخدم غير صحيح", isSuccess: false);
         }
       } else {
-         showToast("حسابك متوقف", isSuccess: false);
-
+        showToast("حسابك متوقف", isSuccess: false);
       }
 
       isLoading = false;
@@ -410,6 +408,7 @@ class AuthProvider extends ChangeNotifier {
           "studentsHomeLessonPrice": '',
           "tutorsHomeLessonPrice": '',
           "bio": '',
+          "active_status": 'unsuspended',
         }).then((value) {
           studentUserName.clear();
           studentEmail.clear();
@@ -440,6 +439,7 @@ class AuthProvider extends ChangeNotifier {
           "studentsHomeLessonPrice": studentsHomeLessonPrice.text,
           "tutorsHomeLessonPrice": tutorsHomeLessonPrice.text,
           "bio": '',
+          "active_status": 'unsuspended',
         }).then((value) {
           tutorUsername.clear();
           tutorEmail.clear();
@@ -520,7 +520,7 @@ class AuthProvider extends ChangeNotifier {
     return data;
   }
 
-  //get user by username // do we still need it ?
+  //get user by username //do we still need it ?
   Future<List<DocumentSnapshot>> doesUserNameAlreadyExist(
       String username, collection) async {
     final QuerySnapshot result = await db

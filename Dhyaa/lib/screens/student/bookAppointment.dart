@@ -37,18 +37,22 @@ class _BookAppointmentState extends State<BookAppointment> {
     userData = widget.userData;
     myUserData = widget.myUserData;
     selectedDegree = degreePipe().first;
-    FirestoreHelper.getTutorTasks(userData).then((value) {
+    getAvailability();
+    super.initState();
+  }
+
+  getAvailability() {
+    FirestoreHelper.getTutorTasks(userData).then((value) async {
       for (var task in value) {
-        var d = task.day.split('-');
-        DateTime _d =
-            DateTime(int.parse(d[0]), int.parse(d[1]), int.parse(d[2]));
-        bool isNotPassed =
-            _d.isAfter(DateTime.now().subtract(Duration(days: 1)));
-        if (isNotPassed) tasks.add(task);
+        var s = task.day.split('-');
+        DateTime d =
+            DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
+        bool isAfter = d.isAfter(DateTime.now());
+        if (isAfter) tasks.add(task);
       }
+      tasks.sort((Task a, Task b) => a.day.compareTo(b.day));
       if (mounted) setState(() {});
     });
-    super.initState();
   }
 
   List<String> degreePipe() {
@@ -106,8 +110,8 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   goNext() {
-    Appointment appointmentData = Appointment(
-        '', '', '', '', '', '', '', '', [], '', DateTime.now(), '', '');
+    Appointment appointmentData = Appointment('', '', '', '', '', '', '', '',
+        [], '', DateTime.now(), '', '', false, false);
     List time = [];
     for (var i in selectedTime) {
       time.add(session[i]);
@@ -456,7 +460,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   bool isChecking = false;
-  
+
   isAppointmentExist(timeObj, date, tutorId) {
     isChecking = true;
     if (mounted) setState(() {});
@@ -465,6 +469,7 @@ class _BookAppointmentState extends State<BookAppointment> {
       if (isAvailableForAppointment) {
         isChecking = false;
         session.add(timeObj);
+        session.sort((a, b) => a['start'].compareTo(b['start']));
         if (mounted) setState(() {});
       }
     });

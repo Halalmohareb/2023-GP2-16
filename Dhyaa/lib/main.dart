@@ -36,14 +36,12 @@ class MyApp extends StatelessWidget {
             SizeConfig().init(constraints, orientation);
             return ChangeNotifierProvider<AuthProvider>.value(
               value: authProvider,
-              // create: (context) => NavigationProvider(),
               child: Consumer<AuthProvider>(
                 builder: (context, value, child) {
                   return MultiProvider(
                     providers: [
                       ChangeNotifierProvider<AuthProvider>.value(
                           value: authProvider),
-                      // ChangeNotifierProvider<ApiBloc>.value(value: _apiBloc),
                     ],
                     child: GetMaterialApp(
                       localizationsDelegates: [
@@ -53,9 +51,6 @@ class MyApp extends StatelessWidget {
                         const Locale('en'),
                         const Locale('ar')
                       ],
-                      // useInheritedMediaQuery: true,
-                      // locale: DevicePreview.locale(context),
-                      // builder: DevicePreview.appBuilder,
                       debugShowCheckedModeBanner: false,
                       home: SplashScreen(),
                     ),

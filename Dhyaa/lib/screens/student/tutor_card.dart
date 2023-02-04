@@ -6,8 +6,14 @@ import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
 
 class TutorCardWidget extends StatefulWidget {
-  const TutorCardWidget({super.key, required this.tutor});
   final UserData tutor;
+  final String myUserId;
+  const TutorCardWidget({
+    super.key,
+    required this.tutor,
+    required this.myUserId,
+  });
+
   @override
   State<TutorCardWidget> createState() => _TutorCardWidgetState();
 }
@@ -100,6 +106,7 @@ class _TutorCardWidgetState extends State<TutorCardWidget> {
                           MaterialPageRoute(
                             builder: (context) => ShowTutorProfilePage(
                               userData: widget.tutor,
+                              myUserId: widget.myUserId,
                             ),
                           ),
                         );

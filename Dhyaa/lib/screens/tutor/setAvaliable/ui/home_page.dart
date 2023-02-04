@@ -181,12 +181,12 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MyButton(
-            label: "+ اضافةاتاحه ",
+            label: "+ اضافة موعد ",
             onTap: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>  AddTaskPage(userdate: _selectedDate),
+                  builder: (context) => const AddTaskPage(),
                 ),
               );
               _taskController.getTasks();

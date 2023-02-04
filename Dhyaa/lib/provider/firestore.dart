@@ -1,18 +1,16 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:Dhyaa/models/appointment.dart';
+import 'package:Dhyaa/models/review.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
-
 import '../singlton.dart';
 
-UserData emptyUserData = UserData(
-    '', '', '', '', '', '', '', '', '', false, false, false, '', '', '', '');
+UserData emptyUserData = UserData('', '', '', '', '', '', '', '', '', false,
+    false, false, '', '', '', '', '0', '');
 
 class FirestoreHelper {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -25,6 +23,7 @@ class FirestoreHelper {
       await db
           .collection('Users')
           .where('email', isEqualTo: data)
+          .where("active_status", isEqualTo: "unsuspended")
           .get()
           .then((value) {
         if (value.docs.isNotEmpty) {
@@ -81,54 +80,24 @@ class FirestoreHelper {
   }
 
   static Future<UserData> getMyUserData() async {
-    UserData userDataa = emptyUserData;
+    UserData userData = emptyUserData;
     SharedPreferences value = await SharedPreferences.getInstance();
-    final User? user = FirebaseAuth.instance.currentUser;
-    final uid = user!.uid;
+
     var data = value.getString('user');
-    var data1 = await db.collection('Users').where('userId', isEqualTo: uid).snapshots();
-//     .then(
-// (value) {
-    data1.first.then((value) {
-      print("i am inside data get value");
-      print("i am inside data get value${uid}");
-      print("i am inside data get value${value.docs.length}");
-      print("i am inside data get value");
-      // });
-      if (value.docs.isNotEmpty) {
-        UserData userrr = UserData.fromMap(value.docs.first.data());
-        Singleton.instance.userData = userrr;
-        Singleton.instance.userId = uid;
-        userDataa = userrr;
-      }
-    },
+    await db
+        .collection('Users')
+        .where('email', isEqualTo: data)
+        .where("active_status", isEqualTo: "unsuspended")
+        .get()
+        .then(
+      (value) {
+        if (value.docs.isNotEmpty) {
+          userData = UserData.fromMap(value.docs.first.data());
+        }
+      },
     );
-    return userDataa;
-  }
-  static Future<UserData> getMyUserDatab() async {
-    UserData userDataa = emptyUserData;
-    SharedPreferences value = await SharedPreferences.getInstance();
-    final User? user = FirebaseAuth.instance.currentUser;
-    final uid = user!.uid;
-    var data = value.getString('user');
-    var data1 = await db.collection('Users').where('userId', isEqualTo: uid).snapshots();
-//     .then(
-// (value) {
-    data1.first.then((value) {
-      print("i am inside data get value");
-      print("i am inside data get value${uid}");
-      print("i am inside data get value${value.docs.length}");
-      print("i am inside data get value");
-      // });
-      if (value.docs.isNotEmpty) {
-        UserData userrr = UserData.fromMap(value.docs.first.data());
-        Singleton.instance.userData = userrr;
-        Singleton.instance.userId = uid;
-        userDataa = userrr;
-      }
-    },
-    );
-    return userDataa;
+
+    return userData;
   }
 
   static Future<bool> updateUserData(id, updateData) async {
@@ -145,6 +114,7 @@ class FirestoreHelper {
           await db
               .collection('Users')
               .where('email', isEqualTo: data)
+              .where("active_status", isEqualTo: "unsuspended")
               .get()
               .then(
             (value) {
@@ -164,65 +134,14 @@ class FirestoreHelper {
     await db
         .collection('Users')
         .where("type", isEqualTo: "Tutor")
+        .where("active_status", isEqualTo: "unsuspended")
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        tutors.add(
-          UserData(
-            element.data()['email'],
-            element.data()['majorSubjects'],
-            jsonEncode(element.data()['degree']),
-            element.data()['location'],
-            element.data()['phone'],
-            element.data()['userId'],
-            element.data()['username'],
-            element.data()['type'],
-            element.data()['address'] ?? '',
-            element.data()['isOnlineLesson'] ?? false,
-            element.data()['isStudentHomeLesson'] ?? false,
-            element.data()['isTutorHomeLesson'] ?? false,
-            element.data()['onlineLessonPrice'] ?? '',
-            element.data()['studentsHomeLessonPrice'] ?? '',
-            element.data()['tutorsHomeLessonPrice'] ?? '',
-            element.data()['bio'] ?? '',
-          ),
-        );
+        tutors.add(UserData.fromMap(element.data()));
       });
     });
     return tutors;
-  }
-
-  static Future<List<UserData>> getTutorUsers() {
-    List<UserData> tutors = [];
-    db
-        .collection('Users')
-        .where("type", isEqualTo: "Tutor")
-        .get()
-        .then((value) {
-      value.docs.forEach((element) {
-        tutors.add(
-          UserData(
-            element.data()['email'],
-            element.data()['majorSubjects'],
-            jsonEncode(element.data()['degree']),
-            element.data()['location'],
-            element.data()['phone'],
-            element.data()['userId'],
-            element.data()['username'],
-            element.data()['type'],
-            element.data()['address'] ?? '',
-            element.data()['isOnlineLesson'] ?? false,
-            element.data()['isStudentHomeLesson'] ?? false,
-            element.data()['isTutorHomeLesson'] ?? false,
-            element.data()['onlineLessonPrice'] ?? '',
-            element.data()['studentsHomeLessonPrice'] ?? '',
-            element.data()['tutorsHomeLessonPrice'] ?? '',
-            element.data()['bio'] ?? '',
-          ),
-        );
-      });
-    });
-    return Future.value(tutors);
   }
 
   static Future<List> getRecommendedTutors(UserData data) async {
@@ -240,33 +159,13 @@ class FirestoreHelper {
     List temp = [];
     await db
         .collection('Users')
+        .where("type", isEqualTo: "Tutor") // removing the tutor its self from recommendation
         .where("userId", isNotEqualTo: user.userId)
-        .where("type",
-            isEqualTo:
-                "Tutor") // revoming the tutor its self from the recommendations
+        .where("active_status", isEqualTo: "unsuspended")
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        tutors.add(
-          UserData(
-            element.data()['email'],
-            element.data()['majorSubjects'],
-            jsonEncode(element.data()['degree']),
-            element.data()['location'],
-            element.data()['phone'],
-            element.data()['userId'],
-            element.data()['username'],
-            element.data()['type'],
-            element.data()['address'] ?? '',
-            element.data()['isOnlineLesson'] ?? false,
-            element.data()['isStudentHomeLesson'] ?? false,
-            element.data()['isTutorHomeLesson'] ?? false,
-            element.data()['onlineLessonPrice'] ?? '',
-            element.data()['studentsHomeLessonPrice'] ?? '',
-            element.data()['tutorsHomeLessonPrice'] ?? '',
-            element.data()['bio'] ?? '',
-          ),
-        );
+        tutors.add(UserData.fromMap(element.data()));
       });
     });
     tutors.shuffle(); // To make tutors list random
@@ -381,8 +280,8 @@ class FirestoreHelper {
           'cosineSimilarity': cosineSimilarity,
           'tutor': tutor,
         });
-      } 
-    } //loop ends 
+      }
+    } //loop ends
     // sorting based on Similarity Level
     //https://api.flutter.dev/flutter/dart-core/List/sort.html
     temp.sort((b, a) => a['cosineSimilarity'].compareTo(b[
@@ -412,7 +311,18 @@ class FirestoreHelper {
   //  Booking Lessons
   // ===============================================
 
- static Future<Appointment> bookAppointment(Appointment appointment) async {
+  static Future<UserData> getUserById(String id) async {
+    UserData uData = emptyUserData;
+    QuerySnapshot<Map<String, dynamic>> value = await db
+        .collection('Users')
+        .where('userId', isEqualTo: id)
+        .where("active_status", isEqualTo: "unsuspended")
+        .get();
+    uData = UserData.fromMap(value.docs.first.data());
+    return uData;
+  }
+
+  static Future<Appointment> bookAppointment(Appointment appointment) async {
     await db.collection('appointments').add({
       'tutorId': appointment.tutorId,
       'tutorName': appointment.tutorName,
@@ -454,6 +364,8 @@ class FirestoreHelper {
           DateTime.parse(element.data()['createdAt']),
           element.data()['status'],
           element.data()['paymentId'],
+          element.data()['isTutorLeavedReview'] ?? false,
+          element.data()['isStudentLeavedReview'] ?? false,
         ),
       );
     });
@@ -483,6 +395,8 @@ class FirestoreHelper {
           DateTime.parse(element.data()['createdAt']),
           element.data()['status'],
           element.data()['paymentId'],
+          element.data()['isTutorLeavedReview'] ?? false,
+          element.data()['isStudentLeavedReview'] ?? false,
         ),
       );
     });
@@ -496,6 +410,11 @@ class FirestoreHelper {
     return true;
   }
 
+  static Future<bool> updateAppointment(String id, data) async {
+    await db.collection('appointments').doc(id).update(data);
+    return true;
+  }
+
   static Future<bool> isAppointmentExist(timeObj, date, tutorId) async {
     QuerySnapshot<Map<String, dynamic>> value = await db
         .collection('appointments')
@@ -506,5 +425,26 @@ class FirestoreHelper {
         .get();
     return value.docs.isEmpty;
   }
-}
 
+  // ===============================================
+  // =================== Reviews ===================
+  // ===============================================
+
+  static Future<List<Review>> getAllReview(String id) async {
+    List<Review> allReviews = [];
+    QuerySnapshot<Map<String, dynamic>> value = await db
+        .collection('reviews')
+        .where('userId', isEqualTo: id)
+        .orderBy("createdAt", descending: true)
+        .get();
+    value.docs.forEach((element) {
+      allReviews.add(Review.fromMap(element));
+    });
+    return allReviews;
+  }
+
+  static Future createReview(Review review) async {
+    await db.collection('reviews').add(review.toMap());
+    return review;
+  }
+}

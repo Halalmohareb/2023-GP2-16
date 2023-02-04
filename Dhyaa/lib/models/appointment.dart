@@ -12,6 +12,8 @@ class Appointment {
   late DateTime createdAt;
   late String status;
   late String paymentId;
+  late bool isTutorLeavedReview;
+  late bool isStudentLeavedReview;
 
   Appointment(
     this.id,
@@ -27,7 +29,10 @@ class Appointment {
     this.createdAt,
     this.status,
     this.paymentId,
+    this.isTutorLeavedReview,
+    this.isStudentLeavedReview,
   );
+
   Appointment.fromMap(dynamic obj) {
     tutorId = obj['tutorId'];
     tutorName = obj['tutorName'];
@@ -41,6 +46,8 @@ class Appointment {
     createdAt = obj['createdAt'];
     status = obj['status'];
     paymentId = obj['paymentId'];
+    isTutorLeavedReview = obj['isTutorLeavedReview'];
+    isStudentLeavedReview = obj['isStudentLeavedReview'];
   }
 
   Map<String, dynamic> toMap() {

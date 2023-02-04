@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Dhyaa/_helper/areas.dart';
 import 'package:Dhyaa/_helper/cities.dart';
+import 'package:Dhyaa/_helper/helper.dart';
 import 'package:Dhyaa/_helper/subject.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -857,7 +858,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             height: screenWidth * 12.5,
             width: double.infinity,
             child: DropdownButtonFormField(
-              key: _tutorAddressKey,
               items: citiesList.map((value) {
                 return DropdownMenuItem(
                   value: value,
@@ -955,6 +955,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             height: screenWidth * 16,
             width: double.infinity,
             child: DropdownButtonFormField(
+              key: _tutorAddressKey,
               items: areasList.map((value) {
                 return DropdownMenuItem(
                   value: value,
@@ -1104,10 +1105,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 width: 110,
                 child: TextFormField(
                   controller: authProvider.onlineLessonPrice,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [DecimalTextInputFormatter(decimalRange: 1)],
+                  keyboardType: TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   onChanged: (value) {
                     setState(() {
                       if (authProvider.isOnlineLesson) {
@@ -1261,10 +1262,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 width: 110,
                 child: TextFormField(
                   controller: authProvider.studentsHomeLessonPrice,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [DecimalTextInputFormatter(decimalRange: 1)],
+                  keyboardType: TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   onChanged: (value) {
                     setState(() {
                       if (authProvider.isStudentHomeLesson) {
@@ -1420,10 +1421,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 width: 110,
                 child: TextFormField(
                   controller: authProvider.tutorsHomeLessonPrice,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [DecimalTextInputFormatter(decimalRange: 1)],
+                  keyboardType: TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   onChanged: (value) {
                     setState(() {
                       if (authProvider.isTutorHomeLesson) {
@@ -1885,7 +1886,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           height: screenWidth * 16,
           width: double.infinity,
           child: DropdownButtonFormField(
-            key: _studentAddressKey,
             items: citiesList.map((value) {
               return DropdownMenuItem(
                 value: value,
@@ -1966,6 +1966,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           height: screenWidth * 16,
           width: double.infinity,
           child: DropdownButtonFormField(
+            key: _studentAddressKey,
             items: areasList.map((value) {
               return DropdownMenuItem(
                 value: value,
@@ -2031,32 +2032,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
               ),
       ]),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  final String label;
-  final ValueChanged<int> onDeleted;
-  final int index;
-  const _Chip({
-    required this.label,
-    required this.onDeleted,
-    required this.index,
-  });
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      backgroundColor: theme.blueColor,
-      labelPadding: const EdgeInsets.only(right: 10, top: 6, bottom: 6),
-      label: Text(
-        label,
-        style: TextStyle(color: theme.whiteColor),
-      ),
-      deleteIcon: Icon(Icons.close, size: 18, color: theme.whiteColor),
-      onDeleted: () {
-        onDeleted(index);
-      },
     );
   }
 }

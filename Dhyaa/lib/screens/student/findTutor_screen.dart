@@ -9,6 +9,7 @@ import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/student/tutor_card.dart';
 import 'package:Dhyaa/theme/studentTopBarNavigator.dart';
+import 'package:textfield_search/textfield_search.dart';
 
 class FindTutorScreen extends StatefulWidget {
   const FindTutorScreen({Key? key}) : super(key: key);
@@ -19,8 +20,8 @@ class FindTutorScreen extends StatefulWidget {
 
 class _FindTutorScreenState extends State<FindTutorScreen> {
   int count = 0;
+  UserData userData = emptyUserData;
   TextEditingController searchTextController = new TextEditingController();
-  UserData emptyTutor = emptyUserData;
   List<UserData> tutors = [];
   List<UserData> foundUsers = [];
   List<UserData> filterTutors = [];
@@ -28,15 +29,15 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
 
   @override
   void initState() {
-    setState(() {
-      tutors.add(emptyTutor);
-    });
-    FirestoreHelper.getTopTutors().then((value) {
-      tutors = value;
-      foundUsers = value;
-      filterTutors = value;
-      searchTutorList = value;
-      if (mounted) setState(() {});
+    FirestoreHelper.getMyUserData().then((value) {
+      userData = value;
+      FirestoreHelper.getTopTutors().then((value) {
+        tutors = value;
+        foundUsers = value;
+        filterTutors = value;
+        searchTutorList = value;
+        if (mounted) setState(() {});
+      });
     });
     super.initState();
   }
@@ -55,6 +56,23 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
     setState(() {
       foundUsers = results;
     });
+  }
+
+  doSearch() {
+    FocusScope.of(context).unfocus();
+    if (searchTextController.text.isEmpty) {
+      searchTutorList = filterTutors;
+    } else {
+      List<UserData> temp = [];
+      for (var item in filterTutors) {
+        List arr = jsonDecode(item.degree);
+        if (arr.contains(searchTextController.text)) {
+          temp.add(item);
+        }
+      }
+      searchTutorList = temp;
+    }
+    if (mounted) setState(() {});
   }
 
   @override
@@ -78,94 +96,85 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                     children: [
                       Divider(),
                       SizedBox(height: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          color: kBlueColor.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: DropdownSearch<String>(
-                                mode: Mode.BOTTOM_SHEET,
-                                showSearchBox: true,
-                                showClearButton: true,
-                                items: subjects,
-                                dropdownSearchDecoration: InputDecoration(
-                                  isDense: true,
-                                  border: InputBorder.none,
-                                  hintText: 'ابحث عن مادة...',
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 5,
+                      Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 50,
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            color: kBlueColor.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () => doSearch(),
+                                child: Container(
+                                  height: 50,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    color: kYellowColor,
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                  hintTextDirection: TextDirection.rtl,
-                                  prefixIcon: IconButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              FilterOptions(
-                                            tutorList: foundUsers,
-                                            onChange: (val) {
-                                              filterTutors = val;
-                                              searchTutorList = val;
-                                              if (mounted) setState(() {});
-                                            },
-                                            onRest: (value) {
-                                              filterTutors = foundUsers;
-                                              searchTutorList = foundUsers;
-                                              if (mounted) setState(() {});
-                                            },
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 15,
+                                  ),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/search.svg',
+                                    height: 25,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: TextFieldSearch(
+                                  initialList: subjects,
+                                  label: "",
+                                  controller: searchTextController,
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    border: InputBorder.none,
+                                    hintText: 'ابحث عن مادة...',
+                                    contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 5,
+                                    ),
+                                    hintTextDirection: TextDirection.rtl,
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                FilterOptions(
+                                              tutorList: foundUsers,
+                                              onChange: (val) {
+                                                filterTutors = val;
+                                                searchTutorList = val;
+                                                if (mounted) setState(() {});
+                                                doSearch();
+                                              },
+                                              onRest: (value) {
+                                                filterTutors = foundUsers;
+                                                searchTutorList = foundUsers;
+                                                if (mounted) setState(() {});
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    icon: Image.asset(
-                                      'assets/images/setting.png',
-                                      width: 25,
+                                        );
+                                      },
+                                      icon: Image.asset(
+                                        'assets/images/setting.png',
+                                        width: 25,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                onChanged: (value) {
-                                  if (value == null) {
-                                    searchTutorList = filterTutors;
-                                  } else {
-                                    List<UserData> temp = [];
-                                    for (var item in filterTutors) {
-                                      List arr = jsonDecode(item.degree);
-                                      if (arr.contains(value)) {
-                                        temp.add(item);
-                                      }
-                                    }
-                                    searchTutorList = temp;
-                                  }
-                                  if (mounted) setState(() {});
-                                },
                               ),
-                            ),
-                            Container(
-                              height: 50,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                color: kYellowColor,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 15,
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/icons/search.svg',
-                                height: 25,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -217,6 +226,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                               itemBuilder: (context, index) {
                                 return TutorCardWidget(
                                   tutor: searchTutorList[index],
+                                  myUserId: userData.userId,
                                 );
                               },
                             ),

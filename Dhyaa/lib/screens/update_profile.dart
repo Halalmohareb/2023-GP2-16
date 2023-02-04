@@ -10,6 +10,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/theme/theme.dart';
+import '../_helper/helper.dart';
 import '../models/UserData.dart';
 import '../responsiveBloc/size_config.dart';
 import 'package:fluttertoast/fluttertoast.dart'
@@ -102,7 +103,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     phone.text = userData.phone.replaceAll('+966', '');
     location.text = userData.location;
     address.text = userData.address;
-
+    bio.text = userData.bio;
     if (userData.type == 'Tutor') {
       subject.text = userData.majorSubjects;
       degree.text = userData.degree;
@@ -118,7 +119,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
       onlineLessonPrice.text = userData.onlineLessonPrice;
       studentsHomeLessonPrice.text = userData.studentsHomeLessonPrice;
       tutorsHomeLessonPrice.text = userData.tutorsHomeLessonPrice;
-      bio.text = userData.bio;
     }
     var tempCity =
         await cities.where((element) => (element['name_ar'] == location.text));
@@ -558,10 +558,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                   width: 110,
                                   child: TextFormField(
                                     controller: onlineLessonPrice,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
+                                    inputFormatters: [
+                                      DecimalTextInputFormatter(decimalRange: 1)
                                     ],
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     style: textStyle(
                                         screenWidth * 3.7, theme.mainColor),
                                     decoration: InputDecoration(
@@ -627,10 +630,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                   width: 110,
                                   child: TextFormField(
                                     controller: studentsHomeLessonPrice,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
+                                    inputFormatters: [
+                                      DecimalTextInputFormatter(decimalRange: 1)
                                     ],
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     style: textStyle(
                                         screenWidth * 3.7, theme.mainColor),
                                     decoration: InputDecoration(
@@ -696,10 +702,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                   width: 110,
                                   child: TextFormField(
                                     controller: tutorsHomeLessonPrice,
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
+                                    inputFormatters: [
+                                      DecimalTextInputFormatter(decimalRange: 1)
                                     ],
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                      decimal: true,
+                                    ),
                                     style: textStyle(
                                         screenWidth * 3.7, theme.mainColor),
                                     decoration: InputDecoration(
@@ -735,49 +744,44 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
-                        Text('نبذه عني'),
-                        SizedBox(height: 5),
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextFormField(
-                            controller: bio,
-                            maxLines: 6,
-                            style:
-                                textStyle(screenWidth * 3.7, theme.mainColor),
-                            decoration: InputDecoration(
-                              isDense: true,
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 4,
-                                vertical: screenWidth * 3,
-                              ),
-                              hintStyle: textStyle(
-                                screenWidth * 3.3,
-                                theme.lightTextColor,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white24,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 5),
-                                borderSide: BorderSide(
-                                    width: .3, color: theme.lightTextColor),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 5),
-                                borderSide: BorderSide(
-                                  width: .6,
-                                  color: theme.yellowColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
                       ],
                     ),
+                  Text('نبذه عني'),
+                  SizedBox(height: 5),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextFormField(
+                      controller: bio,
+                      maxLines: 6,
+                      style: textStyle(screenWidth * 3.7, theme.mainColor),
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 4,
+                          vertical: screenWidth * 3,
+                        ),
+                        hintStyle: textStyle(
+                          screenWidth * 3.3,
+                          theme.lightTextColor,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white24,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(screenWidth * 5),
+                          borderSide: BorderSide(
+                              width: .3, color: theme.lightTextColor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(screenWidth * 5),
+                          borderSide: BorderSide(
+                            width: .6,
+                            color: theme.yellowColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 40),
                   isLoading
                       ? Center(
