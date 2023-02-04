@@ -24,6 +24,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
 
   void initState() {
+    FirestoreHelper.getMyUserDatab().then((value) {
+      if (mounted) setState(() {});
+    });
     // getUserData();
     super.initState();
   }

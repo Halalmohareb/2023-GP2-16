@@ -1,4 +1,6 @@
+import 'package:Dhyaa/screens/contactPage.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +9,8 @@ import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/signinMethodScreen/signin_method_screen.dart';
 import 'package:Dhyaa/screens/student/studentProfile_screen.dart';
 import 'package:Dhyaa/screens/update_profile.dart';
+
+import '../singlton.dart';
 
 class Menu extends StatefulWidget {
   final UserData userData;
@@ -19,13 +23,14 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   // Variables
   UserData userData = emptyUserData;
+  String email = "";
 
   // Functions
   @override
   void initState() {
     userData = widget.userData;
     getUserData();
-
+    user();
     super.initState();
   }
 
@@ -35,6 +40,17 @@ class _MenuState extends State<Menu> {
       print(' @@@@@@@@@@@@ user email @@@@@@@@@@@@');
       print(userData.email);
       if (mounted) setState(() {});
+    });
+  }
+
+  user() async {
+    var document = await FirebaseFirestore.instance.collection('Users')
+        .doc((Singleton.instance.userId));
+    document.get().then((document) {
+      print("hiiiiiiiiiiiiiiiiii");
+      //print(document.data()!['numberOfRead']);
+      email = document.data()!['email'];
+      print(email);
     });
   }
 
@@ -135,7 +151,15 @@ class _MenuState extends State<Menu> {
                 shape: Border(),
                 title: Text('تواصل معنا'),
                 leading: Icon(Icons.call),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          contactPage(emil:email),
+                    ),
+                  );
+                },
               ),
               SizedBox(height: 30),
               Center(

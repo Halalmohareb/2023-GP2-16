@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:Dhyaa/models/appointment.dart';
 import 'package:Dhyaa/models/review.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Dhyaa/models/UserData.dart';
@@ -59,6 +60,8 @@ class FirestoreHelper {
     return tasks;
   }
 
+
+
   static Future<List<Task>> getTutorTasks(UserData user) async {
     List<Task> tasks = [];
     await db
@@ -99,11 +102,39 @@ class FirestoreHelper {
 
     return userData;
   }
+  static Future<UserData> getMyUserDatab() async {
+    UserData userDataa = emptyUserData;
+    SharedPreferences value = await SharedPreferences.getInstance();
+    final User? user = FirebaseAuth.instance.currentUser;
+    final uid = user!.uid;
+    var data = value.getString('user');
+    var data1 = await db.collection('Users').where('userId', isEqualTo: uid).snapshots();
+//     .then(
+// (value) {
+    data1.first.then((value) {
+      print("i am inside data get value");
+      print("i am inside data get value${uid}");
+      print("i am inside data get value${value.docs.length}");
+      print("i am inside data get value");
+      // });
+      if (value.docs.isNotEmpty) {
+        UserData userrr = UserData.fromMap(value.docs.first.data());
+        Singleton.instance.userData = userrr;
+        Singleton.instance.userId = uid;
+        userDataa = userrr;
+      }
+    },
+    );
+    return userDataa;
+  }
+
 
   static Future<bool> updateUserData(id, updateData) async {
     await db.collection('Users').doc(id).update(updateData);
     return true;
   }
+
+
 
   static Future<String> getUserType() async {
     String userType = '';

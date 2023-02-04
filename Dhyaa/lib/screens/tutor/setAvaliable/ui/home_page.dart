@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddTaskPage(),
+                  builder: (context) =>  AddTaskPage(userdate: _selectedDate),
                 ),
               );
               _taskController.getTasks();

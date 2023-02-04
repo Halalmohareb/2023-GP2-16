@@ -11,36 +11,25 @@ import '../provider/firestore.dart';
 import '../responsiveBloc/size_config.dart';
 import '../singlton.dart';
 import 'package:Dhyaa/theme/theme.dart';
-
 class contactPage extends StatefulWidget {
   final String emil;
   contactPage({Key? key, required this.emil}) : super(key: key);
-
   @override
   State<contactPage> createState() => _contactPageState();
 }
-
 final nameController = TextEditingController();
 final subjectController = TextEditingController();
 final emailController = emaile;
 final messagesController = TextEditingController();
 final messageController = TextEditingController();
-
-
-
 String emaile = "";
 String ErrorTextEmail = '';
 bool EmailValid = false;
 bool notempty = false;
 String ErrorAllFields = '';
 bool AllFieldsValid = false;
-
 String message = '';
-
-
-
 Future sendEmail() async{
-
   final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
   const serviceid ="service_t1ixpxo";
   const templateid ="template_jqgkfck";
@@ -63,9 +52,7 @@ Future sendEmail() async{
   );
   print(response.body);
 }
-
 user() async {
-
   var document = await FirebaseFirestore.instance.collection('Users')
       .doc((Singleton.instance.userId));
   document.get().then((document) {
@@ -73,12 +60,10 @@ user() async {
     emaile = document.data()!['email'];
     print(emaile);
   });
-
 }
-
 class _contactPageState extends State<contactPage> {
   Widget build(BuildContext context) {
-   // user();
+    // user();
     emaile = widget.emil;
     print(widget.emil);
     var screenWidth = SizeConfig.widthMultiplier;
@@ -199,7 +184,6 @@ class _contactPageState extends State<contactPage> {
                         subjectController.text.isEmpty){
                       ErrorAllFields = 'خانه فاضيه';
                       print(ErrorAllFields);
-
                       showToast("خانه فاضيه", isSuccess: false);
                       // }else{
                       //   if(message.length > 0){
@@ -210,7 +194,6 @@ class _contactPageState extends State<contactPage> {
                       showToast("تم ارسال الرسالة ", isSuccess: true);
                     }
                     //  }
-
                   },
                   child: Text(
                     "ارسال",
@@ -229,8 +212,6 @@ class _contactPageState extends State<contactPage> {
       ),
     );
   }
-
-
   void validateEmail(String enteredEmail) {
     if (EmailValidator.validate(enteredEmail)) {
       setState(() {
@@ -242,5 +223,4 @@ class _contactPageState extends State<contactPage> {
       });
     }
   }
-
 }
