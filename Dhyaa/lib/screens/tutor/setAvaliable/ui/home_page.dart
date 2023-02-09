@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
   // DateTime jHijri = DateTime.parse(JHijri.now().toString());
 
-
+  DateTime Fday = DateTime.now().add(Duration(days:1));
   final _taskController = Get.put(TaskController());
 
   // late var notifyHelper;
@@ -109,9 +109,9 @@ class _HomePageState extends State<HomePage> {
       child:
       TableCalendar(
         locale: "ar",
-        firstDay: DateTime.now(),
+        firstDay: Fday,
         lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
+        focusedDay:Fday,
           calendarFormat: format ,
 
         onFormatChanged: (CalendarFormat _format){

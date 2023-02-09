@@ -93,16 +93,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
   int day = DateTime.now().weekday;
   int repeatTime = 1;
   int hour = DateTime.now().hour;
-  setHours(){
-    //.substring(0,(timeList2.indexOf(':')))
-    int j=0;
-    for(int i=hour; i<25 ; i++){
-      setState(() {
-        timeList2.add(i);
-        // print(timeList2[j]);
-      });
-    }
-  }
+  // setHours(){
+  //   //.substring(0,(timeList2.indexOf(':')))
+  //   int j=0;
+  //   for(int i=hour; i<25 ; i++){
+  //     setState(() {
+  //       timeList2.add(i);
+  //       // print(timeList2[j]);
+  //     });
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     _selectedRepeat = widget.userdate;
@@ -111,7 +111,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         .format( _selectedRepeat).indexOf(',')).toLowerCase();
     print( "today");
     print(days.add(Duration(days:1)));
-    setHours();
+   // setHours();
     // _selectedTimeStart = timeList2[0].toString()+":00";
     // _selectedTimeEnd =timeList2[2].toString()+":00";
     final now = new DateTime.now();
@@ -162,7 +162,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         widget: Row(
                           children: [
                             Container(
-                              child: DropdownButton<int>(
+                              child: DropdownButton<String>(
                                   dropdownColor: Colors.white,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
@@ -174,19 +174,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   underline: Container(
                                     height: 6,
                                   ),
-                                  onChanged: (int? newValue) {
+                                  onChanged: (String? newValue) {
                                     print(newValue);
                                     setState(() {
-                                      _selectedTimeStart = newValue.toString()+":00";
+                                      _selectedTimeStart = newValue;
                                       print(_selectedTimeStart);
                                     });
                                   },
-                                  items: timeList2.map<DropdownMenuItem<int>>(
-                                          (int value) {
-                                        return DropdownMenuItem<int>(
+                                  items: timeList.map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(
-                                            value.toString()+":00",
+                                            value,
                                             style: const TextStyle(
                                                 color: Colors.black54),
                                           ),
@@ -208,7 +208,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         widget: Row(
                           children: [
                             Container(
-                              child: DropdownButton<int>(
+                              child: DropdownButton<String>(
                                   dropdownColor: Colors.white,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
@@ -220,19 +220,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   underline: Container(
                                     height: 6,
                                   ),
-                                  onChanged: (int? newValue) {
+                                  onChanged: (String? newValue) {
                                     print(newValue);
                                     setState(() {
-                                      _selectedTimeEnd = newValue.toString()+":00";
+                                      _selectedTimeEnd = newValue;
                                       print(_selectedTimeEnd);
                                     });
                                   },
-                                  items: timeList2.map<DropdownMenuItem<int>>(
-                                          (int value) {
-                                        return DropdownMenuItem<int>(
+                                  items: timeList.map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(
-                                            value.toString()+":00",
+                                            value,
                                             style: const TextStyle(
                                                 color: Colors.black54),
                                           ),
