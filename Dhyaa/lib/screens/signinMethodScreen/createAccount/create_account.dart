@@ -1536,7 +1536,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             controller: authProvider.studentUserName,
             onChanged: (value) {
               setState(() {
-                if (!authProvider.studentUserName.text.contains(' ') &&
+                if (//!authProvider.studentUserName.text.contains(' ') &&
                     authProvider.studentUserName.text.isNotEmpty) {
                   studentUsernameValid = true;
                   studentErrorTextUserName = '';

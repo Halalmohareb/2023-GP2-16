@@ -887,7 +887,7 @@ class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
       child: Column(
         children: [
           Text(
-            'Great!',
+            '! رائع',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

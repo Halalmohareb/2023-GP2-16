@@ -19,12 +19,33 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // Variables
+  bool loading = true;
+  dynamic bytes;
   final authProvider = AuthProvider();
 
-  // This widget is the root of your application.
+  // functions
+  memoryFromAssets(String path) async {
+    final byteData = await rootBundle.load('assets/$path');
+    bytes = byteData.buffer.asUint8List();
+    loading = false;
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    memoryFromAssets('images/intro.mp4');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -52,7 +73,17 @@ class MyApp extends StatelessWidget {
                         const Locale('ar')
                       ],
                       debugShowCheckedModeBanner: false,
-                      home: SplashScreen(),
+                      home: Builder(builder: (context) {
+                        MediaQueryData queryData = MediaQuery.of(context);
+                        double w = queryData.size.width;
+                        double h = queryData.size.height;
+                        return loading
+                            ? Container()
+                            : SplashScreen(
+                                path: bytes,
+                                aspectRatio: h / 1.2 / w,
+                              );
+                      }),
                     ),
                   );
                 },

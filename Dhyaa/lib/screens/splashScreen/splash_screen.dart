@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/responsiveBloc/size_config.dart';
@@ -8,13 +11,65 @@ import '../student/student_homepage.dart';
 import '../tutor/tutor_homepage.dart';
 
 class SplashScreen extends StatefulWidget {
+  final dynamic path;
+  final dynamic aspectRatio;
+  const SplashScreen(
+      {super.key, required this.path, required this.aspectRatio});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // Variables
+  late BetterPlayerController _betterPlayerController;
+
+  // Function
+
   @override
   void initState() {
+    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
+      BetterPlayerDataSourceType.memory,
+      '',
+      bytes: widget.path,
+      videoExtension: "mp4",
+    );
+    _betterPlayerController = BetterPlayerController(
+      BetterPlayerConfiguration(
+        autoPlay: true,
+        autoDispose: true,
+        fit: BoxFit.cover,
+        aspectRatio: widget.aspectRatio,
+        controlsConfiguration: BetterPlayerControlsConfiguration(
+          backgroundColor: Colors.white,
+          showControls: false,
+          enableMute: false,
+          enableProgressBar: false,
+          enableFullscreen: false,
+          enableQualities: false,
+          enablePip: false,
+          enableProgressBarDrag: false,
+          enableProgressText: false,
+          enableSkips: false,
+          enablePlayPause: Platform.isIOS ? false : false,
+          enableAudioTracks: false,
+          enableOverflowMenu: false,
+          enablePlaybackSpeed: false,
+          enableRetry: false,
+          enableSubtitles: false,
+        ),
+      ),
+      betterPlayerDataSource: betterPlayerDataSource,
+    );
+    timer();
+    super.initState();
+  }
+
+  timer() {
+    Future.delayed(Duration(milliseconds: 4000), goNext);
+  }
+
+  goNext() {
     FirestoreHelper.getUserType().then(
       (value) {
         if (value == "Student") {
@@ -40,29 +95,14 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
     );
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = SizeConfig.widthMultiplier;
     return Scaffold(
-      backgroundColor: theme.appBackgroundColor,
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/icons/DhyaaLogo.png',
-                height: screenWidth * 50,
-                fit: BoxFit.contain,
-              )
-            ],
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.white),
+      body: BetterPlayer(controller: _betterPlayerController),
     );
   }
 }
