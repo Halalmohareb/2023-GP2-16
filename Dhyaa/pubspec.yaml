@@ -41,8 +41,10 @@ dependencies:
   syncfusion_flutter_sliders: ^20.4.43
   expandable_text: ^2.3.0
   textfield_search: ^0.10.0
-  http: ^0.13.5
   email_validator: ^2.1.17
+  better_player: ^0.0.83
+
+
 
 dev_dependencies:
   flutter_test:
@@ -54,3 +56,15 @@ flutter:
     - assets/
     - assets/icons/
     - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: cr
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
+    - family: cm
+      fonts:
+        - asset: assets/fonts/Cairo-Medium.ttf
+    - family: cb
+      fonts:
+        - asset: assets/fonts/Cairo-Bold.ttf

@@ -273,8 +273,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                                     .copyWith(bottom: screenWidth),
                             padding: EdgeInsets.all(screenWidth * 4.3),
                             decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 50),
+                                borderRadius: BorderRadius.circular(10),
                                 color: theme.blueColor),
                             child: text(
                               ' إنشاء حساب',
@@ -371,13 +370,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: 'اسم المستخدم',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                         width: .6,
                         color: !tutorUsernameValid
@@ -414,11 +413,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               onChanged: (value) {
                 setState(() {
                   if (authProvider.tutorEmail.text.isNotEmpty &&
-                      isEmail(value)
-                      // (tutorEmail.text.contains('@gmail.com') ||
-                      //     tutorEmail.text.contains('@hotmail.com') ||
-                      //     tutorEmail.text.contains('@yahoo.com'))
-                      &&
+                      isEmail(value) &&
                       !authProvider.tutorEmail.text.contains(' ')) {
                     tutorEmailValid = true;
                     tutorErrorTextEmail = '';
@@ -455,13 +450,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: 'abc@domain.com',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                         width: .6,
                         color: !tutorEmailValid
@@ -549,13 +544,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: 'AB@123abc',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                         width: .6,
                         color: !tutorPasswordValid
@@ -654,13 +649,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: '5XXXXXXXX',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                         width: .6,
                         color: !tutorPhoneNumberValid
@@ -736,16 +731,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 hintText: 'إضافة مادة ',
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                     width: .3,
                     color: theme.lightTextColor,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                     width: .6,
                     color:
@@ -819,13 +814,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: 'مثال : تقنية المعلومات',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                         width: .6,
                         color: !tutorMajorValid
@@ -905,13 +900,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: 'المدينة',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                     width: .6,
                     color: !tutorLocationValid
@@ -946,7 +941,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 'العنوان / الحي',
                 screenWidth * 3,
                 theme.lightTextColor,
-                fontWeight: FontWeight.w500,
+                fontFamily: 'cb',
               ),
             ],
           ),
@@ -997,13 +992,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 hintText: "الحي",
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
-                fillColor: Colors.white24,
+                fillColor: theme.fillColor,
                 enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide:
                         BorderSide(width: .3, color: theme.lightTextColor)),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(screenWidth * 200),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
                         width: .6,
                         color: !tutorAddressValid
@@ -1034,7 +1029,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 'نوع الدروس',
                 screenWidth * 3,
                 theme.lightTextColor,
-                fontWeight: FontWeight.w500,
+                fontFamily: 'cb',
               ),
             ],
           ),
@@ -1094,7 +1089,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       style: TextStyle(
                         fontSize: screenWidth * 3,
                         color: theme.lightTextColor,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: 'cb',
                       ),
                     ),
                   ),
@@ -1158,14 +1153,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     hintStyle:
                         textStyle(screenWidth * 3.3, theme.lightTextColor),
                     filled: true,
-                    fillColor: Colors.white24,
+                    fillColor: theme.fillColor,
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide:
                           BorderSide(width: .3, color: theme.lightTextColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
                         width: .6,
                         color: !onlineLessonPriceValid
@@ -1182,7 +1177,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ? sizedBox()
               : Padding(
                   padding: EdgeInsets.only(
-                      left: screenWidth * 1, top: screenWidth * 1),
+                    left: screenWidth * 1,
+                    top: screenWidth * 1,
+                  ),
                   child: Row(
                     children: [
                       text(
@@ -1193,7 +1190,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ],
                   ),
                 ),
-          SizedBox(height: 5),
           Row(
             children: [
               Expanded(
@@ -1251,7 +1247,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       style: TextStyle(
                         fontSize: screenWidth * 3,
                         color: theme.lightTextColor,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: 'cb',
                       ),
                     ),
                   ),
@@ -1318,14 +1314,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     hintStyle:
                         textStyle(screenWidth * 3.3, theme.lightTextColor),
                     filled: true,
-                    fillColor: Colors.white24,
+                    fillColor: theme.fillColor,
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide:
                           BorderSide(width: .3, color: theme.lightTextColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
                         width: .6,
                         color: !studentsHomeLessonPriceValid
@@ -1410,7 +1406,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       style: TextStyle(
                         fontSize: screenWidth * 3,
                         color: theme.lightTextColor,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: 'cb',
                       ),
                     ),
                   ),
@@ -1477,14 +1473,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     hintStyle:
                         textStyle(screenWidth * 3.3, theme.lightTextColor),
                     filled: true,
-                    fillColor: Colors.white24,
+                    fillColor: theme.fillColor,
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide:
                           BorderSide(width: .3, color: theme.lightTextColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(screenWidth * 200),
+                      borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
                         width: .6,
                         color: !tutorsHomeLessonPriceValid
@@ -1536,7 +1532,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             controller: authProvider.studentUserName,
             onChanged: (value) {
               setState(() {
-                if (//!authProvider.studentUserName.text.contains(' ') &&
+                if ( //!authProvider.studentUserName.text.contains(' ') &&
                     authProvider.studentUserName.text.isNotEmpty) {
                   studentUsernameValid = true;
                   studentErrorTextUserName = '';
@@ -1568,13 +1564,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               hintText: 'اسم المستخدم',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !studentUsernameValid
@@ -1646,13 +1642,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               hintText: 'abc@domain.com',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !studentEmailValid
@@ -1734,13 +1730,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               hintText: 'AB123@abc',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !studentPasswordValid
@@ -1836,16 +1832,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               hintText: '5XXXXXXXX',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(screenWidth * 200),
+                borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
                   width: .3,
                   color: theme.lightTextColor,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(screenWidth * 200),
+                borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
                   width: .6,
                   color: !studentPhoneNumberValid
@@ -1927,13 +1923,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               hintText: 'المدينة',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !studentLocationValid
@@ -2003,13 +1999,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               hintText: "حي العمل",
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(screenWidth * 200),
+                borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
                   width: .6,
                   color:

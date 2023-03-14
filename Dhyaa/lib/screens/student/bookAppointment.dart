@@ -169,14 +169,14 @@ class _BookAppointmentState extends State<BookAppointment> {
                         text: 'المعلم :',
                         style: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w900,
+                          fontFamily: 'cb',
                         ),
                       ),
                       TextSpan(
                         text: userData.username,
                         style: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                          fontFamily: 'cb',
                         ),
                       ),
                     ],
@@ -276,7 +276,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           userData.onlineLessonPrice +
                                               ' ريال/ساعة',
                                           style: TextStyle(
-                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'cb',
                                           ),
                                         ),
                                       ],
@@ -310,7 +310,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           userData.studentsHomeLessonPrice +
                                               ' ريال/ساعة',
                                           style: TextStyle(
-                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'cb',
                                           ),
                                         ),
                                       ],
@@ -344,7 +344,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                           userData.tutorsHomeLessonPrice +
                                               ' ريال/ساعة',
                                           style: TextStyle(
-                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'cb',
                                           ),
                                         ),
                                       ],
@@ -448,7 +448,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                       tasks[index].day.toUpperCase(),
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'cb',
                         color: Colors.black,
                       ),
                     ),
@@ -545,7 +545,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                       temp['start'] + ' - ' + temp['end'],
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'cb',
                         color: Colors.black,
                       ),
                     ),

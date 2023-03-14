@@ -79,7 +79,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           userData.username,
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'cb',
                           ),
                         ),
                         SizedBox(width: 10),
@@ -103,7 +103,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           userData.averageRating,
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontFamily: 'cb',
                           ),
                         ),
                       ],
@@ -126,7 +126,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                             text: 'نبذه عني: ',
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w900,
+                              fontFamily: 'cb',
                             ),
                           ),
                           TextSpan(text: userData.bio),
@@ -148,7 +148,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     ': التقييم ',
                     style: TextStyle(
                       fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'cb',
                     ),
                   ),
                 ),

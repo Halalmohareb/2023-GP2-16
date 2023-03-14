@@ -1,3 +1,4 @@
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,18 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  MaterialColor colorCustom = MaterialColor(0xff2d99cd, {
+    50: Color.fromRGBO(45, 152, 205, .1),
+    100: Color.fromRGBO(45, 152, 205, .2),
+    200: Color.fromRGBO(45, 152, 205, .3),
+    300: Color.fromRGBO(45, 152, 205, .4),
+    400: Color.fromRGBO(45, 152, 205, .5),
+    490: Color.fromRGBO(45, 152, 205, .6),
+    600: Color.fromRGBO(45, 152, 205, .7),
+    700: Color.fromRGBO(45, 152, 205, .8),
+    800: Color.fromRGBO(45, 152, 205, .9),
+    900: Color.fromRGBO(45, 152, 205, 1),
+  });
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -64,7 +77,7 @@ class _MyAppState extends State<MyApp> {
                       ChangeNotifierProvider<AuthProvider>.value(
                           value: authProvider),
                     ],
-                    child: GetMaterialApp(
+                    child: MaterialApp(
                       localizationsDelegates: [
                         GlobalMaterialLocalizations.delegate
                       ],
@@ -73,6 +86,16 @@ class _MyAppState extends State<MyApp> {
                         const Locale('ar')
                       ],
                       debugShowCheckedModeBanner: false,
+                      title: 'ضياء',
+                      theme: ThemeData(
+                        fontFamily: 'cr',
+                        colorScheme: ColorScheme.fromSwatch(
+                          primarySwatch: colorCustom,
+                        ).copyWith(
+                          secondary: theme.mainColor,
+                        ),
+                        primaryColor: theme.mainColor,
+                      ),
                       home: Builder(builder: (context) {
                         MediaQueryData queryData = MediaQuery.of(context);
                         double w = queryData.size.width;

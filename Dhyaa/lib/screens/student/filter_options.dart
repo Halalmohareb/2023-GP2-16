@@ -234,7 +234,7 @@ class _FilterOptionsState extends State<FilterOptions> {
           'تصفية نتائج البحث',
           textDirection: TextDirection.rtl,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontFamily: 'cb',
             fontSize: 20,
             color: Colors.black,
           ),
@@ -360,13 +360,14 @@ class _FilterOptionsState extends State<FilterOptions> {
                             filled: true,
                             fillColor: Colors.white24,
                             enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
-                                borderSide: BorderSide(
-                                    width: .3, color: theme.lightTextColor)),
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                width: .3,
+                                color: theme.lightTextColor,
+                              ),
+                            ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.circular(screenWidth * 200),
+                              borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
                                 width: .6,
                                 color: theme.yellowColor,
@@ -406,13 +407,11 @@ class _FilterOptionsState extends State<FilterOptions> {
                             filled: true,
                             fillColor: Colors.white24,
                             enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
+                                borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
                                     width: .3, color: theme.lightTextColor)),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.circular(screenWidth * 200),
+                              borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
                                 width: .6,
                                 color: theme.yellowColor,
@@ -460,7 +459,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   style: TextStyle(
                                     fontSize: screenWidth * 3,
                                     color: theme.lightTextColor,
-                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'cb',
                                   ),
                                 ),
                               ),
@@ -487,7 +486,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   style: TextStyle(
                                     fontSize: screenWidth * 3,
                                     color: theme.lightTextColor,
-                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'cb',
                                   ),
                                 ),
                               ),
@@ -514,7 +513,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   style: TextStyle(
                                     fontSize: screenWidth * 3,
                                     color: theme.lightTextColor,
-                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'cb',
                                   ),
                                 ),
                               ),
@@ -563,7 +562,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   Text(
                                     '1',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],
@@ -593,7 +592,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   Text(
                                     '2',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],
@@ -623,7 +622,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   Text(
                                     '3',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],
@@ -653,7 +652,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   Text(
                                     '4',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],
@@ -683,7 +682,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                                   Text(
                                     '5',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],

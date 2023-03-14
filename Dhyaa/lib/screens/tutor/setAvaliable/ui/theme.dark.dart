@@ -5,14 +5,14 @@ import 'package:get/get.dart';
 const Color  kBackgroundColor = Color(0xffF9F9F9);
 const Color  kWhiteColor = Color(0xffffffff);
 const Color  kOrangeColor = Color(0xffEF716B);
-const Color  kBlueColor = Color(0xff4B7FFB);
+const Color  kBlueColor = Color(0xff2d99cd);
 const Color  kYellowColor = Color(0xffFFB167);
 const Color  kTitleTextColor = Color(0xff1E1C61);
 const Color  kSearchBackgroundColor = Color(0xffF2F2F2);
 const Color  kSearchTextColor = Color(0xffC0C0C0);
 const Color  kCategoryTextColor = Color(0xff292685);
 
-const Color bluishClr = Color(0xff4B7FFB);
+const Color bluishClr = Color(0xff2d99cd);
 const Color yellowClr = Color(0xffFFB167);
 const Color pinkClr = Color(0xffEF716B);
 // const Color bluishClr = Color(0xFF80CBC4);
@@ -41,7 +41,7 @@ TextStyle get headingTextStyle {
   return GoogleFonts.lato(
     textStyle: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.bold,
+        fontFamily: 'cb',
         color: Get.isDarkMode ? Colors.white : Colors.black),
   );
 }
@@ -59,7 +59,7 @@ TextStyle get titleTextStle {
   return GoogleFonts.lato(
     textStyle: TextStyle(
         fontSize: 18,
-        fontWeight: FontWeight.bold,
+        fontFamily: 'cb',
         color: Get.isDarkMode ? Colors.white : Colors.black),
   );
 }

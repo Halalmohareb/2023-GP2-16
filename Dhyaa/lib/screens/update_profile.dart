@@ -304,15 +304,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         hintStyle:
                             textStyle(screenWidth * 3.3, theme.lightTextColor),
                         filled: true,
-                        fillColor: Colors.white24,
+                        fillColor: theme.fillColor,
                         enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(screenWidth * 200),
+                            borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
                                 width: .3, color: theme.lightTextColor)),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(screenWidth * 200),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                             width: .6,
                             color: theme.redColor,
@@ -367,15 +365,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         hintStyle:
                             textStyle(screenWidth * 3.3, theme.lightTextColor),
                         filled: true,
-                        fillColor: Colors.white24,
+                        fillColor: theme.fillColor,
                         enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(screenWidth * 200),
+                            borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
                                 width: .3, color: theme.lightTextColor)),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(screenWidth * 200),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                             width: .6,
                             color: theme.yellowColor,
@@ -413,15 +409,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         hintStyle:
                             textStyle(screenWidth * 3.3, theme.lightTextColor),
                         filled: true,
-                        fillColor: Colors.white24,
+                        fillColor: theme.fillColor,
                         enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(screenWidth * 200),
+                            borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
                                 width: .3, color: theme.lightTextColor)),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(screenWidth * 200),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                             width: .6,
                             color: theme.yellowColor,
@@ -454,15 +448,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               hintStyle: textStyle(
                                   screenWidth * 3.3, theme.lightTextColor),
                               filled: true,
-                              fillColor: Colors.white24,
+                              fillColor: theme.fillColor,
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(screenWidth * 200),
+                                  borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(
                                       width: .3, color: theme.lightTextColor)),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
+                                borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
                                   width: .6,
                                   color: theme.yellowColor,
@@ -494,18 +486,16 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                   screenWidth * 3.3, theme.lightTextColor),
                               hintText: 'إضافة مادة أخرى',
                               filled: true,
-                              fillColor: Colors.white24,
+                              fillColor: theme.fillColor,
                               enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
+                                borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
                                   width: .3,
                                   color: theme.lightTextColor,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.circular(screenWidth * 200),
+                                borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(
                                   width: .6,
                                   color: theme.yellowColor,
@@ -521,7 +511,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               'نوع الدروس',
                               screenWidth * 3,
                               theme.lightTextColor,
-                              fontWeight: FontWeight.w500,
+                              fontFamily: 'cb',
                             ),
                           ],
                         ),
@@ -547,7 +537,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                         style: TextStyle(
                                           fontSize: screenWidth * 3,
                                           color: theme.lightTextColor,
-                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'cb',
                                         ),
                                       ),
                                     ),
@@ -577,7 +567,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                       hintStyle: textStyle(screenWidth * 3.3,
                                           theme.lightTextColor),
                                       filled: true,
-                                      fillColor: Colors.white24,
+                                      fillColor: theme.fillColor,
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
                                             screenWidth * 200),
@@ -619,7 +609,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                         style: TextStyle(
                                           fontSize: screenWidth * 3,
                                           color: theme.lightTextColor,
-                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'cb',
                                         ),
                                       ),
                                     ),
@@ -649,7 +639,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                       hintStyle: textStyle(screenWidth * 3.3,
                                           theme.lightTextColor),
                                       filled: true,
-                                      fillColor: Colors.white24,
+                                      fillColor: theme.fillColor,
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
                                             screenWidth * 200),
@@ -691,7 +681,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                         style: TextStyle(
                                           fontSize: screenWidth * 3,
                                           color: theme.lightTextColor,
-                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'cb',
                                         ),
                                       ),
                                     ),
@@ -721,7 +711,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                       hintStyle: textStyle(screenWidth * 3.3,
                                           theme.lightTextColor),
                                       filled: true,
-                                      fillColor: Colors.white24,
+                                      fillColor: theme.fillColor,
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
                                             screenWidth * 200),
@@ -766,7 +756,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           theme.lightTextColor,
                         ),
                         filled: true,
-                        fillColor: Colors.white24,
+                        fillColor: theme.fillColor,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(screenWidth * 5),
                           borderSide: BorderSide(
@@ -806,15 +796,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                 vertical: screenWidth * 3),
                             decoration: BoxDecoration(
                               border: Border.all(color: theme.mainColor),
-                              borderRadius:
-                                  BorderRadius.circular(screenWidth * 50),
+                              borderRadius: BorderRadius.circular(10),
                               color: theme.blueColor,
                             ),
                             child: text(
                               'تحديث',
                               screenWidth * 3.9,
                               theme.whiteColor,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

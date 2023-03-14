@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:Dhyaa/models/review.dart';
 import 'package:Dhyaa/screens/reviews_component.dart';
 import 'package:Dhyaa/screens/student/bookAppointment.dart';
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:Dhyaa/models/UserData.dart';
@@ -90,9 +91,10 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
               onPressed: null,
               style: TextButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 15),
+                backgroundColor: theme.fillColor,
                 side: BorderSide(color: kBlueColor),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: Text(item),
@@ -156,7 +158,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           userData.username,
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w900,
+                            fontFamily: 'cb',
                           ),
                         ),
                         SizedBox(width: 10),
@@ -180,7 +182,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           userData.averageRating,
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w900,
+                            fontFamily: 'cb',
                           ),
                         ),
                       ],
@@ -200,9 +202,11 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                       children: [
                         Icon(Icons.broadcast_on_personal, size: 18),
                         SizedBox(width: 5),
-                        Text(
-                          lessonTypePipe2(),
-                          style: TextStyle(fontSize: 15),
+                        Expanded(
+                          child: Text(
+                            lessonTypePipe2(),
+                            style: TextStyle(fontSize: 15),
+                          ),
                         ),
                       ],
                     ),
@@ -213,7 +217,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                             text: 'التخصص: ',
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w900,
+                              fontFamily: 'cb',
                             ),
                           ),
                           TextSpan(text: userData.majorSubjects),
@@ -227,7 +231,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                             text: 'نبذه عني: ',
                             style: TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w900,
+                              fontFamily: 'cb',
                             ),
                           ),
                           TextSpan(text: userData.bio),
@@ -251,7 +255,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     'المواعيد المتاحة:',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w900,
+                      fontFamily: 'cb',
                     ),
                   ),
                 ),
@@ -274,7 +278,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     'المواد:',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w900,
+                      fontFamily: 'cb',
                     ),
                   ),
                 ),
@@ -292,7 +296,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     'التقييم:',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w900,
+                      fontFamily: 'cb',
                     ),
                   ),
                 ),
@@ -304,7 +308,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
               SizedBox(height: 10),
               Center(
                 child: Container(
-                  width: 150,
+                  width: 170,
                   child: TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -313,7 +317,6 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           builder: (context) => ChatScreen(
                             friendId: userData.userId,
                             friendName: userData.username,
-                            //userData:Singleton.instance.userData!,
                           ),
                         ),
                       );
@@ -321,8 +324,9 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(horizontal: 15),
                       side: BorderSide(color: kBlueColor),
+                      backgroundColor: theme.fillColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: Row(
@@ -343,7 +347,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     'قد يعجبك',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w900,
+                      fontFamily: 'cb',
                     ),
                   ),
                 ),
@@ -391,8 +395,9 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         side: BorderSide(color: kBlueColor),
+                        backgroundColor: theme.fillColor,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: Text('احجز موعد مع المعلم'),
@@ -403,7 +408,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           TextSpan(
                             text: getMinPrice(userData),
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontFamily: 'cb',
                             ),
                           ),
                           TextSpan(
@@ -499,7 +504,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                           color: kTitleTextColor,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'cb',
                         ),
                       ),
                       RatingBar.builder(
@@ -560,8 +565,9 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           side: BorderSide(color: kBlueColor),
+                          backgroundColor: theme.fillColor,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         onPressed: () {
@@ -623,7 +629,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         tasks[index].day.toUpperCase(),
                         style: TextStyle(
                           fontSize: 11,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'cb',
                           color: Colors.black,
                         ),
                       ),
@@ -631,7 +637,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         tasks[index].startTime + ' - ' + tasks[index].endTime,
                         style: TextStyle(
                           fontSize: 11,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'cb',
                           color: Colors.black,
                         ),
                       ),

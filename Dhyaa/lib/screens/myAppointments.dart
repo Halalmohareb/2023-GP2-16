@@ -313,7 +313,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                   'مواعيد دروسك',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w900,
+                    fontFamily: 'cb',
                   ),
                 ),
               ),
@@ -442,7 +442,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                               ? item.tutorName
                                               : item.studentName,
                                           style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'cb',
                                           ),
                                         ),
                                       ),
@@ -460,7 +460,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                     color: item.status == 'ملغي'
                                                         ? Colors.red[700]
                                                         : Colors.green[700],
-                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'cb',
                                                   ),
                                                 ),
                                                 SizedBox(width: 15),
@@ -475,7 +475,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                 Text(
                                                   item.degree,
                                                   style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'cb',
                                                   ),
                                                 ),
                                                 SizedBox(width: 15),
@@ -485,7 +485,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                           item.lessonType) +
                                                       ' | ',
                                                   style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'cb',
                                                   ),
                                                 ),
                                                 SizedBox(width: 15),
@@ -493,7 +493,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                   item.amount.toString() +
                                                       ' ريال/ساعة ',
                                                   style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'cb',
                                                   ),
                                                 ),
                                               ],
@@ -760,7 +760,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
               child: Text(
                 'كيف كان درسك؟',
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'cb',
                 ),
               ),
             ),
@@ -771,7 +771,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                         ? item.tutorName
                         : item.studentName),
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'cb',
                 ),
               ),
             ),
@@ -781,7 +781,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                 Text(
                   'التقييم:  ',
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'cb',
                   ),
                 ),
                 RatingBar.builder(
@@ -809,7 +809,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
             Text(
               'أكتب تقييم:  ',
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
+                fontFamily: 'cb',
               ),
             ),
             SizedBox(height: 5),
@@ -889,14 +889,14 @@ class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
           Text(
             '! رائع',
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontFamily: 'cb',
             ),
           ),
           SizedBox(height: 5),
           Text(
             'تم التقييم بنجاح',
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontFamily: 'cb',
             ),
           ),
           SizedBox(height: 20),

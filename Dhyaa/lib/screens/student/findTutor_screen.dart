@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:Dhyaa/_helper/subject.dart';
 import 'package:Dhyaa/screens/student/filter_options.dart';
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -83,115 +84,124 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
       },
       child: Scaffold(
         backgroundColor: kBackgroundColor,
-        body: SafeArea(
-          bottom: false,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                StudentTopBarNavigator(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: SafeArea(
+            bottom: false,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  StudentTopBarNavigator(),
+                  Divider(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(),
                       SizedBox(height: 10),
-                      Directionality(
-                        textDirection: TextDirection.rtl,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 50,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            color: kBlueColor.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () => doSearch(),
-                                child: Container(
-                                  height: 50,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    color: kYellowColor,
-                                    borderRadius: BorderRadius.circular(30),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width - 100,
+                              height: 50,
+                              padding: EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                color: kFillColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: TextFieldSearch(
+                                initialList: subjects,
+                                label: "",
+                                controller: searchTextController,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  border: InputBorder.none,
+                                  hintText: 'ابحث عن مادة...',
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 5,
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 15,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/search.svg',
-                                    height: 25,
+                                  prefixIcon: IconButton(
+                                    onPressed: () => doSearch(),
+                                    icon: SvgPicture.asset(
+                                      'assets/icons/search.svg',
+                                      color: theme.darkTextColor,
+                                      height: 20,
+                                    ),
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: TextFieldSearch(
-                                  initialList: subjects,
-                                  label: "",
-                                  controller: searchTextController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    border: InputBorder.none,
-                                    hintText: 'ابحث عن مادة...',
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10,
-                                      horizontal: 5,
-                                    ),
-                                    hintTextDirection: TextDirection.rtl,
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                FilterOptions(
-                                              tutorList: foundUsers,
-                                              onChange: (val) {
-                                                filterTutors = val;
-                                                searchTutorList = val;
-                                                if (mounted) setState(() {});
-                                                doSearch();
-                                              },
-                                              onRest: (value) {
-                                                filterTutors = foundUsers;
-                                                searchTutorList = foundUsers;
-                                                if (mounted) setState(() {});
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      icon: Image.asset(
-                                        'assets/images/setting.png',
-                                        width: 25,
+                            ),
+                            SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: () => doSearch(),
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: kFillColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            FilterOptions(
+                                          tutorList: foundUsers,
+                                          onChange: (val) {
+                                            filterTutors = val;
+                                            searchTutorList = val;
+                                            if (mounted) setState(() {});
+                                            doSearch();
+                                          },
+                                          onRest: (value) {
+                                            filterTutors = foundUsers;
+                                            searchTutorList = foundUsers;
+                                            if (mounted) setState(() {});
+                                          },
+                                        ),
                                       ),
-                                    ),
+                                    );
+                                  },
+                                  icon: Image.asset(
+                                    'assets/images/setting.png',
+                                    color: theme.darkTextColor,
+                                    width: 23,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                        'معلمين ضياء',
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: kTitleTextColor,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            Text(
+                              'تم العثور على معلمين ضياء' + ': ',
+                              style: TextStyle(
+                                fontFamily: 'cb',
+                                fontSize: 16,
+                                color: kTitleTextColor,
+                              ),
+                            ),
+                            Text(
+                              searchTutorList.length.toString(),
+                              style: TextStyle(
+                                fontFamily: 'cb',
+                                fontSize: 16,
+                                color: theme.mainColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        height: 1,
-                        width: MediaQuery.of(context).size.width,
-                        color: kBlueColor,
-                      ),
+                     
+                      Divider(),
                       SizedBox(height: 10),
                       searchTutorList.length == 0
                           ? Center(
@@ -208,7 +218,8 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                     Text(
                                       'لم يتم العثور على معلمين!',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontFamily: 'cb',
+                                      ),
                                     ),
                                     SizedBox(height: 5),
                                     Text(
@@ -232,8 +243,8 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                             ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

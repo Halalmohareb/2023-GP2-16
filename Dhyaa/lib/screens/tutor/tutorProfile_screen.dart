@@ -154,7 +154,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                   ' : التقييم ',
                   style: TextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'cb',
                   ),
                 ),
               ),
@@ -201,7 +201,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                             Text(
                               'نورة',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontFamily: 'cb',
                               ),
                             ),
                           ],
@@ -250,7 +250,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                             Text(
                               'فهد',
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontFamily: 'cb',
                               ),
                             ),
                           ],
@@ -306,7 +306,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                                   Text(
                                     'هلا',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],
@@ -357,7 +357,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                                   Text(
                                     'ريماز',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ],
@@ -398,7 +398,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
             //   child: Text(
             //     'احجز موعد مع المعلم',
             //     style: TextStyle(
-            //       fontWeight: FontWeight.bold,
+            //       fontFamily: 'cb',
             //       color: Color(0xffF2F2F2),
             //     ),
             //   ),
@@ -466,7 +466,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                       selectedTasks[index].day.toUpperCase(),
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'cb',
                         color: Colors.black,
                       ),
                     ),
@@ -476,7 +476,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                           selectedTasks[index].endTime,
                       style: TextStyle(
                         fontSize: 11,
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'cb',
                         color: Colors.black,
                       ),
                     ),

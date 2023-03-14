@@ -1,5 +1,6 @@
 import 'package:Dhyaa/screens/contactPage.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,8 @@ class _MenuState extends State<Menu> {
   }
 
   user() async {
-    var document = await FirebaseFirestore.instance.collection('Users')
+    var document = await FirebaseFirestore.instance
+        .collection('Users')
         .doc((Singleton.instance.userId));
     document.get().then((document) {
       print("hiiiiiiiiiiiiiiiiii");
@@ -57,9 +59,9 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.bgColor,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -156,7 +158,7 @@ class _MenuState extends State<Menu> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          contactPage(emil:email),
+                          contactPage(emil: email),
                     ),
                   );
                 },
@@ -181,15 +183,15 @@ class _MenuState extends State<Menu> {
                     height: 45,
                     width: MediaQuery.of(context).size.width * 0.7,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.red.shade300,
+                      borderRadius: BorderRadius.circular(10),
+                      color: theme.redColor,
                     ),
                     child: Center(
                       child: Text(
                         'تسجيل الخروج',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffF2F2F2),
+                          fontFamily: 'cb',
+                          color: theme.fillColor,
                         ),
                       ),
                     ),

@@ -42,7 +42,7 @@ class TaskTile extends StatelessWidget {
                   style: GoogleFonts.lato(
                     textStyle: const TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'cb',
                         color: Colors.white),
                   ),
                 ),

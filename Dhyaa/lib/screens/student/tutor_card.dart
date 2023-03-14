@@ -1,9 +1,11 @@
 import 'dart:convert';
-
+import 'dart:math';
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/constant.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class TutorCardWidget extends StatefulWidget {
   final UserData tutor;
@@ -39,87 +41,175 @@ class _TutorCardWidgetState extends State<TutorCardWidget> {
     return temp;
   }
 
+  lessonTypePipe2() {
+    String temp = '';
+    if (widget.tutor.isOnlineLesson) {
+      temp += 'أون لاين' + ' | ';
+    }
+    if (widget.tutor.isStudentHomeLesson) {
+      temp += 'حضوري (مكان الطالب)' + ' | ';
+    }
+    if (widget.tutor.isTutorHomeLesson) {
+      temp += 'حضوري (مكان المعلم)';
+    }
+    return temp;
+  }
+
+  String getMinPrice() {
+    var priceList = [
+      int.parse(widget.tutor.onlineLessonPrice == ''
+          ? '0'
+          : widget.tutor.onlineLessonPrice),
+      int.parse(widget.tutor.studentsHomeLessonPrice == ''
+          ? '0'
+          : widget.tutor.studentsHomeLessonPrice),
+      int.parse(widget.tutor.tutorsHomeLessonPrice == ''
+          ? '0'
+          : widget.tutor.tutorsHomeLessonPrice)
+    ];
+    priceList.removeWhere((element) => element == 0);
+    return priceList.length > 0
+        ? priceList.reduce(max).toString() +
+            '-' +
+            priceList.reduce(min).toString()
+        : '-';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        child: Card(
-          elevation: 5,
-          color: kBackgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: kBlueColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShowTutorProfilePage(
+              userData: widget.tutor,
+              myUserId: widget.myUserId,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.tutor.username,
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(
-                        color: kTitleTextColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'التخصص: ' + widget.tutor.majorSubjects,
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(color: kTitleTextColor),
-                    ),
-                    Text(
-                      'الموقع: ' + widget.tutor.location,
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(color: kTitleTextColor),
-                    ),
-                    Text(
-                      'المادة: ' + degreePipe(widget.tutor.degree),
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(color: kTitleTextColor),
+          ),
+        );
+      },
+      child: Container(
+        color: Colors.transparent,
+        width: MediaQuery.of(context).size.width,
+        height: 300,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 20,
+              left: 15,
+              child: Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                margin: EdgeInsets.only(bottom: 10),
+                width: MediaQuery.of(context).size.width - 50,
+                height: 270,
+                decoration: BoxDecoration(
+                  color: theme.bgColor,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.darkTextColor.withOpacity(0.3),
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        side: BorderSide(color: kBlueColor),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ShowTutorProfilePage(
-                              userData: widget.tutor,
-                              myUserId: widget.myUserId,
-                            ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 45),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                widget.tutor.username,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: kTitleTextColor,
+                                  fontFamily: 'cb',
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                      child: const Text(
-                        "عرض ملف المعلم",
+                          Row(
+                            children: [
+                              RatingBar.builder(
+                                initialRating:
+                                    double.parse(widget.tutor.averageRating),
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                ignoreGestures: true,
+                                itemCount: 5,
+                                itemSize: 18,
+                                itemPadding: EdgeInsets.all(0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star_rate_rounded,
+                                  color: kBlueColor,
+                                ),
+                                onRatingUpdate: (rating) {},
+                              ),
+                              SizedBox(width: 5),
+                              Text(widget.tutor.averageRating),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on, size: 18),
+                        SizedBox(width: 5),
+                        Text(
+                          widget.tutor.location + ', ' + widget.tutor.address,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.broadcast_on_personal, size: 18),
+                        SizedBox(width: 5),
+                        Expanded(child: Text(lessonTypePipe2())),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.price_change, size: 18),
+                        SizedBox(width: 5),
+                        Expanded(child: Text(getMinPrice() + '/ساعة')),
+                      ],
+                    ),
+                    Text(
+                      'التخصص: ' + widget.tutor.majorSubjects,
+                    ),
+                    Text(
+                      'المادة: ' + degreePipe(widget.tutor.degree),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
-                )
-              ],
+                ),
+              ),
             ),
-          ),
+            Positioned(
+              top: 0,
+              right: 8,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/images/avatar.png',
+                  height: 70,
+                  width: 70,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

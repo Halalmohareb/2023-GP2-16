@@ -45,7 +45,7 @@ class _ReviewsComponentState extends State<ReviewsComponent> {
                                 Text(
                                   item.reviewerName,
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'cb',
                                   ),
                                 ),
                                 SizedBox(width: 10),

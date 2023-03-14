@@ -7,7 +7,6 @@ import 'package:Dhyaa/globalWidgets/sizedBoxWidget/sized_box_widget.dart';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/provider/auth_provider.dart';
 import 'package:Dhyaa/responsiveBloc/size_config.dart';
-import 'package:Dhyaa/screens/homeScreen/home_screen.dart';
 import 'package:Dhyaa/screens/signinMethodScreen/createAccount/create_account.dart';
 import 'package:Dhyaa/theme/theme.dart';
 
@@ -84,9 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: screenWidth * 30,
                         fit: BoxFit.cover,
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 10),
                       Container(
                           height: screenWidth * 9,
                           width: double.infinity,
@@ -184,11 +181,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         tutorEmail.text,
                                         tutorPassword.text,
                                         "Tutor");
-
-                                    // Navigator.of(context).push(MaterialPageRoute(
-                                    //     builder: (context) => HomeScreen(
-                                    //           title: 'مرحبًا Tutor',
-                                    //         )));
                                   } else {
                                     Fluttertoast.showToast(
                                       msg:
@@ -208,11 +200,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         studentEmail.text,
                                         studentPassword.text,
                                         "Student");
-
-                                    // Navigator.of(context).push(MaterialPageRoute(
-                                    //     builder: (context) => HomeScreen(
-                                    //           title: 'مرحبًا Student',
-                                    //         )));
                                   } else {
                                     Fluttertoast.showToast(
                                       msg:
@@ -232,10 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                         adminEmail.text,
                                         adminPassword.text,
                                         "Admin");
-                                    // Navigator.of(context).push(MaterialPageRoute(
-                                    //     builder: (context) => HomeScreen(
-                                    //           title: 'مرحبًا Admin',
-                                    //         )));
                                   } else {
                                     Fluttertoast.showToast(
                                       msg:
@@ -251,18 +234,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                               child: Container(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  margin: EdgeInsets.symmetric(
-                                          vertical: screenWidth * 2)
-                                      .copyWith(bottom: screenWidth),
-                                  padding: EdgeInsets.all(screenWidth * 4.3),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          screenWidth * 50),
-                                      color: theme.blueColor),
-                                  child: text('تسجيل الدخول', screenWidth * 3.4,
-                                      theme.whiteColor)),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(
+                                        vertical: screenWidth * 2)
+                                    .copyWith(bottom: screenWidth),
+                                padding: EdgeInsets.all(screenWidth * 4.3),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: theme.blueColor,
+                                ),
+                                child: text(
+                                  'تسجيل الدخول',
+                                  screenWidth * 3.4,
+                                  theme.whiteColor,
+                                ),
+                              ),
                             ),
                       sizedBox(height: screenWidth * 40),
                       Align(
@@ -319,9 +306,6 @@ class _LoginScreenState extends State<LoginScreen> {
             onChanged: (value) {
               setState(() {
                 if (tutorEmail.text.length > 0 &&
-                    // (tutorEmail.text.contains('@gmail.com') ||
-                    //     tutorEmail.text.contains('@hotmail.com') ||
-                    //     tutorEmail.text.contains('@yahoo.com'))
                     isEmail(value) &&
                     !tutorEmail.text.contains(' ')) {
                   tutorEmailValid = true;
@@ -349,13 +333,16 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'abc@domain.com',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide:
-                      BorderSide(width: .3, color: theme.lightTextColor)),
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  width: .3,
+                  color: theme.lightTextColor,
+                ),
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !tutorEmailValid
@@ -392,12 +379,6 @@ class _LoginScreenState extends State<LoginScreen> {
             onSaved: (value) {
               if (tutorPassword.text.length < 7) {
                 tutorErrorTextPassword = '';
-                // if (tutorPassword.text.contains(' ')) {
-                //   tutorErrorTextPassword =
-                //       'Password should not contain blank spaces';
-                // }
-                // tutorPasswordValid = false;
-                // tutorAllFieldsValid = false;
               }
             },
             onChanged: (value) {
@@ -410,16 +391,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     tutorAllFieldsValid = true;
                   }
                 }
-                // else  if(tutorPassword.text.length < 7){
-                //   tutorErrorTextPassword =
-                //       'Password must be atleast 8 characters long';
-                // if (tutorPassword.text.contains(' ')) {
-                //   tutorErrorTextPassword =
-                //       'Password should not contain blank spaces';
-                // }
-                // tutorPasswordValid = false;
-                // tutorAllFieldsValid = false;
-                // }
               });
             },
             obscureText: showTutorPassword ? false : true,
@@ -444,18 +415,22 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: '********',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide:
-                      BorderSide(width: .3, color: theme.lightTextColor)),
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  width: .3,
+                  color: theme.lightTextColor,
+                ),
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
-                  borderSide: BorderSide(
-                      width: .6,
-                      color: !tutorPasswordValid
-                          ? theme.redColor
-                          : theme.yellowColor)),
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  width: .6,
+                  color:
+                      !tutorPasswordValid ? theme.redColor : theme.yellowColor,
+                ),
+              ),
             ),
           ),
         ),
@@ -496,11 +471,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onChanged: (value) {
               setState(() {
                 if (studentEmail.text.length > 0 &&
-                    isEmail(value)
-                    // (studentEmail.text.contains('@gmail.com') ||
-                    //     studentEmail.text.contains('@hotmail.com') ||
-                    //     studentEmail.text.contains('@yahoo.com'))
-                    &&
+                    isEmail(value) &&
                     !studentEmail.text.contains(' ')) {
                   studentEmailValid = true;
                   studentErrorTextEmail = '';
@@ -527,13 +498,13 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'abc@domain.com',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !studentEmailValid
@@ -623,13 +594,13 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: '********',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !studentPasswordValid
@@ -706,13 +677,13 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'abc@domain.com',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !adminEmailValid
@@ -802,13 +773,13 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: '********',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
-              fillColor: Colors.white24,
+              fillColor: theme.fillColor,
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
                       BorderSide(width: .3, color: theme.lightTextColor)),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(screenWidth * 200),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                       width: .6,
                       color: !adminPasswordValid

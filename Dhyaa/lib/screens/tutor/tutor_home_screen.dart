@@ -65,7 +65,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                               'مرحبا معلم ' + userData.username,
                               textAlign: TextAlign.right,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                                fontFamily: 'cb',
                               ),
                             ),
                           ),
@@ -106,7 +106,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                                     textAlign: TextAlign.center,
                                     'أوقاتك المتاحة',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ),
@@ -143,7 +143,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                                     'الدروس المحجوزة',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'cb',
                                     ),
                                   ),
                                 ),
@@ -159,7 +159,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                     Text(
                       'تحتاج الى مساعدة ؟',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'cb',
                       ),
                     ),
                     sizedBox(
@@ -178,7 +178,7 @@ class _TutorHomeScreenState extends State<TutorHomeScreen> {
                           Text(
                             'تحدث الى الدعم',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontFamily: 'cb',
                             ),
                           ),
                           Icon(Icons.headset_mic_outlined)

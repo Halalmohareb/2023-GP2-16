@@ -8,15 +8,17 @@ Widget text(
   align = TextAlign.left,
   textDecoration = TextDecoration.none,
   fontWeight = FontWeight.w400,
+  fontFamily = 'cr',
 }) {
   return Text(
     text,
     textAlign: align,
-    style: GoogleFonts.poppins(
+    style: TextStyle(
       decoration: textDecoration,
       color: textColor,
       fontSize: fontSize,
       fontWeight: fontWeight,
+      fontFamily: fontFamily,
     ),
   );
 }
@@ -26,11 +28,13 @@ TextStyle textStyle(
   textColor, {
   textDecoration = TextDecoration.none,
   fontWeight = FontWeight.w400,
+  fontFamily = 'cr',
 }) {
-  return GoogleFonts.poppins(
+  return TextStyle(
     decoration: textDecoration,
     color: textColor,
     fontSize: fontSize,
     fontWeight: fontWeight,
+    fontFamily: fontFamily,
   );
 }
