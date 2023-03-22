@@ -85,7 +85,7 @@
                       if (login_id == row.login_id && login_pass == row.password){
                           sessionStorage.setItem('is_logged_in','TRUE');
                           window.location.assign("index.html");
-                      }else
+                      }
                       alert("Login ID OR Password is Incorrect");
                       $("#login_submit_btn").attr("disabled",false);
                       $("#login_submit_btn").text("Login");
