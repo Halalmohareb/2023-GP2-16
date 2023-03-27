@@ -197,7 +197,7 @@ class _EditTutorScreenState extends State<EditTutorScreen> {
                         Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.accents[0].withOpacity(0.1),
+                              color: kBlueColor.withOpacity(0.3),
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(

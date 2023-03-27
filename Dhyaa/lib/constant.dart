@@ -10,3 +10,5 @@ var kSearchBackgroundColor = Color(0xffF2F2F2);
 var kFillColor = Color(0xffF0F0F0);
 
 String moyasarAPIKey = 'pk_test_J5DLZVGe579PKmeXYK5v4rdBFK5YQwusMFFtyMiD';
+String defaultAvatar =
+    'https://firebasestorage.googleapis.com/v0/b/dhyaa-application-87f85.appspot.com/o/files%2Favatar.png?alt=media&token=ed50a0a7-96ff-4794-adfd-ea30b01dcace';

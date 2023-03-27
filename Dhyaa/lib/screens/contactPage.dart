@@ -92,55 +92,55 @@ class _contactPageState extends State<contactPage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding (
-          padding: const EdgeInsets.symmetric(horizontal:12.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                height:25,
+                height: 25,
               ),
               Text(
                   "تواصل معنا",
-                  style:TextStyle(
+                  style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.normal,
                   )
               ),
               SizedBox(
-                height:25,
+                height: 25,
               ),
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
                   // icon: Icon(Icons.account_circle_outlined),
                   hintText: 'الاسم',
-                  hintTextDirection:TextDirection.rtl ,
-                  border:InputBorder.none,
+                  hintTextDirection: TextDirection.rtl,
+                  border: InputBorder.none,
                   filled: true,
                 ),
               ),
               SizedBox(
-                height:25,
+                height: 25,
               ),
               TextField(
                 controller: subjectController,
                 decoration: const InputDecoration(
                   //icon: Icon(Icons.subject),
                   hintText: 'الموضوع',
-                  hintTextDirection:TextDirection.rtl ,
-                  border:InputBorder.none,
+                  hintTextDirection: TextDirection.rtl,
+                  border: InputBorder.none,
                   filled: true,
                 ),
               ),
               SizedBox(
-                height:25,
+                height: 25,
               ),
               TextFormField(
                 initialValue: emaile,
-                textDirection:TextDirection.rtl ,
+                textDirection: TextDirection.rtl,
                 decoration: const InputDecoration(
-                  border:InputBorder.none,
+                  border: InputBorder.none,
                   filled: true,
                 ),
               ),
@@ -157,7 +157,7 @@ class _contactPageState extends State<contactPage> {
               //   ),
               // ),
               SizedBox(
-                height:25,
+                height: 25,
               ),
               TextField(
                 maxLines: 7,
@@ -165,23 +165,23 @@ class _contactPageState extends State<contactPage> {
                 decoration: const InputDecoration(
                   // icon: Icon(Icons.message),
                   hintText: 'الرسالة',
-                  hintTextDirection:TextDirection.rtl ,
-                  border:InputBorder.none,
+                  hintTextDirection: TextDirection.rtl,
+                  border: InputBorder.none,
                   filled: true,
                 ),
               ),
               SizedBox(
-                height:9,
+                height: 9,
               ),
               MaterialButton(
                   height: 45,
                   minWidth: double.infinity,
                   color: Color(0xff4B7FFB),
-                  onPressed: (){
-                    if(nameController.text.isEmpty ||
+                  onPressed: () {
+                    if (nameController.text.isEmpty ||
                         messagesController.text.isEmpty ||
                         //emailController.text.isEmpty ||
-                        subjectController.text.isEmpty){
+                        subjectController.text.isEmpty) {
                       ErrorAllFields = 'خانه فاضيه';
                       print(ErrorAllFields);
                       showToast("خانه فاضيه", isSuccess: false);
@@ -189,10 +189,12 @@ class _contactPageState extends State<contactPage> {
                       //   if(message.length > 0){
                       //     showToast("ادخل ايميل صحيح", isSuccess: false);
                       //     print(message);
-                    }else {
+                    } else {
                       sendEmail();
                       showToast("تم ارسال الرسالة ", isSuccess: true);
+                      validateEmail();
                     }
+
                     //  }
                   },
                   child: Text(
@@ -212,15 +214,14 @@ class _contactPageState extends State<contactPage> {
       ),
     );
   }
-  void validateEmail(String enteredEmail) {
-    if (EmailValidator.validate(enteredEmail)) {
-      setState(() {
-        message = '';
-      });
-    } else {
-      setState(() {
-        message = 'Please enter a valid email address!';
-      });
-    }
+
+  void validateEmail() {
+    setState(() {
+      message = '';
+      messagesController.text = "";
+      subjectController.text = "";
+      nameController.text = "";
+    });
   }
+
 }

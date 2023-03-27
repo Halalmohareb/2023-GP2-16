@@ -1,11 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Dhyaa/_helper/areas.dart';
 import 'package:Dhyaa/_helper/cities.dart';
 import 'package:Dhyaa/_helper/subject.dart';
+import 'package:Dhyaa/constant.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/provider/firestore.dart';
@@ -77,6 +82,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   List<String> values = [];
   List areasList = [];
+  bool imageSelected = false;
+  File img = File('');
 
   // Functions
   @override
@@ -129,7 +136,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     if (mounted) setState(() {});
   }
 
-  update() {
+  update() async {
     FocusScope.of(context).unfocus();
     checkValidation();
 
@@ -145,6 +152,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       if (!isTutorHomeLesson) {
         tutorsHomeLessonPrice.text = '';
       }
+
       var form = {
         'phone': phone.text,
         'location': location.text,
@@ -158,7 +166,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
         "studentsHomeLessonPrice": studentsHomeLessonPrice.text,
         "tutorsHomeLessonPrice": tutorsHomeLessonPrice.text,
         "bio": bio.text,
+        "avatar": userData.avatar,
       };
+      if (imageSelected) {
+        var avatarUrl = await uploadFile();
+        form['avatar'] = avatarUrl;
+      }
       FirestoreHelper.updateUserData(userData.userId, form).then((value) {
         FirestoreHelper.getMyUserData().then((value) {
           isLoading = false;
@@ -229,6 +242,127 @@ class _UpdateProfileState extends State<UpdateProfile> {
     }
   }
 
+  // =============================================
+  // =============== Profile Image ===============
+  // =============================================
+  imageBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext bc) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: theme.bgColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Wrap(
+                children: <Widget>[
+                  Center(
+                      child: Text(
+                    'اختر المصدر',
+                    style: TextStyle(fontSize: 20, fontFamily: 'cb'),
+                  )),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: ListTile(
+                        leading: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              stops: [0.5, 0.5],
+                              colors: [Colors.purple, Colors.purple.shade400],
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Icon(
+                              Icons.image_outlined,
+                              color: theme.bgColor,
+                            ),
+                          ),
+                        ),
+                        title: Text('معرض الصور'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          avatarGallery(context);
+                        }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: ListTile(
+                      leading: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: [0.5, 0.5],
+                                colors: [Colors.pink, Colors.pink.shade400])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Icon(
+                            Icons.camera_alt_outlined,
+                            color: theme.bgColor,
+                          ),
+                        ),
+                      ),
+                      title: Text('الكاميرا'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        avatarCamera(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future avatarCamera(BuildContext context) async {
+    final dynamic image = await ImagePicker.platform.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 60,
+    );
+    if (image != null) {
+      img = File(image.path);
+      imageSelected = true;
+      if (mounted) setState(() {});
+    }
+  }
+
+  Future avatarGallery(BuildContext context) async {
+    final dynamic image = await ImagePicker.platform.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 60,
+    );
+    if (image != null) {
+      img = File(image.path);
+      imageSelected = true;
+      if (mounted) setState(() {});
+    }
+  }
+
+  uploadFile() async {
+    UploadTask? uploadTask;
+    String date = DateTime.now().microsecondsSinceEpoch.toString();
+    String fileName = 'files/' + date;
+    final storageRef = FirebaseStorage.instance.ref(fileName);
+    uploadTask = storageRef.putFile(img);
+    final snapshot = await uploadTask.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    return urlDownload;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -266,6 +400,62 @@ class _UpdateProfileState extends State<UpdateProfile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () => imageBottomSheet(context),
+                    child: Center(
+                      child: Container(
+                        height: 110,
+                        width: 130,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 15,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: !imageSelected
+                                    ? CachedNetworkImage(
+                                        imageUrl: userData.avatar,
+                                        placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.file(
+                                        img,
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: kBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  Icons.edit,
+                                  color: theme.whiteColor,
+                                  size: 22,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40),
+
                   Text('رقم الجوال'),
                   SizedBox(
                     height: screenWidth * 12.5,
@@ -275,9 +465,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       countries: ["SA"],
                       maxLength: 9,
                       inputBorder: InputBorder.none,
-                      onInputValidated: (bool value) {
-                        print(value);
-                      },
                       selectorConfig: SelectorConfig(
                         selectorType: PhoneInputSelectorType.DROPDOWN,
                         trailingSpace: false,
@@ -298,17 +485,23 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         isDense: true,
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 4,
-                            vertical: screenWidth * 3),
+                          horizontal: screenWidth * 4,
+                          vertical: screenWidth * 3,
+                        ),
                         hintText: 'XXXXXXXXX',
-                        hintStyle:
-                            textStyle(screenWidth * 3.3, theme.lightTextColor),
+                        hintStyle: textStyle(
+                          screenWidth * 3.3,
+                          theme.lightTextColor,
+                        ),
                         filled: true,
                         fillColor: theme.fillColor,
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                width: .3, color: theme.lightTextColor)),
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            width: .3,
+                            color: theme.lightTextColor,
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
@@ -318,17 +511,21 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         ),
                       ),
                       keyboardType: TextInputType.numberWithOptions(
-                          signed: true, decimal: true),
-                      onSaved: (PhoneNumber number) {
-                        print('On Saved: $number');
-                      },
+                        signed: true,
+                        decimal: true,
+                      ),
                     ),
                   ),
                   (!phone.text.startsWith('5') && phone.text.isNotEmpty)
-                      ? Row(children: [
-                          text("يجب أن يبدأ الهاتف بالرقم 5", screenWidth * 2.7,
-                              theme.redColor)
-                        ])
+                      ? Row(
+                          children: [
+                            text(
+                              "يجب أن يبدأ الهاتف بالرقم 5",
+                              screenWidth * 2.7,
+                              theme.redColor,
+                            )
+                          ],
+                        )
                       : Container(),
                   SizedBox(height: 20),
                   Text('المدينة'),

@@ -10,6 +10,8 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/input_field.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+
+import '../../../../../globalWidgets/toast.dart';
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key, required this.userdate}) : super(key: key);
@@ -111,7 +113,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         .format( _selectedRepeat).indexOf(',')).toLowerCase();
     print( "today");
     print(days.add(Duration(days:1)));
-   // setHours();
+    // setHours();
     // _selectedTimeStart = timeList2[0].toString()+":00";
     // _selectedTimeEnd =timeList2[2].toString()+":00";
     final now = new DateTime.now();
@@ -486,13 +488,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
       }
     }
     if(isoklarger){
-      _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+     // _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+      showToast('وقت البداية اكبر من وقت النهايه');
     }else {
       if (isokequal) {
-        _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+      //  _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+        showToast( 'وقت البداية و وقت النهايه متساوي');
       } else {
         if (isoksameday) {
-          _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+         // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+          showToast('تمت اضافة هذا الوقت مسبقا');
         }else{
           _selectedRepeat = widget.userdate;
           for (int i = 0; i < repeatTime; i++) {
@@ -508,12 +513,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
             if (day == _selectedRepeat.weekday) {
               if (timeList.indexOf(_selectedTimeStart.toString()) >
                   timeList.indexOf(_selectedTimeEnd.toString())) {
-                _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+               // _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+                showToast('وقت البداية اكبر من وقت النهايه');
               } else {
                 if (timeList
                     .indexOf(_selectedTimeStart.toString())
                     .isEqual(timeList.indexOf(_selectedTimeEnd.toString()))) {
-                  _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+                 // _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+                  showToast( 'وقت البداية و وقت النهايه متساوي');
                 } else {
                   await FirestoreHelper.getMyTasks().then((value) {
                     value.forEach((element) async {
@@ -538,7 +545,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     });
                   });
                   if (sameDatExist == true) {
-                    _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+                   // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+                    showToast('تمت اضافة هذا الوقت مسبقا');
                     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     //   content: const Text('تمت اضافه الوقت مسبقا'),
                     // ));
@@ -558,7 +566,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     }
   }
   _showBottomwarnning(BuildContext context, String massage) {
-    Get.bottomSheet(
+
       Container(
           padding: const EdgeInsets.only(top: 4),
           height: MediaQuery.of(context).size.height * 0.32,
@@ -611,8 +619,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 height: 10,
               ),
             ],
-          )),
-    );
+          ));
+
   }
   _buildBottomSheetButton({
     required String label,
@@ -651,9 +659,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             _selectedTimeEnd.toString(),
             _selectedColor,
             _selectedRepeat.toString().substring(0,10)));
-    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //   content: const Text('Time edited Successfully.'),
-    // ));
+
     Navigator.pop(context);
   }
   //   var sameDatExist = false;
@@ -690,49 +696,5 @@ class _AddTaskPageState extends State<AddTaskPage> {
   //     Navigator.pop(context);
   //   }
   //
-  _colorChips() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        "اللون",
-        style: titleTextStle,
-      ),
-      const SizedBox(
-        height: 8,
-      ),
-      Wrap(
-        children: List<Widget>.generate(
-          3,
-              (int index) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedColor = index;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: CircleAvatar(
-                  radius: 14,
-                  backgroundColor: index == 0
-                      ? primaryClr
-                      : index == 1
-                      ? pinkClr
-                      : yellowClr,
-                  child: index == _selectedColor
-                      ? const Center(
-                    child: Icon(
-                      Icons.done,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  )
-                      : Container(),
-                ),
-              ),
-            );
-          },
-        ).toList(),
-      ),
-    ]);
-  }
+
 }

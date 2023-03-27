@@ -130,7 +130,10 @@ class _BookAppointmentState extends State<BookAppointment> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PaymentPage(appointmentData: appointmentData),
+        builder: (context) => PaymentPage(appointmentData: appointmentData,
+          myUserData:myUserData,
+          userData:userData,
+        ),
       ),
     );
   }
@@ -160,7 +163,7 @@ class _BookAppointmentState extends State<BookAppointment> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Divider(color: Colors.black, thickness: 1),
+              Divider(),
               Center(
                 child: Text.rich(
                   TextSpan(
@@ -183,7 +186,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   ),
                 ),
               ),
-              Divider(color: Colors.black, thickness: 1),
+              Divider(),
               SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.all(15),
@@ -203,7 +206,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                           padding: EdgeInsets.all(0),
                           decoration: BoxDecoration(
                             border: Border.all(color: kBlueColor),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
@@ -385,33 +388,26 @@ class _BookAppointmentState extends State<BookAppointment> {
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-          decoration: BoxDecoration(
-            color: kSearchBackgroundColor,
-            border: Border(
-              top: BorderSide(width: 0.8, color: Colors.black),
-            ),
-          ),
-          child: TextButton(
-            onPressed: () {
-              doValidation();
-            },
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              side: BorderSide(color: kBlueColor),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+              Center(
+                child: Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: TextButton(
+                    onPressed: () {
+                      doValidation();
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      side: BorderSide(color: kBlueColor),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text('الدفع والحجز'),
+                  ),
+                ),
               ),
-            ),
-            child: Text('الدفع والحجز'),
+            ],
           ),
         ),
       ),
@@ -440,9 +436,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: selectedDateIndex == index
-                          ? Colors.accents[6].withOpacity(0.2)
+                          ? kBlueColor.withOpacity(0.3)
                           : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       tasks[index].day.toUpperCase(),
@@ -537,9 +533,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: selectedTime.contains(index)
-                          ? Colors.accents[6].withOpacity(0.2)
+                          ? kBlueColor.withOpacity(0.3)
                           : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       temp['start'] + ' - ' + temp['end'],

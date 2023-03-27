@@ -117,7 +117,7 @@
           var status_reason = row.data().status_reason;
           var updated_at = row.data().updated_at;
           var action_btn = '';
-          action_btn = '<select class="form-select form-select-lg change_status" style="font-size:16px" data-user_id="'+row.id+'" aria-label="Default select example"> <option selected>Suspend ( Select Reason )</option> <option value="did not attend a class">did not attend a class</option> <option value="reported">reported</option> <option value="inappropriate behavior or use of words">inappropriate behavior or use of words</option> <option value="else">else</option> </select>';
+          action_btn = '<select class="form-select form-select-lg change_status" style="font-size:16px" data-user_id="'+row.id+'" aria-label="Default select example"> <option selected>ايقاف ( اختار سبب الايقاف )</option> <option value="did not attend a class">لم يحضر الدرس</option> <option value="reported">بلاغ</option> <option value="inappropriate behavior or use of words">سلوك او استخدام غير لاىق للاعبارات</option> <option value="else">else</option> </select>';
                   
           if (row.data().active_status){
               if (row.data().active_status == 'suspended'){

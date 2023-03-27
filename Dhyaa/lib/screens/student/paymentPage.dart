@@ -11,7 +11,9 @@ import 'package:moyasar_payment/moyasar_payment.dart';
 
 class PaymentPage extends StatefulWidget {
   final Appointment appointmentData;
-  const PaymentPage({super.key, required this.appointmentData});
+  final dynamic userData;
+  final dynamic myUserData;
+  const PaymentPage({super.key, required this.appointmentData, this.userData, this.myUserData});
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -50,6 +52,8 @@ class _PaymentPageState extends State<PaymentPage> {
           builder: (BuildContext context) => VerifyPayment(
             url: cardModel.transactionUrl,
             appointmentData: widget.appointmentData,
+            myUserData:widget.myUserData,
+            userData:widget.userData,
           ),
         ),
       );
@@ -92,7 +96,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 obscureCardNumber: true,
                 obscureCardCvv: true,
                 isHolderNameVisible: true,
-                cardBgColor: Color(0xff0F1B5B),
+                cardBgColor: kBlueColor,
                 isSwipeGestureEnabled: true,
                 onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
               ),
@@ -111,35 +115,37 @@ class _PaymentPageState extends State<PaymentPage> {
                         isExpiryDateVisible: true,
                         cardHolderName: cardHolderName,
                         expiryDate: expiryDate,
-                        themeColor: Colors.blue,
-                        textColor: Colors.black,
+                        themeColor: kBlueColor,
+                        numberValidationMessage: 'الرجاء إدخال رقم صحيح',
+                        dateValidationMessage: 'الرجاء إدخال تاريخ صالح',
+                        cvvValidationMessage: 'الرجاء إدخال رمز CVV صالح',
                         cardNumberDecoration: InputDecoration(
                           labelText: 'رقم البطاقة',
                           hintText: 'XXXX XXXX XXXX XXXX',
-                          hintStyle: const TextStyle(color: Colors.black),
-                          labelStyle: const TextStyle(color: Colors.black),
+                          hintStyle: TextStyle(fontFamily: 'cr'),
+                          labelStyle: TextStyle(fontFamily: 'cr'),
                           focusedBorder: border,
                           enabledBorder: border,
                         ),
                         expiryDateDecoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.black),
-                          labelStyle: const TextStyle(color: Colors.black),
+                          hintStyle: TextStyle(fontFamily: 'cr'),
+                          labelStyle: TextStyle(fontFamily: 'cr'),
                           focusedBorder: border,
                           enabledBorder: border,
                           labelText: 'تاريخ الانتهاء',
                           hintText: 'XX/XX',
                         ),
                         cvvCodeDecoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.black),
-                          labelStyle: const TextStyle(color: Colors.black),
+                          hintStyle: TextStyle(fontFamily: 'cr'),
+                          labelStyle: TextStyle(fontFamily: 'cr'),
                           focusedBorder: border,
                           enabledBorder: border,
                           labelText: 'الارقام السريه CVV',
                           hintText: 'XXX',
                         ),
                         cardHolderDecoration: InputDecoration(
-                          hintStyle: const TextStyle(color: Colors.black),
-                          labelStyle: const TextStyle(color: Colors.black),
+                          hintStyle: TextStyle(fontFamily: 'cr'),
+                          labelStyle: TextStyle(fontFamily: 'cr'),
                           focusedBorder: border,
                           enabledBorder: border,
                           labelText: 'إسم صاحب البطاقة',
@@ -149,27 +155,28 @@ class _PaymentPageState extends State<PaymentPage> {
                       SizedBox(height: 10),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
                           backgroundColor: theme.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 50,
-                          ),
-                          child: Text(
-                            'ادفع الآن',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          height: 45,
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: Center(
+                            child: Text(
+                              'ادفع الآن',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
                         ),
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           if (formKey.currentState!.validate()) {
-                            print('valid!');
                             byCard();
-                          } else {
-                            print('invalid!');
                           }
                         },
                       ),

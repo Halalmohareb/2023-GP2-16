@@ -1,5 +1,6 @@
 import 'package:Dhyaa/models/review.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -21,80 +22,80 @@ class _ReviewsComponentState extends State<ReviewsComponent> {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: widget.allReviews.length == 0
           ? Text("لايوجد تقييم")
-          : Column(
-              children: [
-                Column(
-                  children: List.generate(widget.allReviews.length, (index) {
-                    var item = widget.allReviews[index];
-                    return Visibility(
-                      visible: index > 2 ? showMore : true,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.accents[6].withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(10),
+          : SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(widget.allReviews.length, (index) {
+                  var item = widget.allReviews[index];
+                  return Container(
+                    height: 125,
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      color: theme.bgColor,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: theme.darkTextColor.withOpacity(0.3),
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
                         ),
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            Wrap(
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(13.3),
+                              child: Image.asset(
+                                'assets/images/avatar.png',
+                                height: 46.6,
+                                width: 46.6,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  item.reviewerName,
-                                  style: TextStyle(
-                                    fontFamily: 'cb',
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                RatingBar.builder(
-                                  initialRating: double.parse(item.stars),
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  ignoreGestures: true,
-                                  itemCount: 5,
-                                  itemSize: 15,
-                                  itemPadding: EdgeInsets.all(0),
-                                  itemBuilder: (context, _) => Icon(
+                                Row(children: [
+                                  Icon(
                                     Icons.star_rate_rounded,
                                     color: kBlueColor,
                                   ),
-                                  onRatingUpdate: (rating) {},
+                                  Text(
+                                    double.parse(item.stars).toString(),
+                                    style: TextStyle(fontFamily: 'cb'),
+                                  ),
+                                ]),
+                                Text(
+                                  item.reviewerName,
+                                  style: TextStyle(fontFamily: 'cb'),
                                 ),
                               ],
                             ),
-                            ExpandableText(
+                          ],
+                        ),
+                        Container(
+                          constraints: BoxConstraints(maxHeight: 50),
+                          child: SingleChildScrollView(
+                            child: ExpandableText(
                               item.review,
                               expandText: 'أظهر المزيد',
                               collapseText: 'أظهر أقل',
                               maxLines: 2,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
-                Visibility(
-                  visible: showMore == false && widget.allReviews.length > 3,
-                  child: TextButton(
-                    onPressed: () {
-                      showMore = !showMore;
-                      if (mounted) setState(() {});
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      side: BorderSide(color: kBlueColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                      ],
                     ),
-                    child: Text('..المزيد'),
-                  ),
-                ),
-              ],
+                  );
+                }),
+              ),
             ),
     );
   }

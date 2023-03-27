@@ -1,7 +1,6 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
@@ -168,8 +167,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
-                      color:
-                          Colors.accents[6].withOpacity(0.2).withOpacity(0.1),
+                      color: kBlueColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     margin: EdgeInsets.only(bottom: 10),
@@ -217,8 +215,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
-                      color:
-                          Colors.accents[6].withOpacity(0.2).withOpacity(0.1),
+                      color: kBlueColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     margin: EdgeInsets.only(bottom: 10),
@@ -272,9 +269,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
                           decoration: BoxDecoration(
-                            color: Colors.accents[6]
-                                .withOpacity(0.2)
-                                .withOpacity(0.1),
+                            color: kBlueColor.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           margin: EdgeInsets.only(bottom: 10),
@@ -323,9 +318,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
                           decoration: BoxDecoration(
-                            color: Colors.accents[6]
-                                .withOpacity(0.2)
-                                .withOpacity(0.1),
+                            color: kBlueColor.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           margin: EdgeInsets.only(bottom: 10),
@@ -388,22 +381,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
-            // Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(10),
-            //     color: Color(0xff1E1C61),
-            //   ),
-            //   child: Text(
-            //     'احجز موعد مع المعلم',
-            //     style: TextStyle(
-            //       fontFamily: 'cb',
-            //       color: Color(0xffF2F2F2),
-            //     ),
-            //   ),
-            // ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -413,13 +391,13 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
   _getBGClr(int? no) {
     switch (no) {
       case 0:
-        return bluishClr;
+        return kBlueColor;
       case 1:
-        return pinkClr;
+        return kOrangeColor;
       case 2:
-        return yellowClr;
+        return kYellowColor;
       default:
-        return bluishClr;
+        return kBlueColor;
     }
   }
 
@@ -455,7 +433,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
                 padding: EdgeInsets.all(5),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.accents[6].withOpacity(0.2),
+                  color: kBlueColor.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
@@ -497,36 +475,23 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
           width: 80,
           initialSelectedDate: DateTime.now(),
           selectionColor: Color.fromARGB(255, 255, 222, 124),
-          //selectedTextColor: primaryClr,
           selectedTextColor: Colors.black,
-          dateTextStyle: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
+          dateTextStyle: TextStyle(
+            fontSize: 20.0,
+            color: Colors.grey,
+            fontFamily: 'cb',
           ),
-          dayTextStyle: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.grey,
-            ),
+          dayTextStyle: TextStyle(
+            fontSize: 16.0,
+            color: Colors.grey,
           ),
-          monthTextStyle: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              fontSize: 10.0,
-              color: Colors.grey,
-            ),
+          monthTextStyle: TextStyle(
+            fontSize: 10.0,
+            color: Colors.grey,
           ),
-
           onDateChange: (date) {
-            // New date selected
-
-            setState(
-              () {
-                _selectedDate = date;
-              },
-            );
+            _selectedDate = date;
+            if (mounted) setState(() {});
           },
         ),
       ),

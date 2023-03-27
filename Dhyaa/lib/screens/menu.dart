@@ -1,7 +1,9 @@
 import 'package:Dhyaa/screens/contactPage.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
+import 'package:Dhyaa/screens/student/student_showprofile.dart';
+import 'package:Dhyaa/screens/tutor/tutor_frofile.dart';
 import 'package:Dhyaa/theme/theme.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,8 +12,6 @@ import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/signinMethodScreen/signin_method_screen.dart';
 import 'package:Dhyaa/screens/student/studentProfile_screen.dart';
 import 'package:Dhyaa/screens/update_profile.dart';
-
-import '../singlton.dart';
 
 class Menu extends StatefulWidget {
   final UserData userData;
@@ -24,35 +24,20 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   // Variables
   UserData userData = emptyUserData;
-  String email = "";
 
   // Functions
   @override
   void initState() {
     userData = widget.userData;
     getUserData();
-    user();
+    // user();
     super.initState();
   }
 
   getUserData() {
     FirestoreHelper.getMyUserData().then((value) {
       userData = value;
-      print(' @@@@@@@@@@@@ user email @@@@@@@@@@@@');
-      print(userData.email);
       if (mounted) setState(() {});
-    });
-  }
-
-  user() async {
-    var document = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc((Singleton.instance.userId));
-    document.get().then((document) {
-      print("hiiiiiiiiiiiiiiiiii");
-      //print(document.data()!['numberOfRead']);
-      email = document.data()!['email'];
-      print(email);
     });
   }
 
@@ -77,25 +62,29 @@ class _MenuState extends State<Menu> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'assets/icons/DhyaaLogo.png',
-                  height: 120,
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: CachedNetworkImage(
+                    imageUrl: userData.avatar,
+                    placeholder: (context, url) => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              SizedBox(height: 20),
-              Align(
-                alignment: Alignment.center,
+              SizedBox(height: 10),
+              Center(
                 child: Text(
                   userData.username,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontFamily: 'cb'),
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(userData.email),
-              ),
+              Center(child: Text(userData.email)),
               SizedBox(height: 50),
               ListTile(
                 shape: Border(),
@@ -106,7 +95,7 @@ class _MenuState extends State<Menu> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => StudentProfileScreen(
+                        builder: (BuildContext context) => StudentShowProfile(
                           userData: userData,
                         ),
                       ),
@@ -115,7 +104,7 @@ class _MenuState extends State<Menu> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ShowTutorProfilePage(
+                        builder: (context) => tutorFrofile(
                           userData: userData,
                           myUserId: userData.userId,
                         ),
@@ -158,7 +147,7 @@ class _MenuState extends State<Menu> {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          contactPage(emil: email),
+                          contactPage(emil: userData.email),
                     ),
                   );
                 },

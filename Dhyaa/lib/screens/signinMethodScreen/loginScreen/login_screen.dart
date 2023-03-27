@@ -85,78 +85,71 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 10),
                       Container(
-                          height: screenWidth * 9,
-                          width: double.infinity,
-                          margin: EdgeInsets.only(bottom: screenWidth * 2),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: theme.mainColor),
-                            borderRadius: BorderRadius.circular(screenWidth),
-                          ),
-                          child: Row(children: [
+                        height: screenWidth * 11,
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: screenWidth * 2),
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: theme.mainColor, width: 1.3),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
                             Expanded(
-                                child: GestureDetector(
-                              onTap: () {
-                                setState(() {
+                              child: GestureDetector(
+                                onTap: () {
                                   tutorSelected = true;
                                   studentSelected = false;
                                   adminSelected = false;
-                                });
-                              },
-                              child: Container(
+                                  if (mounted) setState(() {});
+                                },
+                                child: Container(
                                   alignment: Alignment.center,
-                                  color: tutorSelected
-                                      ? theme.blueColor
-                                      : theme.whiteColor,
+                                  decoration: BoxDecoration(
+                                    color: tutorSelected
+                                        ? theme.blueColor
+                                        : theme.whiteColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                   child: text(
-                                      'معلم',
-                                      screenWidth * 3.2,
-                                      tutorSelected
-                                          ? theme.whiteColor
-                                          : theme.blueColor)),
-                            )),
+                                    'معلم',
+                                    screenWidth * 3.2,
+                                    tutorSelected
+                                        ? theme.whiteColor
+                                        : theme.blueColor,
+                                  ),
+                                ),
+                              ),
+                            ),
                             Expanded(
-                                child: GestureDetector(
-                              onTap: () {
-                                setState(() {
+                              child: GestureDetector(
+                                onTap: () {
                                   tutorSelected = false;
                                   studentSelected = true;
                                   adminSelected = false;
-                                });
-                              },
-                              child: Container(
+                                  if (mounted) setState(() {});
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: studentSelected
+                                        ? theme.blueColor
+                                        : theme.whiteColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                   alignment: Alignment.center,
-                                  color: studentSelected
-                                      ? theme.blueColor
-                                      : theme.whiteColor,
                                   child: text(
-                                      'طالب',
-                                      screenWidth * 3.2,
-                                      studentSelected
-                                          ? theme.whiteColor
-                                          : theme.blueColor)),
-                            )),
-                            /*Expanded(
-                                child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  tutorSelected = false;
-                                  studentSelected = false;
-                                  adminSelected = true;
-                                });
-                              },
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  color: adminSelected
-                                      ? theme.blueColor
-                                      : theme.whiteColor,
-                                  child: text(
-                                      'إدارة',
-                                      screenWidth * 3.2,
-                                      adminSelected
-                                          ? theme.whiteColor
-                                          : theme.blueColor)),
-                            ))*/
-                          ])),
+                                    'طالب',
+                                    screenWidth * 3.2,
+                                    studentSelected
+                                        ? theme.whiteColor
+                                        : theme.blueColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       tutorSelected
                           ? tutorEmailPassword(screenWidth)
                           : studentSelected

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:Dhyaa/constant.dart';
 import 'package:Dhyaa/models/appointment.dart';
 import 'package:Dhyaa/models/review.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ import 'package:Dhyaa/models/task.dart';
 import '../singlton.dart';
 
 UserData emptyUserData = UserData('', '', '', '', '', '', '', '', '', false,
-    false, false, '', '', '', '', '0', '');
+    false, false, '', '', '', '', defaultAvatar, '0', '');
 
 class FirestoreHelper {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -60,8 +61,6 @@ class FirestoreHelper {
     return tasks;
   }
 
-
-
   static Future<List<Task>> getTutorTasks(UserData user) async {
     List<Task> tasks = [];
     await db
@@ -102,39 +101,39 @@ class FirestoreHelper {
 
     return userData;
   }
+
   static Future<UserData> getMyUserDatab() async {
-    UserData userDataa = emptyUserData;
+    UserData userData = emptyUserData;
     SharedPreferences value = await SharedPreferences.getInstance();
-    final User? user = FirebaseAuth.instance.currentUser;
-    final uid = user!.uid;
+
     var data = value.getString('user');
-    var data1 = await db.collection('Users').where('userId', isEqualTo: uid).snapshots();
-//     .then(
-// (value) {
-    data1.first.then((value) {
-      print("i am inside data get value");
-      print("i am inside data get value${uid}");
-      print("i am inside data get value${value.docs.length}");
-      print("i am inside data get value");
-      // });
-      if (value.docs.isNotEmpty) {
-        UserData userrr = UserData.fromMap(value.docs.first.data());
-        Singleton.instance.userData = userrr;
-        Singleton.instance.userId = uid;
-        userDataa = userrr;
-      }
-    },
+    await db
+        .collection('Users')
+        .where('email', isEqualTo: data)
+        .where("active_status", isEqualTo: "unsuspended")
+        .get()
+        .then(
+          (value) {
+        if (value.docs.isNotEmpty) {
+          print("yeeees");
+          UserData userrr = UserData.fromMap(value.docs.first.data());
+          Singleton.instance.userData = userrr;
+          Singleton.instance.userId = userrr.userId;
+          userData = userrr;
+          userData = UserData.fromMap(value.docs.first.data());
+        }
+      },
     );
-    return userDataa;
+
+    return userData;
   }
+
 
 
   static Future<bool> updateUserData(id, updateData) async {
     await db.collection('Users').doc(id).update(updateData);
     return true;
   }
-
-
 
   static Future<String> getUserType() async {
     String userType = '';
@@ -190,7 +189,9 @@ class FirestoreHelper {
     List temp = [];
     await db
         .collection('Users')
-        .where("type", isEqualTo: "Tutor") // removing the tutor its self from recommendation
+        .where("type",
+            isEqualTo:
+                "Tutor") // removing the tutor its self from recommendation
         .where("userId", isNotEqualTo: user.userId)
         .where("active_status", isEqualTo: "unsuspended")
         .get()

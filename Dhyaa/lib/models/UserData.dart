@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:Dhyaa/constant.dart';
+
 class UserData {
   late String id;
   late String email;
@@ -18,6 +20,7 @@ class UserData {
   late String studentsHomeLessonPrice;
   late String tutorsHomeLessonPrice;
   late String bio;
+  late String avatar;
   late String averageRating;
   late String active_status;
 
@@ -38,6 +41,7 @@ class UserData {
     this.studentsHomeLessonPrice,
     this.tutorsHomeLessonPrice,
     this.bio,
+    this.avatar,
     this.averageRating,
     this.active_status,
   );
@@ -58,6 +62,7 @@ class UserData {
     studentsHomeLessonPrice = obj['studentsHomeLessonPrice'] ?? '';
     tutorsHomeLessonPrice = obj['tutorsHomeLessonPrice'] ?? '';
     bio = obj['bio'] ?? '';
+    avatar = obj['avatar'] ?? defaultAvatar;
     averageRating = obj['averageRating'] ?? '0.0';
     active_status = obj['active_status'] ?? 'unsuspended';
   }
@@ -81,6 +86,7 @@ class UserData {
       map['studentsHomeLessonPrice'] = this.studentsHomeLessonPrice;
       map['tutorsHomeLessonPrice'] = this.tutorsHomeLessonPrice;
       map['bio'] = this.bio;
+      map['avatar'] = this.avatar;
       map['averageRating'] = this.averageRating;
       map['active_status'] = this.active_status;
     }

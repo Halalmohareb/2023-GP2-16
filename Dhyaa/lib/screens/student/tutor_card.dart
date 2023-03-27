@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:Dhyaa/theme/theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:Dhyaa/constant.dart';
 import 'package:Dhyaa/models/UserData.dart';
@@ -201,8 +202,12 @@ class _TutorCardWidgetState extends State<TutorCardWidget> {
               right: 8,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  'assets/images/avatar.png',
+                child: CachedNetworkImage(
+                  imageUrl: widget.tutor.avatar,
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                   height: 70,
                   width: 70,
                   fit: BoxFit.cover,

@@ -195,27 +195,29 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   ),
                   const SizedBox(height: 10),
                   Container(
-                    height: screenWidth * 8,
+                    height: screenWidth * 11,
                     width: double.infinity,
                     margin: EdgeInsets.only(bottom: screenWidth * 2),
                     decoration: BoxDecoration(
                       border: Border.all(color: theme.mainColor),
-                      borderRadius: BorderRadius.circular(screenWidth),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       children: [
                         Expanded(
                             child: GestureDetector(
                           onTap: () {
-                            setState(() {
-                              studentSelected = false;
-                            });
+                            studentSelected = false;
+                            if (mounted) setState(() {});
                           },
                           child: Container(
                               alignment: Alignment.center,
-                              color: !studentSelected
-                                  ? theme.blueColor
-                                  : theme.whiteColor,
+                              decoration: BoxDecoration(
+                                color: !studentSelected
+                                    ? theme.blueColor
+                                    : theme.whiteColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               child: text(
                                   'معلم',
                                   screenWidth * 3.2,
@@ -232,9 +234,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              color: studentSelected
-                                  ? theme.blueColor
-                                  : theme.whiteColor,
+                              decoration: BoxDecoration(
+                                color: studentSelected
+                                    ? theme.blueColor
+                                    : theme.whiteColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               child: text(
                                 'طالب',
                                 screenWidth * 3.2,
@@ -447,7 +452,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 4, vertical: screenWidth * 4),
-                hintText: 'abc@domain.com',
+                hintText: 'abc@example.com',
                 hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
                 filled: true,
                 fillColor: theme.fillColor,
@@ -622,15 +627,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               countries: ["SA"],
               maxLength: 9,
               inputBorder: InputBorder.none,
-              onInputValidated: (bool value) {
-                print(value);
-              },
               selectorConfig: SelectorConfig(
-                  selectorType: PhoneInputSelectorType.DROPDOWN,
-                  trailingSpace: false,
-                  // countryComparator:(valu,val){},
-                  leadingPadding: 0.0,
-                  showFlags: false),
+                selectorType: PhoneInputSelectorType.DROPDOWN,
+                trailingSpace: false,
+                leadingPadding: 0.0,
+                showFlags: false,
+              ),
               ignoreBlank: false,
               autoValidateMode: AutovalidateMode.disabled,
               selectorTextStyle: TextStyle(color: Colors.black),
@@ -947,7 +949,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           ),
           sizedBox(height: screenWidth * 3),
           SizedBox(
-            height: screenWidth * 16,
+            height: screenWidth * 12.5,
             width: double.infinity,
             child: DropdownButtonFormField(
               key: _tutorAddressKey,
@@ -1607,11 +1609,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             onChanged: (value) {
               setState(() {
                 if (authProvider.studentEmail.text.isNotEmpty &&
-                    isEmail(value)
-                    // (studentEmail.text.contains('@gmail.com') ||
-                    //     studentEmail.text.contains('@hotmail.com') ||
-                    //     studentEmail.text.contains('@yahoo.com'))
-                    &&
+                    isEmail(value) &&
                     !authProvider.studentEmail.text.contains(' ')) {
                   studentEmailValid = true;
                   studentErrorTextEmail = '';
@@ -1639,7 +1637,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: 'abc@domain.com',
+              hintText: 'abc@example.com',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: theme.fillColor,
@@ -1727,7 +1725,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 4, vertical: screenWidth * 4),
-              hintText: 'AB123@abc',
+              hintText: 'AB@123abc',
               hintStyle: textStyle(screenWidth * 3.3, theme.lightTextColor),
               filled: true,
               fillColor: theme.fillColor,
@@ -1766,7 +1764,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
         sizedBox(height: screenWidth * 3),
         SizedBox(
-          height: screenWidth * 16,
+          height: screenWidth * 12.5,
           width: double.infinity,
           child: InternationalPhoneNumberInput(
             onInputChanged: (PhoneNumber number) {
@@ -1879,7 +1877,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
         sizedBox(height: screenWidth * 3),
         SizedBox(
-          height: screenWidth * 16,
+          height: screenWidth * 12.5,
           width: double.infinity,
           child: DropdownButtonFormField(
             items: citiesList.map((value) {
@@ -1959,7 +1957,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
         sizedBox(height: screenWidth * 3),
         SizedBox(
-          height: screenWidth * 16,
+          height: screenWidth * 12.5,
           width: double.infinity,
           child: DropdownButtonFormField(
             key: _studentAddressKey,

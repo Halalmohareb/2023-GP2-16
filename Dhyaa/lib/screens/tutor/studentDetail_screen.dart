@@ -1,3 +1,4 @@
+import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -82,7 +83,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                   Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.accents[6].withOpacity(0.2),
+                      color: kBlueColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(

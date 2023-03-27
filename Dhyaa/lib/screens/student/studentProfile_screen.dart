@@ -108,7 +108,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         Icon(Icons.location_on, size: 18),
@@ -136,10 +136,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Divider(color: Colors.black, thickness: 1),
+              SizedBox(height: 10),
               Align(
                 alignment: Alignment.topRight,
                 child: Container(
@@ -153,11 +150,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              ReviewsComponent(allReviews: allReviews),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
               SizedBox(height: 20),
+              ReviewsComponent(allReviews: allReviews),
+              SizedBox(height: 30),
             ],
           ),
         ),

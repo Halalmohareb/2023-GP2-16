@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:Dhyaa/_helper/loading.dart';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/globalWidgets/toast.dart';
@@ -11,13 +11,15 @@ import 'package:Dhyaa/screens/chat_screen.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
 import 'package:Dhyaa/screens/student/studentProfile_screen.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
-import 'package:Dhyaa/theme/studentTopBarNavigator.dart';
 import 'package:Dhyaa/theme/theme.dart';
+import 'package:Dhyaa/theme/topAppBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart' as intl;
 import '../responsiveBloc/size_config.dart';
+import'package:http/http.dart' as http;
+
 
 List<Appointment> allAppointments = [];
 
@@ -33,6 +35,9 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   UserData userData = emptyUserData;
   var screenWidth = SizeConfig.widthMultiplier;
   bool upcomingTab = true;
+  String rseverToken = "";
+  String usertoken = "";
+  String lastMessageId = "";
 
   // Functions
   @override
@@ -44,6 +49,45 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
     });
     super.initState();
   }
+
+  sendNotification(String title, String token, String messages)async{
+
+
+    final data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '0',
+      'status': 'done',
+      'message': title,
+      "title_loc_key": "notification_title",
+      "body_loc_key": "notification_message"
+    };
+
+    try{
+      http.Response response = await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),headers: <String,String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=AAAAIVO33Gg:APA91bH0Bus7E6OwJi2bR3Qoj3clfScVv7_SP1PFhLZYCQPI5ys659fZC6mjJ3oNkMEgGszPQdBOHZBw6Znn3FqZy6W2-zgEj_PkHY0wbMC3RYA2HnDfB-GrX0_d7NWomod6Nddg1bHd'
+      },
+          body: jsonEncode(<String,dynamic>{
+            'notification': <String,dynamic> {'title': title,'body': messages},
+            'priority': 'high',
+            'data': data,
+            'to': '$token'
+          })
+      );
+
+
+      if(response.statusCode == 200){
+        print("Yeh notificatin is sended");
+      }else{
+        print("Error");
+      }
+
+    }catch(e){
+
+    }
+
+  }
+
 
   loadData() {
     if (upcomingTab) {
@@ -125,9 +169,31 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                   child: Text('لا، تراجع'),
                 ),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(context, rootNavigator: true).pop();
                     doCancel(index);
+                    DocumentSnapshot snap =
+                        await FirebaseFirestore.instance.collection("Users").doc(allAppointments[index].studentId).collection('token').doc(allAppointments[index].studentId).get();
+                    rseverToken = snap['token'];
+                    print(rseverToken);
+
+                    DocumentSnapshot snap2 =
+                        await FirebaseFirestore.instance.collection("Users").doc(allAppointments[index].tutorId).collection('token').doc(allAppointments[index].tutorId).get();
+                    usertoken = snap2['token'];
+                    print(usertoken);
+
+                    print("to  get token");
+                    print( allAppointments[index].id);
+                    print(rseverToken);
+
+                    sendNotification("ضياء",
+                        rseverToken,
+                        "" +allAppointments[index].tutorName+" تم الغاء موعدك مع المعلم ");
+
+                    sendNotification("ضياء",
+                        usertoken,
+                        "" +allAppointments[index].studentName+" تم الغاء موعدك مع الطالب");
+
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -286,28 +352,12 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Directionality(
-                textDirection: TextDirection.ltr,
-                child: Row(
-                  children: [
-                    Navigator.canPop(context)
-                        ? Container(
-                            width: 30,
-                            child: IconButton(
-                              padding: EdgeInsets.only(left: 15, right: 0),
-                              onPressed: () => Navigator.pop(context),
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.black,
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Expanded(child: StudentTopBarNavigator()),
-                  ],
-                ),
+              Row(
+                children: [
+                  Expanded(child: TopAppBar(isHome: false)),
+                ],
               ),
-              Divider(color: Colors.black, thickness: 1),
+              SizedBox(height: 20),
               Center(
                 child: Text(
                   'مواعيد دروسك',
@@ -317,12 +367,11 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
               Center(
                 child: Container(
-                  height: screenWidth * 8,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  margin: EdgeInsets.only(bottom: screenWidth * 2),
+                  height: screenWidth * 10,
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     border: Border.all(color: theme.mainColor),
                     borderRadius: BorderRadius.circular(screenWidth),
@@ -333,7 +382,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                         child: GestureDetector(
                           onTap: () {
                             upcomingTab = false;
-                            setState(() {});
+                            if (mounted) setState(() {});
                             loadData();
                           },
                           child: Container(
@@ -353,7 +402,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                         child: GestureDetector(
                           onTap: () {
                             upcomingTab = true;
-                            setState(() {});
+                            if (mounted) setState(() {});
                             loadData();
                           },
                           child: Container(
@@ -373,11 +422,28 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
               Padding(
                 padding: EdgeInsets.all(15),
                 child: allAppointments.isEmpty
-                    ? Center(child: Text('لم يتم العثور على مواعيد'))
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/calendar.png',
+                            ),
+                            Text(
+                              'لا يوجد طلب حجوزات بعد!',
+                              style: TextStyle(
+                                fontFamily: 'cb',
+                                fontSize: 16,
+                                color: kTitleTextColor,
+                              ),
+                            ),
+                            Text('لم تقبل أي حجز مع أي طالب.'),
+                          ],
+                        ),
+                      )
                     : Column(
                         children:
                             List.generate(allAppointments.length, (index) {
@@ -392,16 +458,12 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                             ),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: upcomingTab
-                                    ? kBlueColor.withOpacity(0.1)
-                                    : Colors.accents[0].withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Column(
                                   children: [
-                                    SizedBox(height: 10),
                                     ListTile(
                                       title: GestureDetector(
                                         onTap: () {
@@ -441,9 +503,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                           userData.type == 'Student'
                                               ? item.tutorName
                                               : item.studentName,
-                                          style: const TextStyle(
-                                            fontFamily: 'cb',
-                                          ),
+                                          style: TextStyle(fontFamily: 'cb'),
                                         ),
                                       ),
                                       subtitle: Container(
@@ -459,7 +519,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                   style: TextStyle(
                                                     color: item.status == 'ملغي'
                                                         ? Colors.red[700]
-                                                        : Colors.green[700],
+                                                        : Colors.grey,
                                                     fontFamily: 'cb',
                                                   ),
                                                 ),
@@ -502,7 +562,6 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 10),
                                     Visibility(
                                       visible:
                                           item.status == 'مؤكد', // if Confirmed
@@ -511,22 +570,6 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                             MainAxisAlignment.spaceAround,
                                         children: [
                                           Spacer(),
-                                          // TextButton(
-                                          //   onPressed: () {
-                                          //     showCompleteAlert(context, index);
-                                          //   },
-                                          //   style: TextButton.styleFrom(
-                                          //     padding: EdgeInsets.symmetric(
-                                          //         horizontal: 15),
-                                          //     side:
-                                          //         BorderSide(color: kBlueColor),
-                                          //     shape: RoundedRectangleBorder(
-                                          //       borderRadius:
-                                          //           BorderRadius.circular(30),
-                                          //     ),
-                                          //   ),
-                                          //   child: Text('انتهى الدرس'),
-                                          // ),
                                           TextButton(
                                             onPressed: () {
                                               Navigator.push(
@@ -542,7 +585,6 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                             'Student'
                                                         ? item.tutorName
                                                         : item.studentName,
-                                                    //userData: userData,//(i dont know why this line is causing an error )
                                                   ),
                                                 ),
                                               );
@@ -571,7 +613,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                   BorderSide(color: kBlueColor),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(30),
+                                                    BorderRadius.circular(10),
                                               ),
                                             ),
                                             child: Text('إلغاء الموعد'),
@@ -600,12 +642,13 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                             },
                                             style: TextButton.styleFrom(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 15),
+                                                horizontal: 15,
+                                              ),
                                               side:
                                                   BorderSide(color: kBlueColor),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(30),
+                                                    BorderRadius.circular(10),
                                               ),
                                             ),
                                             child: Text('تقييم'),
@@ -613,7 +656,6 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 10),
                                   ],
                                 ),
                               ),
@@ -751,7 +793,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
       textDirection: TextDirection.rtl,
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 350,
+        height: 400,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -770,9 +812,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                     (userData.type == 'Student'
                         ? item.tutorName
                         : item.studentName),
-                style: const TextStyle(
-                  fontFamily: 'cb',
-                ),
+                style: TextStyle(fontFamily: 'cb'),
               ),
             ),
             SizedBox(height: 10),
@@ -858,7 +898,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   side: BorderSide(color: kBlueColor),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: Text('تقييم'),
@@ -888,16 +928,12 @@ class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
         children: [
           Text(
             '! رائع',
-            style: TextStyle(
-              fontFamily: 'cb',
-            ),
+            style: TextStyle(fontFamily: 'cb'),
           ),
           SizedBox(height: 5),
           Text(
             'تم التقييم بنجاح',
-            style: TextStyle(
-              fontFamily: 'cb',
-            ),
+            style: TextStyle(fontFamily: 'cb'),
           ),
           SizedBox(height: 20),
           TextButton(
@@ -908,7 +944,7 @@ class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               side: BorderSide(color: kBlueColor),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: Text('تم'),

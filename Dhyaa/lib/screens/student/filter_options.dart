@@ -11,13 +11,15 @@ import '../../responsiveBloc/size_config.dart';
 
 class FilterOptions extends StatefulWidget {
   final List<UserData> tutorList;
+  final dynamic oldData;
   final ValueChanged onChange;
-  final ValueChanged onRest;
+  final ValueChanged onReset;
   const FilterOptions({
     super.key,
     required this.tutorList,
+    required this.oldData,
     required this.onChange,
-    required this.onRest,
+    required this.onReset,
   });
 
   @override
@@ -206,8 +208,20 @@ class _FilterOptionsState extends State<FilterOptions> {
         filteredList.add(tutor);
       }
     }
-
-    widget.onChange(filteredList);
+    var temp = {
+      "priceRange": priceRange,
+      "location": location.text,
+      "address": address.text,
+      "isOnlineLesson": isOnlineLesson,
+      "isStudentHomeLesson": isStudentHomeLesson,
+      "isTutorHomeLesson": isTutorHomeLesson,
+      "star1": star1,
+      "star2": star2,
+      "star3": star3,
+      "star4": star4,
+      "star5": star5,
+    };
+    widget.onChange({"list": filteredList, "filterData": temp});
     Navigator.pop(context);
   }
 
@@ -221,8 +235,41 @@ class _FilterOptionsState extends State<FilterOptions> {
     isOnlineLesson = true;
     isStudentHomeLesson = false;
     isTutorHomeLesson = false;
-    widget.onRest('reset');
+    widget.onReset('reset');
     if (mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    oldDataSetter();
+    super.initState();
+  }
+
+  oldDataSetter() async {
+    if (widget.oldData != null) {
+      priceRange = widget.oldData['priceRange'];
+      location.text = widget.oldData['location'];
+      if (location.text.isNotEmpty) {
+        var tempCity = await cities
+            .where((element) => (element['name_ar'] == location.text));
+        var tempArea = await areas.where(
+            (element) => (element['city_id'] == tempCity.first['city_id']));
+        addressKey.currentState?.reset();
+        areasList.clear();
+        areasList.addAll(tempArea);
+        address.text = widget.oldData['address'];
+      }
+
+      isOnlineLesson = widget.oldData['isOnlineLesson'];
+      isStudentHomeLesson = widget.oldData['isStudentHomeLesson'];
+      isTutorHomeLesson = widget.oldData['isTutorHomeLesson'];
+      star1 = widget.oldData['star1'];
+      star2 = widget.oldData['star2'];
+      star3 = widget.oldData['star3'];
+      star4 = widget.oldData['star4'];
+      star5 = widget.oldData['star5'];
+      if (mounted) setState(() {});
+    }
   }
 
   @override
@@ -272,7 +319,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: kBlueColor.withOpacity(0.1),
+                    color: theme.fillColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -315,7 +362,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: kBlueColor.withOpacity(0.1),
+                    color: theme.fillColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -428,7 +475,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: kBlueColor.withOpacity(0.1),
+                    color: theme.fillColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -529,7 +576,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: kBlueColor.withOpacity(0.1),
+                    color: theme.fillColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(

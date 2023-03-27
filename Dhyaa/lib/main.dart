@@ -1,3 +1,4 @@
+import 'package:Dhyaa/screens/services/local_push_notification.dart';
 import 'package:Dhyaa/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,19 @@ import 'package:Dhyaa/screens/splashScreen/splash_screen.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/db/db_helper.dart';
 import 'responsiveBloc/size_config.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+
+Future<void> _firebaseMessagingBackgroundHandler (RemoteMessage message) async{
+  //
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseMessaging.instance.getInitialMessage();
+  LocalNotificationService.initialize();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   WidgetsFlutterBinding.ensureInitialized();
   await DBHelper.initDb();
   await GetStorage.init();

@@ -39,16 +39,18 @@ class _TutorHomepageState extends State<TutorHomepage> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: '',
+            icon: Icon(Icons.chat_rounded),
+            label: 'محادثة',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
+            icon: Icon(Icons.home_filled),
+            label: 'الرئيسية',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '',
+            icon: Icon(
+              Icons.calendar_month_rounded,
+            ),
+            label: 'دروسك',
           ),
         ],
         currentIndex: _currentIndex,

@@ -5,6 +5,7 @@ import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 
 import '../signinMethodScreen/loginScreen/login_screen.dart';
+import '../tutor/setAvaliable/ui/theme.dark.dart';
 
 class EditStudentPage extends StatefulWidget {
   const EditStudentPage({super.key});
@@ -113,7 +114,7 @@ class _EditStudentPageState extends State<EditStudentPage> {
                         Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.accents[6].withOpacity(0.2),
+                              color: kBlueColor.withOpacity(0.3),
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(

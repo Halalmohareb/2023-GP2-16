@@ -14,10 +14,9 @@ class StudentHomepage extends StatefulWidget {
 }
 
 class _StudentHomepageState extends State<StudentHomepage> {
-  int count = 0;
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  int _currentIndex = 1;
+  int tabIndex = 1;
   final List _children = [
     ChatPage(),
     FindTutorScreen(),
@@ -26,7 +25,7 @@ class _StudentHomepageState extends State<StudentHomepage> {
 
   void onTabTapped(int index) {
     navigatorKey.currentState?.popUntil((route) => route.isFirst);
-    _currentIndex = index;
+    tabIndex = index;
     if (mounted) setState(() {});
   }
 
@@ -36,22 +35,27 @@ class _StudentHomepageState extends State<StudentHomepage> {
       backgroundColor: kBackgroundColor,
       body: CustomNavigator(
         navigatorKey: navigatorKey,
-        home: _children[_currentIndex],
+        home: _children[tabIndex],
         pageRoute: PageRoutes.materialPageRoute,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          new BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: '',
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_rounded),
+            label: 'محادثة',
           ),
-          new BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'الرئيسية',
           ),
-          new BottomNavigationBarItem(icon: Icon(Icons.list), label: '')
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.calendar_month_rounded,
+            ),
+            label: 'دروسك',
+          ),
         ],
-        currentIndex: _currentIndex,
+        currentIndex: tabIndex,
         onTap: onTabTapped,
       ),
     );

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/pages/TaskTile.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
@@ -27,10 +26,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DateTime _selectedDate = DateTime.parse(DateTime.now().toString());
+  DateTime _selectedDate = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
   // DateTime jHijri = DateTime.parse(JHijri.now().toString());
 
-
+  DateTime Fday = DateTime.now().add(Duration(days:1));
   final _taskController = Get.put(TaskController());
 
   // late var notifyHelper;
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 12,
             ),
-           _showTasks(),
+            _showTasks(),
           ],
         ),
       ),
@@ -109,68 +109,27 @@ class _HomePageState extends State<HomePage> {
       child:
       TableCalendar(
         locale: "ar",
-        firstDay: DateTime.now(),
+        firstDay:  DateTime.now().add(Duration(days:1)),
         lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now(),
-          calendarFormat: format ,
+        focusedDay: DateTime.now().add(Duration(days:1)),
+        calendarFormat: format ,
 
         onFormatChanged: (CalendarFormat _format){
-         setState(() {
-           format = _format;
-         });
+          setState(() {
+            format = _format;
+          });
         },
+
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDate, day);
         },
-        onDaySelected: (selectedDay, _focusedDay) {
+        onDaySelected: (selectedDay, focusedDay) {
           setState(() {
-            _selectedDate = selectedDay;
-            _selectedDate = _focusedDay; // update `_focusedDay` here as well
+            _selectedDate = focusedDay;
+            _selectedDate = selectedDay; // update `_focusedDay` here as well
           });
         },
       ),
-      // DatePicker(
-      //   locale: "ar",
-      //   DateTime.now(),
-      //   height: 130,
-      //   width: 80,
-      //   initialSelectedDate: DateTime.now(),
-      //   selectionColor: primaryClr,
-      //   //selectedTextColor: primaryClr,
-      //   selectedTextColor: Colors.white,
-      //   dateTextStyle: GoogleFonts.lato(
-      //     textStyle: const TextStyle(
-      //       fontSize: 20.0,
-      //       fontWeight: FontWeight.w600,
-      //       color: Colors.grey,
-      //       //   locale: const Locale("ar","AR"),
-      //     ),
-      //   ),
-      //   dayTextStyle: GoogleFonts.lato(
-      //     textStyle: const TextStyle(
-      //       fontSize: 16.0,
-      //       color: Colors.grey,
-      //       //  locale: const Locale("ar","AR"),
-      //     ),
-      //   ),
-      //   monthTextStyle: GoogleFonts.lato(
-      //     textStyle: const TextStyle(
-      //       fontSize: 15.0,
-      //       color: Colors.grey,
-      //       //  locale: const Locale("ar","AR"),
-      //     ),
-      //   ),
-      //   onDateChange: (date) {
-      //     // New date selected
-      //     setState(
-      //       () {
-      //         _selectedDate = date;
-      //         print("dedededed" );
-      //         print( _selectedDate.toString().substring(0,10));
-      //       },
-      //     );
-      //   },
-      // ),
     );
   }
 
@@ -229,50 +188,50 @@ class _HomePageState extends State<HomePage> {
         // if (!i) {
         //   return Container(child: Text("لايوجد وقت متاح "));
         // } else {
-          return ListView.builder(
+        return ListView.builder(
 
-              itemCount: _taskController.taskList.length,
-              itemBuilder: (_, index) {
-                Task task = _taskController.taskList[index];
-                // print("task.toJson()");
-                int v = (repeatList2.indexOf(
-                    DateFormat('EEEE').format(_selectedDate).toLowerCase()));
+            itemCount: _taskController.taskList.length,
+            itemBuilder: (_, index) {
+              Task task = _taskController.taskList[index];
+              // print("task.toJson()");
+              int v = (repeatList2.indexOf(
+                  DateFormat('EEEE').format(_selectedDate).toLowerCase()));
 
-                 if (( _selectedDate.toString().substring(0,10))==task.day){
-              //  if (task.day == repeatList[v]) {
-                  return AnimationConfiguration.staggeredList(
-                      position: index,
-                      child: SlideAnimation(
-                          child: FadeInAnimation(
-                              child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+              if (( _selectedDate.toString().substring(0,10))==task.day){
+                //  if (task.day == repeatList[v]) {
+                return AnimationConfiguration.staggeredList(
+                    position: index,
+                    child: SlideAnimation(
+                        child: FadeInAnimation(
+                            child: Row(
                               children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      print("tapped");
-                                      _showBottomSheet(context, task);
-                                    },
-                                    child: TaskTile(task))
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            print("tapped");
+                                            _showBottomSheet(context, task);
+                                          },
+                                          child: TaskTile(task))
+                                    ],
+                                  ),
+                                ),
                               ],
-                            ),
-                          ),
-                        ],
-                      ))));
-                  // } else {
-                  //   if (i) {
-                  //     print("hi");
-                  //     return Container(
-                  //       child: Text("hi")
-                  //     );
-                } else {
-                  return Container();
-                }
-                //   }
-              });
-      //  }
+                            ))));
+                // } else {
+                //   if (i) {
+                //     print("hi");
+                //     return Container(
+                //       child: Text("hi")
+                //     );
+              } else {
+                return Container();
+              }
+              //   }
+            });
+        //  }
       }),
     );
   }
@@ -412,19 +371,19 @@ class _HomePageState extends State<HomePage> {
                 width: 2,
                 color: isClose == true
                     ? Get.isDarkMode
-                        ? Colors.grey[600]!
-                        : Colors.grey[300]!
+                    ? Colors.grey[600]!
+                    : Colors.grey[300]!
                     : clr!),
             borderRadius: BorderRadius.circular(24),
             color: isClose ? Colors.transparent : clr,
           ),
           child: Center(
               child: Text(
-            label,
-            style: isClose
-                ? titleTextStle
-                : titleTextStle.copyWith(color: Colors.white),
-          )),
+                label,
+                style: isClose
+                    ? titleTextStle
+                    : titleTextStle.copyWith(color: Colors.white),
+              )),
         ));
   }
 }
@@ -432,6 +391,6 @@ class _HomePageState extends State<HomePage> {
 display(String s) {
   Center(
       child: Text(
-    s,
-  ));
+        s,
+      ));
 }

@@ -1,16 +1,46 @@
+// child: Container(
+// alignment: Alignment.center,
+// width: double.infinity,
+// margin:
+// EdgeInsets.symmetric(vertical: screenWidth * 2, horizontal: screenWidth*4)
+// .copyWith(bottom: 0),
+// padding: EdgeInsets.symmetric(
+// horizontal: screenWidth * 4,
+// vertical: screenWidth * 3),
+// decoration: BoxDecoration(
+// border: Border.all(color: theme.mainColor),
+// borderRadius: BorderRadius.circular(10),
+// color: theme.blueColor,
+// ),
+// child: text(
+// 'تحديث',
+// screenWidth * 3.9,
+// theme.whiteColor,
+// ),
+// ),
+
+
+
+
+
+
+
 import 'dart:convert';
 import 'dart:math';
+import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/models/review.dart';
+import 'package:Dhyaa/responsiveBloc/size_config.dart';
 import 'package:Dhyaa/screens/reviews_component.dart';
 import 'package:Dhyaa/screens/student/bookAppointment.dart';
 import 'package:Dhyaa/theme/theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
-import '../../singlton.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import '../chat_screen.dart';
 
 class ShowTutorProfilePage extends StatefulWidget {
@@ -30,6 +60,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   UserData myUserData = emptyUserData;
   List<Task> tasks = [];
   List<Review> allReviews = [];
+  int tabIndex = 0;
 
   @override
   void initState() {
@@ -49,7 +80,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       for (var task in value) {
         var s = task.day.split('-');
         DateTime d =
-            DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
+        DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         bool isAfter = d.isAfter(DateTime.now());
         if (isAfter) tasks.add(task);
       }
@@ -79,19 +110,22 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       }
     }
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
+      padding: EdgeInsets.symmetric(horizontal: 5),
       child: Wrap(
         children: List.generate(temp.length, (index) {
           var item = temp[index];
           return Container(
-            height: 30,
+            height: 25,
             margin: EdgeInsets.symmetric(horizontal: 5),
             child: TextButton(
               onPressed: null,
               style: TextButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                backgroundColor: theme.fillColor,
+                backgroundColor: theme.fillLightColor,
                 side: BorderSide(color: kBlueColor),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -121,6 +155,8 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = SizeConfig.widthMultiplier;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -145,14 +181,61 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Divider(color: Colors.black, thickness: 1),
+              Divider(color: Colors.grey, thickness: 1),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: userData.avatar,
+                            placeholder: (context, url) =>
+                                Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                            height: 70,
+                            width: 70,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 5,
+                          ),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: kBlueColor.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: getMinPrice(userData),
+                                  style: TextStyle(
+                                    fontFamily: 'cb',
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' ريال/ساعة',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           userData.username,
@@ -162,51 +245,53 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           ),
                         ),
                         SizedBox(width: 10),
-                        RatingBar.builder(
-                          initialRating: double.parse(userData.averageRating),
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          ignoreGestures: true,
-                          itemCount: 5,
-                          itemSize: 25,
-                          itemPadding: EdgeInsets.all(0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star_rate_rounded,
-                            color: kBlueColor,
-                          ),
-                          onRatingUpdate: (rating) {},
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          userData.averageRating,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'cb',
-                          ),
+                        Row(
+                          children: [
+                            RatingBar.builder(
+                              initialRating:
+                              double.parse(userData.averageRating),
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              ignoreGestures: true,
+                              itemCount: 5,
+                              itemSize: 20,
+                              itemPadding: EdgeInsets.all(0),
+                              itemBuilder: (context, _) =>
+                                  Icon(
+                                    Icons.star_rate_rounded,
+                                    color: kBlueColor,
+                                  ),
+                              onRatingUpdate: (rating) {},
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              userData.averageRating,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'cb',
+                                color: kBlueColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
                     Row(
                       children: [
-                        Icon(Icons.location_on, size: 18),
+                        Icon(Icons.location_on_outlined, size: 16),
                         SizedBox(width: 5),
                         Text(
                           userData.location + ', ' + userData.address,
-                          style: TextStyle(fontSize: 15),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Icon(Icons.broadcast_on_personal, size: 18),
+                        Icon(Icons.broadcast_on_personal_outlined, size: 16),
                         SizedBox(width: 5),
                         Expanded(
-                          child: Text(
-                            lessonTypePipe2(),
-                            style: TextStyle(fontSize: 15),
-                          ),
+                          child: Text(lessonTypePipe2()),
                         ),
                       ],
                     ),
@@ -215,127 +300,60 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         children: [
                           TextSpan(
                             text: 'التخصص: ',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'cb',
-                            ),
+                            style: TextStyle(fontFamily: 'cb'),
                           ),
                           TextSpan(text: userData.majorSubjects),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'نبذه عني: ',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'cb',
-                            ),
-                          ),
-                          TextSpan(text: userData.bio),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              Divider(
-                color: Colors.black,
-                thickness: 1,
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'المواعيد المتاحة:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'cb',
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: _showTasks(),
-              ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'المواد:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'cb',
-                    ),
-                  ),
-                ),
-              ),
               SizedBox(height: 10),
               degreePipe(),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'التقييم:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'cb',
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              ReviewsComponent(allReviews: allReviews),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 10),
-              Center(
-                child: Container(
-                  width: 170,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatScreen(
-                            friendId: userData.userId,
-                            friendName: userData.username,
+              SizedBox(height: 5),
+              Container(
+                height: tabHight(),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: DefaultTabController(
+                  initialIndex: 0,
+                  length: 3,
+                  child: Column(
+                    children: [
+                      TabBar(
+                        labelColor: kBlueColor,
+                        onTap: (value) {
+                          tabIndex = value;
+                          if (mounted) setState(() {});
+                        },
+                        tabs: <Widget>[
+                          Tab(
+                            text: 'نبذه عني',
                           ),
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      side: BorderSide(color: kBlueColor),
-                      backgroundColor: theme.fillColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                          Tab(
+                            text: 'التوفر',
+                          ),
+                          Tab(
+                            text: 'التقييم',
+                          ),
+                        ],
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.chat_rounded, size: 18),
-                        SizedBox(width: 10),
-                        Text("تواصل مع المعلم"),
-                      ],
-                    ),
+                      Expanded(
+                        child: TabBarView(
+                          physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            Text(
+                              userData.bio == '' ? 'غير متوفرة' : userData.bio,
+                            ),
+                            showAvailability(),
+                            ReviewsComponent(allReviews: allReviews),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -357,75 +375,90 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: recommendedWidget,
               ),
-              SizedBox(height: 10),
-              Divider(color: Colors.black, thickness: 1),
-              SizedBox(height: 50),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: widget.myUserId == widget.userData.userId
-          ? Container(height: 0)
-          : Directionality(
-              textDirection: TextDirection.rtl,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: kSearchBackgroundColor,
-                  border: Border(
-                    top: BorderSide(width: 0.8, color: Colors.black),
-                  ),
-                ),
+              SizedBox(height: 20),
+              widget.myUserId == widget.userData.userId
+                  ? Container(height: 0)
+                  : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                      onPressed: () {
+                    GestureDetector(
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BookAppointment(
-                              userData: userData,
-                              myUserData: myUserData,
-                            ),
+                            builder: (context) =>
+                                BookAppointment(
+                                    userData: userData,
+                                    myUserData: myUserData),
                           ),
                         );
                       },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        side: BorderSide(color: kBlueColor),
-                        backgroundColor: theme.fillColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 2.3,
+                        margin: EdgeInsets.symmetric(
+                            vertical: screenWidth * 2)
+                            .copyWith(bottom: screenWidth),
+                        padding: EdgeInsets.all(screenWidth * 2.5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: theme.blueColor),
+                        child: text(
+                          'احجز موعدًا',
+                          screenWidth * 3.4,
+                          theme.whiteColor,
                         ),
                       ),
-                      child: Text('احجز موعد مع المعلم'),
                     ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: getMinPrice(userData),
-                            style: TextStyle(
-                              fontFamily: 'cb',
-                            ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ChatScreen(
+                                    friendId: userData.userId,
+                                    friendName: userData.username),
                           ),
-                          TextSpan(
-                            text: ' ريال/ساعة',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width / 2.3,
+                        margin: EdgeInsets.symmetric(
+                            vertical: screenWidth * 2)
+                            .copyWith(bottom: 0),
+                        padding: EdgeInsets.all(screenWidth * 2.5),
+                        decoration: BoxDecoration(
+                          color: theme.fillColor,
+                          border: Border.all(color: theme.mainColor),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: text(
+                          "تواصل مع المعلم",
+                          screenWidth * 3.4,
+                          theme.mainColor,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
+              SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
     );
   }
-
-  Widget recommendedWidget = Container();
 
   degreeTextPipe(var val) {
     var temp = val;
@@ -469,10 +502,11 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       int.parse(
           tutor.tutorsHomeLessonPrice == '' ? '0' : tutor.tutorsHomeLessonPrice)
     ];
-    // excluding (0) from the minimum comparison
     priceList.removeWhere((element) => element == 0);
     return priceList.length > 0 ? priceList.reduce(min).toString() : '-';
   }
+
+  Widget recommendedWidget = Container();
 
   getRecommendedTutors() {
     FirestoreHelper.getRecommendedTutors(userData).then((tutors) {
@@ -483,111 +517,131 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
           children: List.generate(tutors.length, (index) {
             UserData _tutor = tutors[index];
             return Container(
-              width: MediaQuery.of(context).size.width / 2.2,
+              height: 320,
               margin: EdgeInsets.symmetric(horizontal: 5),
-              padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
-              constraints: BoxConstraints(
-                minHeight: 220,
-              ),
-              decoration: BoxDecoration(
-                color: kBlueColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 1.5,
+              child: Stack(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _tutor.username,
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                          color: kTitleTextColor,
-                          fontFamily: 'cb',
-                        ),
-                      ),
-                      RatingBar.builder(
-                        initialRating: double.parse(_tutor.averageRating),
-                        minRating: 0,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        ignoreGestures: true,
-                        itemCount: 5,
-                        itemSize: 15,
-                        itemPadding: EdgeInsets.all(0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star_rate_rounded,
-                          color: kBlueColor,
-                        ),
-                        onRatingUpdate: (rating) {},
-                      ),
-                      SizedBox(height: 5),
-                      Wrap(
-                        children: [
-                          Icon(Icons.location_on, size: 15),
-                          SizedBox(width: 5),
-                          Text(
-                            _tutor.location + ', ' + _tutor.address,
-                            style: TextStyle(fontSize: 13),
+                  Positioned(
+                    top: 40,
+                    child: Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 1.5,
+                      padding: EdgeInsets.only(top: 15, left: 10, right: 10),
+                      height: 270,
+                      decoration: BoxDecoration(
+                        color: theme.bgColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.darkTextColor.withOpacity(0.3),
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
                           ),
                         ],
                       ),
-                      Wrap(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.broadcast_on_personal, size: 15),
-                          SizedBox(width: 5),
+                          SizedBox(height: 30),
                           Text(
-                            lessonTypePipe(_tutor),
-                            style: TextStyle(fontSize: 13),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'المادة: ' + degreeTextPipe(_tutor.degree),
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      Text(
-                        'السعر يبدأ من:  ' +
-                            getMinPrice(_tutor) +
-                            ' ' +
-                            'ريال/ساعة',
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          side: BorderSide(color: kBlueColor),
-                          backgroundColor: theme.fillColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ShowTutorProfilePage(
-                                userData: _tutor,
-                                myUserId: widget.myUserId,
-                              ),
+                            _tutor.username,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              color: kTitleTextColor,
+                              fontFamily: 'cb',
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "عرض ملف المعلم",
-                          style: TextStyle(fontSize: 13),
-                        ),
+                          ),
+                          RatingBar.builder(
+                            initialRating: double.parse(_tutor.averageRating),
+                            minRating: 0,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            ignoreGestures: true,
+                            itemCount: 5,
+                            itemSize: 15,
+                            itemPadding: EdgeInsets.all(0),
+                            itemBuilder: (context, _) =>
+                                Icon(
+                                  Icons.star_rate_rounded,
+                                  color: kBlueColor,
+                                ),
+                            onRatingUpdate: (rating) {},
+                          ),
+                          SizedBox(height: 5),
+                          Wrap(
+                            children: [
+                              Icon(Icons.location_on, size: 15),
+                              SizedBox(width: 5),
+                              Text(
+                                _tutor.location + ', ' + _tutor.address,
+                                style: TextStyle(fontSize: 13),
+                              ),
+                            ],
+                          ),
+                          Wrap(
+                            children: [
+                              Icon(Icons.broadcast_on_personal, size: 15),
+                              SizedBox(width: 5),
+                              Text(
+                                lessonTypePipe(_tutor),
+                                style: TextStyle(fontSize: 13),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'المادة: ' + degreeTextPipe(_tutor.degree),
+                            textDirection: TextDirection.rtl,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          Text(
+                            'السعر يبدأ من:  ' +
+                                getMinPrice(_tutor) +
+                                ' ' +
+                                'ريال/ساعة',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(fontSize: 13),
+                          ),
+                        ],
                       ),
-                    ],
-                  )
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    child: Container(
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 1.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: CachedNetworkImage(
+                              imageUrl: _tutor.avatar,
+                              placeholder: (context, url) =>
+                                  Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                              height: 70,
+                              width: 70,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             );
@@ -598,54 +652,88 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     });
   }
 
-  _showTasks() {
+  showAvailability() {
     return Container(
-      height: 60,
-      margin: EdgeInsets.symmetric(horizontal: 10),
+      height: 55,
+      margin: EdgeInsets.all(10),
       child: tasks.length == 0
           ? Align(
-              alignment: Alignment.topRight,
-              child: Text('المعلم غير متوفر لتحديد موعد'),
-            )
-          : ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: tasks.length,
-              itemBuilder: (BuildContext ctx, index) {
-                return Container(
-                  height: 60,
-                  width: 100,
-                  margin: EdgeInsets.only(right: 10),
-                  padding: EdgeInsets.all(5),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.accents[6].withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(15),
+        alignment: Alignment.topRight,
+        child: Text('المعلم غير متوفر لتحديد موعد'),
+      )
+          : Wrap(
+          spacing: 10.0,
+          children: List.generate(tasks.length, (index) {
+            return Container(
+              height: 55,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 3 - 15,
+              margin: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: kBlueColor.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    tasks[index].day.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontFamily: 'cb',
+                      color: Colors.black,
+                    ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        tasks[index].day.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontFamily: 'cb',
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        tasks[index].startTime + ' - ' + tasks[index].endTime,
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontFamily: 'cb',
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    tasks[index].startTime + ' - ' + tasks[index].endTime,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontFamily: 'cb',
+                      color: Colors.black,
+                    ),
                   ),
-                );
-              },
-            ),
+                ],
+              ),
+            );
+          })),
     );
+  }
+
+  tabHight() {
+    double h = 0;
+    if (tabIndex == 0) {
+      h = 50.0 + (25.0 * getNumberOfLines(userData.bio, context));
+    }
+    if (tabIndex == 1) {
+      h = tasks.length > 3 ? (tasks.length / 2) * 70 : 120;
+    }
+    if (tabIndex == 2) {
+      h = 200;
+    }
+    return h;
+  }
+
+  int getNumberOfLines(String text, BuildContext context) {
+    final textSpan = TextSpan(
+      text: text,
+      style: DefaultTextStyle
+          .of(context)
+          .style,
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+      maxLines: null,
+    );
+    textPainter.layout(maxWidth: MediaQuery
+        .of(context)
+        .size
+        .width);
+    final lines = textPainter.computeLineMetrics();
+    return lines.length;
   }
 }

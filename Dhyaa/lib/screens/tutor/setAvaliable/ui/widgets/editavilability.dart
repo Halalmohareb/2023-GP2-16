@@ -20,8 +20,6 @@ class _EditAvilability extends State<EditAvilability> {
   final TaskController _taskController = Get.put(TaskController());
 
   DateTime _selectedDate = DateTime.now();
-  // String? _startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
-  // String? _endTime = "9:30 AM";
   int _selectedColor = 0;
   String? _selectedTimeStart = "1:00";
   String? _selectedTimeEnd = "3:00";
@@ -172,55 +170,11 @@ class _EditAvilability extends State<EditAvilability> {
                     ),
                   ),
                 ),
-                // Expanded(
-                //   child: InputField(
-                //     textDirection: TextDirection.RTL,
-                //     title: "PM/AM",
-                //     hint: _selecteddaystart,
-                //     widget: Row(
-                //       children: [
-                //         Container(
-                //           child: DropdownButton<String>(
-                //               dropdownColor: Colors.white,
-                //               //value: _selectedRemind.toString(),
-                //               icon: const Icon(
-                //                 Icons.keyboard_arrow_down,
-                //                 color: Colors.grey,
-                //               ),
-                //               iconSize: 32,
-                //               elevation: 4,
-                //               style: subTitleTextStle,
-                //               underline: Container(
-                //                 height: 6,
-                //               ),
-                //               onChanged: (String? newValue) {
-                //                 setState(() {
-                //                   _selecteddaystart = newValue;
-                //                 });
-                //               },
-                //               items: dayList.map<DropdownMenuItem<String>>(
-                //                   (String value) {
-                //                 return DropdownMenuItem<String>(
-                //                   value: value,
-                //                   child: Text(
-                //                     value,
-                //                     style:
-                //                         const TextStyle(color: Colors.black45),
-                //                   ),
-                //                 );
-                //               }).toList()),
-                //         ),
-                //         const SizedBox(width: 6),
-                //       ],
-                //     ),
-                //   ),
-                // )
               ]),
               Row(children: [
                 Expanded(
                   child: InputField(
                     textDirection: TextDirection.RTL,
-                    //   title: "end time",
                     title: "وقت النهاية",
                     hint: _selectedTimeEnd,
                     widget: Row(
@@ -261,100 +215,13 @@ class _EditAvilability extends State<EditAvilability> {
                     ),
                   ),
                 ),
-                // Expanded(
-                //   child: InputField(
-                //     textDirection: TextDirection.RTL,
-                //     title: "PM/AM",
-                //     hint: _selecteddayend,
-                //     widget: Row(
-                //       children: [
-                //         Container(
-                //           child: DropdownButton<String>(
-                //               dropdownColor: Colors.white,
-                //               //value: _selectedRemind.toString(),
-                //               icon: const Icon(
-                //                 Icons.keyboard_arrow_down,
-                //                 color: Colors.grey,
-                //               ),
-                //               iconSize: 32,
-                //               elevation: 4,
-                //               style: subTitleTextStle,
-                //               underline: Container(
-                //                 height: 6,
-                //               ),
-                //               onChanged: (String? newValue) {
-                //                 setState(() {
-                //                   _selecteddayend = newValue;
-                //                 });
-                //               },
-                //               items: dayList.map<DropdownMenuItem<String>>(
-                //                   (String value) {
-                //                 return DropdownMenuItem<String>(
-                //                   value: value,
-                //                   child: Text(
-                //                     value,
-                //                     style:
-                //                         const TextStyle(color: Colors.black45),
-                //                   ),
-                //                 );
-                //               }).toList()),
-                //         ),
-                //         const SizedBox(width: 6),
-                //       ],
-                //     ),
-                //   ),
-                // )
               ]),
-              // InputField(
-              //   textDirection: TextDirection.RTL,
-              //   title: "day",
-              //   hint: _selectedRepeat,
-              //   widget: Row(
-              //     children: [
-              //       Container(
-              //         child: DropdownButton<String>(
-              //             dropdownColor: Colors.white,
-              //             //value: _selectedRemind.toString(),
-              //             icon: const Icon(
-              //               Icons.keyboard_arrow_down,
-              //               color: Colors.grey,
-              //             ),
-              //             iconSize: 32,
-              //             elevation: 4,
-              //             style: subTitleTextStle,
-              //             underline: Container(
-              //               height: 6,
-              //             ),
-              //             onChanged: (String? newValue) {
-              //               setState(() {
-              //                 _selectedRepeat = newValue;
-              //               });
-              //             },
-              //             items: repeatList
-              //                 .map<DropdownMenuItem<String>>((String value) {
-              //               return DropdownMenuItem<String>(
-              //                 value: value,
-              //                 child: Text(
-              //                   value,
-              //                   style: const TextStyle(color: Colors.black45),
-              //                 ),
-              //               );
-              //             }).toList()),
-              //       ),
-              //       const SizedBox(width: 6),
-              //     ],
-              //   ),
-              // ),
-              const SizedBox(
-                height: 18.0,
-              ),
+              const SizedBox(height: 18.0),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 // _colorChips(),
                   MyButton(
-                    //  label: "Edit ",
                     label: "تحديث ",
                     onTap: () {
                       _showBottomdelet(context);
@@ -400,9 +267,6 @@ class _EditAvilability extends State<EditAvilability> {
                   element.id == widget.editTask!.id &&
                   element.day == _selectedRepeat.toString()) {
                 sameDatExist = false;
-                // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-                // Navigator.pop(context);
-
               } else {
                 if ((timeList.indexOf(element.startTime)) <=
                         (timeList.indexOf(_selectedTimeStart.toString())) &&
@@ -410,29 +274,15 @@ class _EditAvilability extends State<EditAvilability> {
                         (timeList.indexOf(_selectedTimeEnd.toString())) &&
                     element.day == _selectedRepeat.toString()) {
                   sameDatExist = true;
-                  // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-                  // Navigator.pop(context);
-
-                } else {
-                  // sameDatExist = false;
-                }
-                //  sameDatExist = false;
+                } else {}
               }
             }
           });
         });
         if (sameDatExist == true) {
           _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          //   content: const Text('تمت اضافه الوقت مسبقا'),
-          // ));
-
         } else {
           _addTaskToDB();
-          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          // content: const Text('Data updated successfully'),
-          // ));
-          // Navigator.pop(context);
         }
       }
     }
@@ -451,23 +301,11 @@ class _EditAvilability extends State<EditAvilability> {
           ),
           child: Column(
             children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 5,
-                width: 30,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                massage,
-                style: headingTextStyle,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
+              Container(height: 5, width: 30),
+              const SizedBox(height: 10),
+              Text(massage, style: headingTextStyle),
+              const SizedBox(height: 10),
               const Center(
                 child: Icon(
                   Icons.warning_amber_outlined,
@@ -476,9 +314,7 @@ class _EditAvilability extends State<EditAvilability> {
                 ),
               ),
               Spacer(),
-              const SizedBox(
-                height: 1,
-              ),
+              const SizedBox(height: 1),
               _buildBottomSheetButton(
                 label: "حسنا",
                 onTap: () {
@@ -596,51 +432,4 @@ class _EditAvilability extends State<EditAvilability> {
     Navigator.pop(context);
     Navigator.pop(context);
   }
-
-  // _colorChips() {
-  //   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-  //     Text(
-  //       // "Color",
-  //       "اللون",
-  //       style: titleTextStle,
-  //     ),
-  //     const SizedBox(
-  //       height: 8,
-  //     ),
-  //     Wrap(
-  //       children: List<Widget>.generate(
-  //         3,
-  //         (int index) {
-  //           return GestureDetector(
-  //             onTap: () {
-  //               setState(() {
-  //                 _selectedColor = index;
-  //               });
-  //             },
-  //             child: Padding(
-  //               padding: const EdgeInsets.only(right: 8.0),
-  //               child: CircleAvatar(
-  //                 radius: 14,
-  //                 backgroundColor: index == 0
-  //                     ? primaryClr
-  //                     : index == 1
-  //                         ? pinkClr
-  //                         : yellowClr,
-  //                 child: index == _selectedColor
-  //                     ? const Center(
-  //                         child: Icon(
-  //                           Icons.done,
-  //                           color: Colors.white,
-  //                           size: 18,
-  //                         ),
-  //                       )
-  //                     : Container(),
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //       ).toList(),
-  //     ),
-  //   ]);
-  // }
 }

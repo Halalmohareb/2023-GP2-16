@@ -161,7 +161,6 @@ class AuthProvider extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-
       UserCredential? userCredential;
       if (type == "Student") {
         List<DocumentSnapshot> usernameList =
@@ -218,17 +217,11 @@ class AuthProvider extends ChangeNotifier {
 
       Map<String, dynamic> userData =
           await doesNameAlreadyExist(user.uid, "Users");
-
-      print(userData["type"]);
-      print(type);
-      print('lll');
       if (userData["active_status"] == "unsuspended") {
         if (userData["type"] == type) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('type', type);
           await prefs.setString('user', email);
-          print(prefs.getString('type'));
-          print(prefs.getString('user'));
           if (type == "Student") {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -255,22 +248,16 @@ class AuthProvider extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       notifyListeners();
-      print(
-          'handleSignInEmail on FirebaseAuthException catch (e)  =-=-=-=-=-=-=');
-
-      print(e.message);
       if (e.code == "user-not-found") {
         showToast("لم يتم العثور على المستخدم", isSuccess: false);
       } else if (e.code == "suspended") {
-        showToast("", isSuccess: false);
+        showToast("حسابك متوقف", isSuccess: false);
       } else {
-        showToast("تأكد من إدخال كلمة المرور صحيحة");
+        showToast("تأكد من إدخال البريد الإلكتروني وكلمة المرور الصحيحين.");
       }
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      print('handleSignInEmail in catch (e)  =-=-=-=-=-=-=');
-      print(e);
     }
   }
 
