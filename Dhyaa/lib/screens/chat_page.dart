@@ -110,7 +110,8 @@ class _ChatPageState extends State<ChatPage> {
         toolbarHeight: 70,),
       body:
 
-      StreamBuilder (
+      Center(
+      child: StreamBuilder (
           stream:  FirebaseFirestore.instance.collection('Users').doc(
               Singleton.instance.userId).collection('message').snapshots(),
           builder: (context, AsyncSnapshot snapshot) {
@@ -140,7 +141,9 @@ class _ChatPageState extends State<ChatPage> {
                           print("friend data");
                           print("friend data${friend["username"]}");
                           print("friend data");
-                          return ListTile(
+                          return SingleChildScrollView(
+                            //  padding: EdgeInsets.all(10),
+                            child: ListTile(
                             leading: CircleAvatar(
                               child: Icon(Icons.account_circle,
                                 color: Color(0xff4B7FFB),
@@ -154,12 +157,13 @@ class _ChatPageState extends State<ChatPage> {
                                 style: TextStyle(color: Colors.grey),
                                 overflow: TextOverflow.ellipsis,),
                             ),
-                            trailing: Column(
+                            trailing: SingleChildScrollView(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const SizedBox(
-                                  height: 9,
+                                  height: 0,
                                 ),
 
                                 Text(now.day == lastMsgtime.day &&
@@ -200,7 +204,7 @@ class _ChatPageState extends State<ChatPage> {
                                   height: 10,
                                 ),
                               ],
-                            ),
+                            ),),
                             onTap: () {
                               //   sendNotification('title', "eRL7_SxLQM6Z0b_esIWeT0:APA91bEhjVms40CukwPIjX16AqGMXGJVYCED8TVKcF5L_7fUIiFjaWcEWRxydhyescRM1sIu24h73EkroUkbUTwRyFEpQCPnFu4W2sFqkcJj1DnOA1Kc3_sSciLK2sr9N-2b832no8jd");
                               Navigator.push(context,
@@ -211,6 +215,7 @@ class _ChatPageState extends State<ChatPage> {
                                       )));
                             },
 
+                          )
                           );
                         }
                         return LinearProgressIndicator(
@@ -222,7 +227,7 @@ class _ChatPageState extends State<ChatPage> {
             }
             return Center(child: CircularProgressIndicator(),);
           }),
-
+    ),
     );
   }
 

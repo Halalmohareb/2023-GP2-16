@@ -173,41 +173,48 @@ class _contactPageState extends State<contactPage> {
               SizedBox(
                 height: 9,
               ),
-              MaterialButton(
-                  height: 45,
-                  minWidth: double.infinity,
-                  color: Color(0xff4B7FFB),
-                  onPressed: () {
-                    if (nameController.text.isEmpty ||
-                        messagesController.text.isEmpty ||
-                        //emailController.text.isEmpty ||
-                        subjectController.text.isEmpty) {
-                      ErrorAllFields = 'خانه فاضيه';
-                      print(ErrorAllFields);
-                      showToast("خانه فاضيه", isSuccess: false);
-                      // }else{
-                      //   if(message.length > 0){
-                      //     showToast("ادخل ايميل صحيح", isSuccess: false);
-                      //     print(message);
-                    } else {
-                      sendEmail();
-                      showToast("تم ارسال الرسالة ", isSuccess: true);
-                      validateEmail();
-                    }
 
-                    //  }
-                  },
-                  child: Text(
-                    "ارسال",
-                    style: TextStyle(color: Colors.white),
-                  )),
-              // ElevatedButton(
-              //     onPressed: (){
-              //       sendEmail();
-              //     },
-              //     child: Text(
-              //       "send",
-              //     ))
+              GestureDetector(
+                onTap: () {
+                  if (nameController.text.isEmpty ||
+                      messagesController.text.isEmpty ||
+                      //emailController.text.isEmpty ||
+                      subjectController.text.isEmpty) {
+                    ErrorAllFields = 'خانه فاضيه';
+                    print(ErrorAllFields);
+                    showToast("خانه فاضيه", isSuccess: false);
+                    // }else{
+                    //   if(message.length > 0){
+                    //     showToast("ادخل ايميل صحيح", isSuccess: false);
+                    //     print(message);
+                  } else {
+                    sendEmail();
+                    showToast("تم ارسال الرسالة ", isSuccess: true);
+                    validateEmail();
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  margin:
+                  EdgeInsets.symmetric(vertical: screenWidth * 2, horizontal: screenWidth*4)
+                      .copyWith(bottom: 0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 4,
+                      vertical: screenWidth * 3),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: theme.mainColor),
+                    borderRadius: BorderRadius.circular(10),
+                    color: theme.blueColor,
+                  ),
+                  child: text(
+                    'ارسال',
+                    screenWidth * 3.9,
+                    theme.whiteColor,
+                  ),
+                ),
+              ),
+
             ],
           ),
         ),

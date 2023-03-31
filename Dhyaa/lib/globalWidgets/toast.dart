@@ -9,7 +9,7 @@ showToast(text, {isSuccess = true}) {
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
     backgroundColor: theme.whiteColor,
-    textColor: theme.redColor,
+    textColor: isSuccess ?theme.mainColor :theme.redColor ,
     fontSize: 16.0,
   );
 }

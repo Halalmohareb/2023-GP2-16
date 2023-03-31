@@ -444,12 +444,14 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                           ],
                         ),
                       )
-                    : Column(
+                    :SingleChildScrollView(
+                  child: Column(
                         children:
                             List.generate(allAppointments.length, (index) {
                           Appointment item = allAppointments[index];
                           if (upcomingTab) checkForPassed(item, index);
-                          return Card(
+                          return SingleChildScrollView(
+                            child: Card(
                             margin: EdgeInsets.only(bottom: 15),
                             elevation: 5,
                             color: kBackgroundColor,
@@ -462,6 +464,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
+                                child: SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     ListTile(
@@ -507,6 +510,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                         ),
                                       ),
                                       subtitle: Container(
+                                        child: SingleChildScrollView(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -530,7 +534,8 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                               ],
                                             ),
                                             SizedBox(height: 10),
-                                            Row(
+                                          SingleChildScrollView(
+                                            child: Row(
                                               children: [
                                                 Text(
                                                   item.degree,
@@ -558,13 +563,16 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                 ),
                                               ],
                                             ),
+                                          ),
                                           ],
+                                        ),
                                         ),
                                       ),
                                     ),
                                     Visibility(
                                       visible:
                                           item.status == 'مؤكد', // if Confirmed
+                                      child: SingleChildScrollView(
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -620,6 +628,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                           ),
                                         ],
                                       ),
+                                      ),
                                     ),
                                     Visibility(
                                       // visible If status Done and not leaved review before
@@ -629,6 +638,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                   false
                                               : item.isTutorLeavedReview ==
                                                   false),
+                                      child:SingleChildScrollView(
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -655,14 +665,18 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                           ),
                                         ],
                                       ),
+                                      ),
                                     ),
                                   ],
                                 ),
+                                ),
                               ),
                             ),
+                          )
                           );
                         }),
                       ),
+                ),
               ),
             ],
           ),

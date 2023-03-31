@@ -742,49 +742,74 @@ class _FilterOptionsState extends State<FilterOptions> {
                   ),
                 ),
                 SizedBox(height: 20),
-                Center(
+                GestureDetector(
+                  onTap: () {
+                    doFilter();
+                  },
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: 45,
-                    child: TextButton(
-                      onPressed: () {
-                        doFilter();
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(width: 15),
-                              Text('تصفية نتيجة البحث'),
-                            ],
-                          ),
-                          Container(
-                            height: 38,
-                            width: 38,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: kBlueColor.withOpacity(0.2),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 15,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        side: BorderSide(color: kBlueColor),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    margin:
+                    EdgeInsets.symmetric(vertical: screenWidth * 2, horizontal: screenWidth*4)
+                        .copyWith(bottom: 0),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 4,
+                        vertical: screenWidth * 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: theme.mainColor),
+                      borderRadius: BorderRadius.circular(10),
+                      color: theme.blueColor,
+                    ),
+                    child: text(
+                      'تصفية نتيجة البحث',
+                      screenWidth * 3.9,
+                      theme.whiteColor,
                     ),
                   ),
                 ),
+                // Center(
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width * 0.6,
+                //     height: 45,
+                //     child: TextButton(
+                //       onPressed: () {
+                //         doFilter();
+                //       },
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Row(
+                //             children: [
+                //               SizedBox(width: 15),
+                //               Text('تصفية نتيجة البحث'),
+                //             ],
+                //           ),
+                //           Container(
+                //             height: 38,
+                //             width: 38,
+                //             decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(100),
+                //               color: kBlueColor.withOpacity(0.2),
+                //             ),
+                //             child: Center(
+                //               child: Icon(
+                //                 Icons.arrow_forward_ios_rounded,
+                //                 size: 15,
+                //               ),
+                //             ),
+                //           )
+                //         ],
+                //       ),
+                //       style: TextButton.styleFrom(
+                //         padding: EdgeInsets.symmetric(horizontal: 5),
+                //         side: BorderSide(color: kBlueColor),
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(30),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: 20),
               ],
             ),

@@ -561,6 +561,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               }
             }
           }
+          Navigator.pop(context);
         }
       }
     }
@@ -660,7 +661,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             _selectedColor,
             _selectedRepeat.toString().substring(0,10)));
 
-    Navigator.pop(context);
+   // Navigator.pop(context);
   }
   //   var sameDatExist = false;
   //   await FirestoreHelper.getMyTasks().then((value) {

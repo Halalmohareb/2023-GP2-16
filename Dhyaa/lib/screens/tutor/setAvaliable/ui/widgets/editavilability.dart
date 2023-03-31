@@ -110,7 +110,7 @@ class _EditAvilability extends State<EditAvilability> {
             color: Colors.black,
           ),
           onPressed: () {
-            Get.back();
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -289,47 +289,54 @@ class _EditAvilability extends State<EditAvilability> {
   }
 
   _showBottomwarnning(BuildContext context, String massage) {
-    Get.bottomSheet(
-      Container(
-          padding: const EdgeInsets.only(top: 4),
-          height: MediaQuery.of(context).size.height * 0.32,
-          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
-          margin: const EdgeInsets.only(
-            left: 25,
-            right: 25,
-            bottom: 150,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Container(height: 5, width: 30),
-              const SizedBox(height: 10),
-              Text(massage, style: headingTextStyle),
-              const SizedBox(height: 10),
-              const Center(
-                child: Icon(
-                  Icons.warning_amber_outlined,
-                  color: Colors.redAccent,
-                  size: 80,
-                ),
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+         return Container(
+              padding: const EdgeInsets.only(top: 4),
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.32,
+              color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+              margin: const EdgeInsets.only(
+                left: 25,
+                right: 25,
+                bottom: 150,
               ),
-              Spacer(),
-              const SizedBox(height: 1),
-              _buildBottomSheetButton(
-                label: "حسنا",
-                onTap: () {
-                  Get.back();
-                  Get.back();
-                },
-                clr: Colors.grey,
-                isClose: true,
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          )),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Container(height: 5, width: 30),
+                  const SizedBox(height: 10),
+                  Text(massage, style: headingTextStyle),
+                  const SizedBox(height: 10),
+                  const Center(
+                    child: Icon(
+                      Icons.warning_amber_outlined,
+                      color: Colors.redAccent,
+                      size: 80,
+                    ),
+                  ),
+                  Spacer(),
+                  const SizedBox(height: 1),
+                  _buildBottomSheetButton(
+                    label: "حسنا",
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    clr: Colors.grey,
+                    isClose: true,
+                    context: context,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ));
+
+        },
     );
   }
 
@@ -362,56 +369,62 @@ class _EditAvilability extends State<EditAvilability> {
   }
 
   _showBottomdelet(BuildContext context) {
-    Get.bottomSheet(
-      Container(
-          padding: const EdgeInsets.only(top: 4),
-          height: MediaQuery.of(context).size.height * 0.32,
-          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
-          margin: const EdgeInsets.only(
-            left: 10,
-            right: 10,
-            bottom: 150,
-          ),
-          child: Column(
-            children: [
-              Container(
-                height: 5,
-                width: 30,
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              padding: const EdgeInsets.only(top: 4),
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.32,
+              color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+              margin: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                bottom: 150,
               ),
-              Text(
-                "هل انت متاكد ؟",
-                style: headingTextStyle,
-              ),
-              Spacer(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildBottomSheetButton(
-                label: "تحديث ",
-                onTap: () {
-                  _validateInputs();
-                  // Get.back();
-                },
-                clr: Colors.red[300],
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildBottomSheetButton(
-                label: "الغاء",
-                onTap: () {
-                  Get.back();
-                },
-                clr: Colors.grey,
-                isClose: true,
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          )),
+              child: Column(
+                children: [
+                  Container(
+                    height: 5,
+                    width: 30,
+                  ),
+                  Text(
+                    "هل انت متاكد ؟",
+                    style: headingTextStyle,
+                  ),
+                  Spacer(),
+                  const SizedBox(
+                    height: 1,
+                  ),
+                  _buildBottomSheetButton(
+                    label: "تحديث ",
+                    onTap: () {
+                      _validateInputs();
+                      // Get.back();
+                    },
+                    clr: Colors.red[300],
+                    context: context,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _buildBottomSheetButton(
+                    label: "الغاء",
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    clr: Colors.grey,
+                    isClose: true,
+                    context: context,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ));
+        },
     );
   }
 
@@ -426,9 +439,9 @@ class _EditAvilability extends State<EditAvilability> {
             _selectedColor,
             _selectedRepeat.toString()));
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text('تم تحديث الوقت بنجاح.'),
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: const Text('تم تحديث الوقت بنجاح.'),
+    // ));
     Navigator.pop(context);
     Navigator.pop(context);
   }

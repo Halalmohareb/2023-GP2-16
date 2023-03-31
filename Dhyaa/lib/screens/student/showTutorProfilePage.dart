@@ -376,87 +376,167 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                 child: recommendedWidget,
               ),
               SizedBox(height: 20),
-              widget.myUserId == widget.userData.userId
-                  ? Container(height: 0)
-                  : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                BookAppointment(
-                                    userData: userData,
-                                    myUserData: myUserData),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width / 2.3,
-                        margin: EdgeInsets.symmetric(
-                            vertical: screenWidth * 2)
-                            .copyWith(bottom: screenWidth),
-                        padding: EdgeInsets.all(screenWidth * 2.5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: theme.blueColor),
-                        child: text(
-                          'احجز موعدًا',
-                          screenWidth * 3.4,
-                          theme.whiteColor,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ChatScreen(
-                                    friendId: userData.userId,
-                                    friendName: userData.username),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width / 2.3,
-                        margin: EdgeInsets.symmetric(
-                            vertical: screenWidth * 2)
-                            .copyWith(bottom: 0),
-                        padding: EdgeInsets.all(screenWidth * 2.5),
-                        decoration: BoxDecoration(
-                          color: theme.fillColor,
-                          border: Border.all(color: theme.mainColor),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: text(
-                          "تواصل مع المعلم",
-                          screenWidth * 3.4,
-                          theme.mainColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
+              // widget.myUserId == widget.userData.userId
+              //     ? Container(height: 0)
+              //     : Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 15),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       GestureDetector(
+              //         onTap: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder: (context) =>
+              //                   BookAppointment(
+              //                       userData: userData,
+              //                       myUserData: myUserData),
+              //             ),
+              //           );
+              //         },
+              //         child: Container(
+              //           alignment: Alignment.center,
+              //           width: MediaQuery
+              //               .of(context)
+              //               .size
+              //               .width / 2.3,
+              //           margin: EdgeInsets.symmetric(
+              //               vertical: screenWidth * 2)
+              //               .copyWith(bottom: screenWidth),
+              //           padding: EdgeInsets.all(screenWidth * 2.5),
+              //           decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(10),
+              //               color: theme.blueColor),
+              //           child: text(
+              //             'احجز موعدًا',
+              //             screenWidth * 3.4,
+              //             theme.whiteColor,
+              //           ),
+              //         ),
+              //       ),
+              //
+              //       GestureDetector(
+              //         onTap: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder: (context) =>
+              //                   ChatScreen(
+              //                       friendId: userData.userId,
+              //                       friendName: userData.username),
+              //             ),
+              //           );
+              //         },
+              //         child: Container(
+              //           alignment: Alignment.center,
+              //           width: MediaQuery
+              //               .of(context)
+              //               .size
+              //               .width / 2.3,
+              //           margin: EdgeInsets.symmetric(
+              //               vertical: screenWidth * 2)
+              //               .copyWith(bottom: 0),
+              //           padding: EdgeInsets.all(screenWidth * 2.5),
+              //           decoration: BoxDecoration(
+              //             color: theme.fillColor,
+              //             border: Border.all(color: theme.mainColor),
+              //             borderRadius: BorderRadius.circular(10),
+              //           ),
+              //           child: text(
+              //             "تواصل مع المعلم",
+              //             screenWidth * 3.4,
+              //             theme.mainColor,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // SizedBox(height: 20),
             ],
           ),
         ),
       ),
+      bottomNavigationBar:
+          Container(
+            padding:EdgeInsets.all(screenWidth * 2.5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              BookAppointment(
+                                  userData: userData,
+                                  myUserData: myUserData),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 2.3,
+                      margin: EdgeInsets.symmetric(
+                          vertical: screenWidth * 2)
+                          .copyWith(bottom: screenWidth),
+                      padding: EdgeInsets.all(screenWidth * 2.5),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: theme.blueColor),
+                      child: text(
+                        'احجز موعدًا',
+                        screenWidth * 3.4,
+                        theme.whiteColor,
+                      ),
+                    ),
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatScreen(
+                                  friendId: userData.userId,
+                                  friendName: userData.username),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width / 2.3,
+                      margin: EdgeInsets.symmetric(
+                          vertical: screenWidth * 2)
+                          .copyWith(bottom: 0),
+                      padding: EdgeInsets.all(screenWidth * 2.5),
+                      decoration: BoxDecoration(
+                        color: theme.fillColor,
+                        border: Border.all(color: theme.mainColor),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: text(
+                        "تواصل مع المعلم",
+                        screenWidth * 3.4,
+                        theme.mainColor,
+                      ),
+                    ),
+                  ),
+                ],
+
+              ),
+            height: 80
+    ),
+
     );
   }
 

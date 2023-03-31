@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/pages/TaskTile.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
@@ -14,6 +15,7 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/add_task_bar.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/editavilability.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../../../globalWidgets/textWidget/text_widget.dart';
 import '../controllers/task_controller.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   double left = 630;
   double top = 900;
   Timer? _timer;
+
 
   List<String> repeatList = [
     'الاحد',
@@ -176,18 +179,21 @@ class _HomePageState extends State<HomePage> {
     return Expanded(
       child: Obx(() {
 
-        // for (int j = 0; j < _taskController.taskList.length; j++) {
-        //   print(_taskController.taskList[j].day);
-        //   if (_taskController.taskList[j].day ==
-        //       (repeatList[(repeatList2.indexOf(
-        //           DateFormat('EEEE').format(_selectedDate).toLowerCase()))]))
-        //     i = true;
-        // }
-        // print(i);
+        for (int j = 0; j < _taskController.taskList.length; j++) {
+          print("_taskController.taskList[j].day");
+          print(_taskController.taskList[j].day);
+          print("_selectedDate.day");
+          print(_selectedDate.toString().substring(0,10));
+          if (_taskController.taskList[j].day.toString() ==_selectedDate.toString().substring(0,10)) {
+            i = true;
+            print(i);
+          }
+        }
+        print(i);
 
-        // if (!i) {
-        //   return Container(child: Text("لايوجد وقت متاح "));
-        // } else {
+        if (!i) {
+          return Container(child: Text("لايوجد وقت متاح "));
+        } else {
         return ListView.builder(
 
             itemCount: _taskController.taskList.length,
@@ -220,136 +226,263 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ))));
-                // } else {
-                //   if (i) {
-                //     print("hi");
-                //     return Container(
-                //       child: Text("hi")
-                //     );
-              } else {
+                } else {
+
                 return Container();
               }
-              //   }
+
             });
-        //  }
+         }
       }),
+    );
+  }
+
+  showCancelAlert(BuildContext context, Task task) {
+    AlertDialog alert =
+
+    AlertDialog(
+      content:
+      Container(
+          padding: const EdgeInsets.only(top: 4),
+          height: MediaQuery.of(context).size.height * 0.40,
+          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                height: 55,
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextButton(
+                  onPressed: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditAvilability(
+                          editTask: task,
+                        )),
+                      );
+
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    //  side: BorderSide(color: kBlueColor),
+                    backgroundColor:kBlueColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+
+                  child: Text('تعديل الوقت',
+                    style: titleTextStle.copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 1,
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 4),
+                height: 55,
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TextButton(
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    _showBottomdelet(context, task);
+
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    //  side: BorderSide(color: kBlueColor),
+                    backgroundColor: Colors.red[300],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+
+                  child: Text('حذف الوقت',
+                    style: titleTextStle.copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            height: 55,
+            width: MediaQuery.of(context).size.width * 0.9,
+              child: TextButton(
+                onPressed: ()  {
+                  Navigator.pop(context);
+                  // doCancel(index);
+
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                //  side: BorderSide(color: kBlueColor),
+                    backgroundColor:kBlueColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+
+                child: Text(' إلغاء',
+                  style: titleTextStle.copyWith(color: Colors.white),
+                ),
+              ),
+          ),
+
+            ],
+          )),
+    );
+
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return
+          alert;
+      },
     );
   }
 
   _showBottomSheet(BuildContext context, Task task) {
     print(task.toJson());
-    Get.bottomSheet(
-      Container(
-          padding: const EdgeInsets.only(top: 4),
-          height: MediaQuery.of(context).size.height * 0.32,
-          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
-          child: Column(
-            children: [
-              Container(
-                  height: 6,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Get.isDarkMode
-                          ? Colors.grey[600]
-                          : Colors.grey[300])),
-              Spacer(),
-              _buildBottomSheetButton(
-                label: "تعديل الوقت",
-                onTap: () async {
-                  await Get.to(EditAvilability(
-                    editTask: task,
-                  ));
-                  // _taskController.markTaskCompleted(task.id!);
-                  Get.back();
-                },
-                clr: primaryClr,
-                context: context,
-              ),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildBottomSheetButton(
-                label: "حذف الوقت",
-                onTap: () {
-                  _showBottomdelet(context, task);
-                },
-                clr: Colors.red[300],
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildBottomSheetButton(
-                label: "الغاء",
-                onTap: () {
-                  Get.back();
-                },
-                clr: Colors.grey,
-                isClose: true,
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          )),
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+         return  Container(
+              padding: const EdgeInsets.only(top: 4),
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.32,
+              color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+              child: Column(
+                children: [
+                  Container(
+                      height: 6,
+                      width: 120,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Get.isDarkMode
+                              ? Colors.grey[600]
+                              : Colors.grey[300])),
+                  Spacer(),
+                  _buildBottomSheetButton(
+                    label: "تعديل الوقت",
+
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditAvilability(
+                              editTask: task,
+                            )),
+                      );
+
+                      Navigator.pop(context);
+                    },
+
+                    clr: primaryClr,
+                    context: context,
+                  ),
+                  const SizedBox(
+                    height: 1,
+                  ),
+                  _buildBottomSheetButton(
+                    label: "حذف الوقت",
+                    onTap: () {
+                      _showBottomdelet(context, task);
+                    },
+                    clr: Colors.red[300],
+                    context: context,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _buildBottomSheetButton(
+                    label: "الغاء",
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    clr: Colors.grey,
+                    isClose: true,
+                    context: context,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ));
+
+        },
     );
   }
 
   _showBottomdelet(BuildContext context, Task task) {
-    Get.bottomSheet(
-      Container(
-          padding: const EdgeInsets.only(top: 4),
-          height: MediaQuery.of(context).size.height * 0.32,
-          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
-          margin: const EdgeInsets.only(
-            left: 10,
-            right: 10,
-            bottom: 150,
-          ),
-          child: Column(
-            children: [
-              Container(
-                height: 5,
-                width: 30,
-              ),
-              Text(
-                "هل انت متاكد؟",
-                style: headingTextStyle,
-              ),
-              Spacer(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildBottomSheetButton(
-                label: "حذف ",
-                onTap: () {
-                  _taskController.deleteTask(task);
-                  Get.back();
-                  Get.back();
-                },
-                clr: Colors.red[300],
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _buildBottomSheetButton(
-                label: "الغاء",
-                onTap: () {
-                  Get.back();
-                  Get.back();
-                },
-                clr: Colors.grey,
-                isClose: true,
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          )),
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+       return Container(
+            padding: const EdgeInsets.only(top: 4),
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.32,
+            color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+            margin: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              bottom: 12,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 5,
+                  width: 30,
+                ),
+                Text(
+                  "هل انت متاكد؟",
+                  style: headingTextStyle,
+                ),
+                Spacer(),
+                const SizedBox(
+                  height: 1,
+                ),
+                _buildBottomSheetButton(
+                  label: "حذف ",
+                  onTap: () {
+                    _taskController.deleteTask(task);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  clr: Colors.red[300],
+                  context: context,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildBottomSheetButton(
+                  label: "الغاء",
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  clr: Colors.grey,
+                  isClose: true,
+                  context: context,
+                ),
+
+              ],
+            ));
+
+      }
+
     );
   }
 
@@ -388,9 +521,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-display(String s) {
-  Center(
-      child: Text(
-        s,
-      ));
-}

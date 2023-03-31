@@ -89,7 +89,73 @@ class TaskTile extends StatelessWidget {
     }
   }
 
+
+  showCancelAlert(BuildContext context, Task task) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.all(10),
+      titlePadding: EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.all(20),
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 180,
+        child: Column(
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              size: 70,
+            ),
+            SizedBox(height: 10),
+            Text('هل انت متأكد من إلغاء موعدك  ؟'),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('لا، تراجع'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    // doCancel(index);
+
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('نعم، إلغاء'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   _showBottomSheet(BuildContext context, Task task) {
+    print(task.toJson());
     Get.bottomSheet(
       Container(
           padding: const EdgeInsets.only(top: 4),
@@ -107,7 +173,7 @@ class TaskTile extends StatelessWidget {
                           : Colors.grey[300])),
               Spacer(),
               _buildBottomSheetButton(
-                label: "edit availability",
+                label: "تعديل الوقت",
                 onTap: () async {
                   await Get.to(EditAvilability(
                     editTask: task,
@@ -122,7 +188,7 @@ class TaskTile extends StatelessWidget {
                 height: 1,
               ),
               _buildBottomSheetButton(
-                label: "delete availability",
+                label: "حذف الوقت",
                 onTap: () {
                   _showBottomdelet(context, task);
                 },
@@ -133,7 +199,7 @@ class TaskTile extends StatelessWidget {
                 height: 10,
               ),
               _buildBottomSheetButton(
-                label: "Close",
+                label: "الغاء",
                 onTap: () {
                   Get.back();
                 },
@@ -167,7 +233,7 @@ class TaskTile extends StatelessWidget {
                 width: 30,
               ),
               Text(
-                "are you sure?",
+                "هل انت متاكد؟",
                 style: headingTextStyle,
               ),
               Spacer(),
@@ -175,7 +241,7 @@ class TaskTile extends StatelessWidget {
                 height: 1,
               ),
               _buildBottomSheetButton(
-                label: "delete ",
+                label: "حذف ",
                 onTap: () {
                   _taskController.deleteTask(task);
                   Get.back();
@@ -188,7 +254,7 @@ class TaskTile extends StatelessWidget {
                 height: 10,
               ),
               _buildBottomSheetButton(
-                label: "cancel",
+                label: "الغاء",
                 onTap: () {
                   Get.back();
                   Get.back();
@@ -223,19 +289,19 @@ class TaskTile extends StatelessWidget {
                 width: 2,
                 color: isClose == true
                     ? Get.isDarkMode
-                        ? Colors.grey[600]!
-                        : Colors.grey[300]!
+                    ? Colors.grey[600]!
+                    : Colors.grey[300]!
                     : clr!),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(24),
             color: isClose ? Colors.transparent : clr,
           ),
           child: Center(
               child: Text(
-            label,
-            style: isClose
-                ? titleTextStle
-                : titleTextStle.copyWith(color: Colors.white),
-          )),
+                label,
+                style: isClose
+                    ? titleTextStle
+                    : titleTextStle.copyWith(color: Colors.white),
+              )),
         ));
   }
 }
