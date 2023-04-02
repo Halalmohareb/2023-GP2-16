@@ -326,17 +326,18 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
   }
 
   checkForPassed(Appointment item, int index) {
-    item.time.sort((a, b) => a['start'].compareTo(b['start']));
-    List d = item.date.split('-');
-    DateTime _d = DateTime(int.parse(d[0]), int.parse(d[1]), int.parse(d[2]));
-    bool isPassed = _d.isBefore(DateTime.now().add(Duration(days: 1)));
-    if (isPassed) {
-      List t = item.time.last['end'].split(':');
-      if (int.parse(t.first) <= DateTime.now().hour) {
-        doComplete(index);
-      }
-    }
+  item.time.sort((a, b) => a['start'].compareTo(b['start']));
+  List d = item.date.split('-');
+  DateTime _d = DateTime(int.parse(d[0]), int.parse(d[1]), int.parse(d[2]));
+  
+  DateTime now = DateTime.now();
+  bool isPassed = (_d.isBefore(now) || (_d == now && item.time.last['end'] <= '${now.hour}:${now.minute}'));
+
+  if (isPassed) {
+    doComplete(index);
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -566,8 +567,8 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                           ),
                                           ],
                                         ),
-                                        ),
                                       ),
+                                    ),
                                     ),
                                     Visibility(
                                       visible:
@@ -669,8 +670,8 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                     ),
                                   ],
                                 ),
-                                ),
                               ),
+                            ),
                             ),
                           )
                           );
