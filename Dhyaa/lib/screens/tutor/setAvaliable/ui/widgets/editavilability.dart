@@ -239,17 +239,65 @@ class _EditAvilability extends State<EditAvilability> {
     );
   }
 
-  //
+  showCancelAlert(BuildContext context, String massage) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.all(10),
+      titlePadding: EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.all(20),
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 180,
+        child: Column(
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              size: 70,
+            ),
+            SizedBox(height: 10),
+            Text(massage),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('حسنا'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   _validateInputs() async {
     var sameDatExist = false;
     if (timeList.indexOf(_selectedTimeStart.toString()) >
         timeList.indexOf(_selectedTimeEnd.toString())) {
-      _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
+      showCancelAlert(context, 'وقت البداية اكبر من وقت النهايه');
     } else {
       if (timeList
           .indexOf(_selectedTimeStart.toString())
           .isEqual(timeList.indexOf(_selectedTimeEnd.toString()))) {
-        _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
+        showCancelAlert(context, 'وقت البداية و وقت النهايه متساوي');
       } else {
         await FirestoreHelper.getMyTasks().then((value) {
           value.forEach((element) async {
@@ -280,7 +328,7 @@ class _EditAvilability extends State<EditAvilability> {
           });
         });
         if (sameDatExist == true) {
-          _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+          showCancelAlert(context, 'تمت اضافة هذا الوقت مسبقا');
         } else {
           _addTaskToDB();
         }

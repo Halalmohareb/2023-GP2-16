@@ -488,16 +488,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
       }
     }
     if(isoklarger){
-     // _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
-      showToast('وقت البداية اكبر من وقت النهايه');
+      showCancelAlert(context, 'وقت البداية اكبر من وقت النهايه');
+    //  showToast('وقت البداية اكبر من وقت النهايه');
     }else {
       if (isokequal) {
-      //  _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
-        showToast( 'وقت البداية و وقت النهايه متساوي');
+        showCancelAlert(context, 'وقت البداية و وقت النهايه متساوي');
+      //  showToast( 'وقت البداية و وقت النهايه متساوي');
       } else {
         if (isoksameday) {
-         // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-          showToast('تمت اضافة هذا الوقت مسبقا');
+          showCancelAlert(context, 'تمت اضافة هذا الوقت مسبقا');
+        //  showToast('تمت اضافة هذا الوقت مسبقا');
         }else{
           _selectedRepeat = widget.userdate;
           for (int i = 0; i < repeatTime; i++) {
@@ -513,14 +513,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
             if (day == _selectedRepeat.weekday) {
               if (timeList.indexOf(_selectedTimeStart.toString()) >
                   timeList.indexOf(_selectedTimeEnd.toString())) {
-               // _showBottomwarnning(context, 'وقت البداية اكبر من وقت النهايه');
-                showToast('وقت البداية اكبر من وقت النهايه');
+                showCancelAlert(context, 'وقت البداية اكبر من وقت النهايه');
+               // showToast('وقت البداية اكبر من وقت النهايه');
               } else {
                 if (timeList
                     .indexOf(_selectedTimeStart.toString())
                     .isEqual(timeList.indexOf(_selectedTimeEnd.toString()))) {
-                 // _showBottomwarnning(context, 'وقت البداية و وقت النهايه متساوي');
-                  showToast( 'وقت البداية و وقت النهايه متساوي');
+                  showCancelAlert(context, 'وقت البداية و وقت النهايه متساوي');
+              //    showToast( 'وقت البداية و وقت النهايه متساوي');
                 } else {
                   await FirestoreHelper.getMyTasks().then((value) {
                     value.forEach((element) async {
@@ -536,7 +536,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 (timeList.indexOf(_selectedTimeEnd.toString())) &&
                             element.day == _selectedRepeat.toString().substring(0,10)) {
                           sameDatExist = true;
-                          // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
+                         // showCancelAlert(context, 'تمت اضافة هذا الوقت مسبقا');
                           // Navigator.pop(context);
                         } else {
                           //  sameDatExist = false;
@@ -545,8 +545,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     });
                   });
                   if (sameDatExist == true) {
-                   // _showBottomwarnning(context, 'تمت اضافة هذا الوقت مسبقا');
-                    showToast('تمت اضافة هذا الوقت مسبقا');
+                    showCancelAlert(context, 'تمت اضافة هذا الوقت مسبقا');
+                    //showToast('تمت اضافة هذا الوقت مسبقا');
                     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     //   content: const Text('تمت اضافه الوقت مسبقا'),
                     // ));
@@ -566,63 +566,157 @@ class _AddTaskPageState extends State<AddTaskPage> {
       }
     }
   }
+
+  showCancelAlert(BuildContext context, String massage) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.all(10),
+      titlePadding: EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.all(20),
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 180,
+        child: Column(
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              size: 70,
+            ),
+            SizedBox(height: 10),
+            Text(massage),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('حسنا'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
+  showCompleteAlert(BuildContext context, index) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.all(10),
+      titlePadding: EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.all(20),
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 180,
+        child: Column(
+          children: [
+            Icon(
+              Icons.check_circle_outline,
+              color: Colors.green[700],
+              size: 70,
+            ),
+            SizedBox(height: 10),
+            Text(' تمت اضافه الوقت بنجاح '),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('حسنا'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   _showBottomwarnning(BuildContext context, String massage) {
 
-      Container(
-          padding: const EdgeInsets.only(top: 4),
-          height: MediaQuery.of(context).size.height * 0.32,
-          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
-          margin: const EdgeInsets.only(
-            left: 25,
-            right: 25,
-            bottom: 150,
-          ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 5,
-                width: 30,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                massage,
-                style: headingTextStyle,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Center(
-                child: Icon(
-                  Icons.warning_amber_outlined,
-                  color: Colors.redAccent,
-                  size: 80,
+
+        return Container(
+            padding: const EdgeInsets.only(top: 4),
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.32,
+            color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+            margin: const EdgeInsets.only(
+              left: 25,
+              right: 25,
+              bottom: 150,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                Container(height: 5, width: 30),
+                const SizedBox(height: 10),
+                Text(massage, style: headingTextStyle),
+                const SizedBox(height: 10),
+                const Center(
+                  child: Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.redAccent,
+                    size: 80,
+                  ),
                 ),
-              ),
-              Spacer(),
-              const SizedBox(
-                height: 1,
-              ),
-              _buildBottomSheetButton(
-                label: "حسنا",
-                onTap: () {
-                  Get.back();
-                },
-                clr: Colors.grey,
-                isClose: true,
-                context: context,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          ));
+                Spacer(),
+                const SizedBox(height: 1),
+                _buildBottomSheetButton(
+                  label: "حسنا",
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  clr: Colors.grey,
+                  isClose: true,
+                  context: context,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ));
 
   }
+
   _buildBottomSheetButton({
     required String label,
     required Function()? onTap,
@@ -638,7 +732,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           width: MediaQuery.of(context).size.width * 0.7,
           decoration: BoxDecoration(
             border: Border.all(width: 2, color: clr!),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(20),
             color: isClose ? Colors.transparent : clr,
           ),
           child: Center(
@@ -650,6 +744,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               )),
         ));
   }
+
   _addTaskToDB() async {
     await _taskController.addTask(
         task: Task(
@@ -663,39 +758,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
    // Navigator.pop(context);
   }
-  //   var sameDatExist = false;
-  //   await FirestoreHelper.getMyTasks().then((value) {
-  //     value.forEach((element) async {
-  //       if (element.startTime ==
-  //               _selectedTimeStart.toString() +
-  //                   "" +
-  //                   _selecteddaystart.toString() &&
-  //           element.endTime ==
-  //               _selectedTimeEnd.toString() + "" + _selecteddayend.toString() &&
-  //           element.day == _selectedRepeat.toString()) {
-  //         sameDatExist = true;
-  //       }
-  //     });
-  //   });
-  //   if (sameDatExist == true) {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       content: const Text('You cannot add same time'),
-  //     ));
-  //   } else {
-  //     await _taskController.addTask(
-  //         task: Task(
-  //             '0',
-  //             0,
-  //             _selectedTimeStart.toString(),
-  //             _selectedTimeStart.toString() + "" + _selecteddaystart.toString(),
-  //             _selectedTimeEnd.toString() + "" + _selecteddayend.toString(),
-  //             _selectedColor,
-  //             _selectedRepeat.toString()));
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       content: const Text('Time edited Successfully.'),
-  //     ));
-  //     Navigator.pop(context);
-  //   }
-  //
+
 
 }
