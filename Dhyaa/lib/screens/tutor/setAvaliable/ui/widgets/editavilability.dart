@@ -9,6 +9,8 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/input_field.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../globalWidgets/toast.dart';
+
 class EditAvilability extends StatefulWidget {
   const EditAvilability({Key? key, required this.editTask}) : super(key: key);
   final Task? editTask;
@@ -331,6 +333,7 @@ class _EditAvilability extends State<EditAvilability> {
           showCancelAlert(context, 'تمت اضافة هذا الوقت مسبقا');
         } else {
           _addTaskToDB();
+          showToast("تم تحديث الوقت بنجاح ", isSuccess: true);
         }
       }
     }
@@ -416,6 +419,7 @@ class _EditAvilability extends State<EditAvilability> {
         ));
   }
 
+
   _showBottomdelet(BuildContext context) {
     showModalBottomSheet<void>(
         context: context,
@@ -430,7 +434,7 @@ class _EditAvilability extends State<EditAvilability> {
               margin: const EdgeInsets.only(
                 left: 10,
                 right: 10,
-                bottom: 150,
+                bottom: 12,
               ),
               child: Column(
                 children: [
@@ -439,7 +443,7 @@ class _EditAvilability extends State<EditAvilability> {
                     width: 30,
                   ),
                   Text(
-                    "هل انت متاكد ؟",
+                    "هل انت متاكد؟",
                     style: headingTextStyle,
                   ),
                   Spacer(),
@@ -450,7 +454,8 @@ class _EditAvilability extends State<EditAvilability> {
                     label: "تحديث ",
                     onTap: () {
                       _validateInputs();
-                      // Get.back();
+                      Navigator.pop(context);
+
                     },
                     clr: Colors.red[300],
                     context: context,
@@ -462,17 +467,19 @@ class _EditAvilability extends State<EditAvilability> {
                     label: "الغاء",
                     onTap: () {
                       Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                     clr: Colors.grey,
                     isClose: true,
                     context: context,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+
                 ],
               ));
-        },
+
+        }
+
     );
   }
 

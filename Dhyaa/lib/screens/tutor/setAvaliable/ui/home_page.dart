@@ -376,17 +376,28 @@ class _HomePageState extends State<HomePage> {
                   _buildBottomSheetButton(
                     label: "تعديل الوقت",
 
-                    onTap: () async {
-                      Navigator.push(
-                        context,
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: false).push(
                         MaterialPageRoute(
-                            builder: (context) => EditAvilability(
-                              editTask: task,
-                            )),
+                          builder: (context) => EditAvilability(
+                            editTask: task,
+                          ),
+                          maintainState: false,
+                        ),
                       );
-
-                      Navigator.pop(context);
+                     // Navigator.pop(context);
                     },
+                    // onTap: ()  {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => EditAvilability(
+                    //           editTask: task,
+                    //         )),
+                    //   );
+                    //
+                    //   Navigator.pop(context);
+                    // },
 
                     clr: primaryClr,
                     context: context,
