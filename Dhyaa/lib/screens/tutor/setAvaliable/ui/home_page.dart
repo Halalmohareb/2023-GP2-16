@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -112,10 +113,18 @@ class _HomePageState extends State<HomePage> {
       child:
       TableCalendar(
         locale: "ar",
-        firstDay:  DateTime.now().add(Duration(days:1)),
+        firstDay:  DateTime.now(),
         lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now().add(Duration(days:1)),
+        focusedDay: DateTime.now().add(Duration(days:2)),
         calendarFormat: format ,
+        currentDay:DateTime.now() ,
+        pageJumpingEnabled : true,
+        availableCalendarFormats : const
+        {CalendarFormat.month : 'اسبوع',
+          CalendarFormat.twoWeeks : 'شهر',
+          CalendarFormat.week : 'اسبوعين'
+        },
+
 
         onFormatChanged: (CalendarFormat _format){
           setState(() {
@@ -129,9 +138,18 @@ class _HomePageState extends State<HomePage> {
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectedDate = focusedDay;
-            _selectedDate = selectedDay; // update `_focusedDay` here as well
+            _selectedDate = selectedDay;
+
           });
         },
+    calendarStyle: CalendarStyle(
+    isTodayHighlighted: true,
+    selectedDecoration: BoxDecoration(
+    color: _selectedDate.toString().substring(0,10)==DateTime.now().toString().substring(0,10)?CupertinoColors.systemIndigo.withOpacity(0.5):Color(0xff2d99cd),
+    shape: BoxShape.circle,
+
+    ),
+    ),
       ),
     );
   }
@@ -142,9 +160,21 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
+          _selectedDate.toString().substring(0,10)==DateTime.now().toString().substring(0,10)?
           MyButton(
             label: "+ اضافة موعد ",
+            colorr :Colors.grey,
             onTap: () async {
+              print(_selectedDate.toString().substring(0,10)==DateTime.now().toString().substring(0,10));
+            },
+          ):MyButton(
+            label: "+ اضافة موعد ",
+            colorr : Color(0xff2d99cd),
+            onTap: () async {
+              print(_selectedDate);
+              print(DateTime.now());
+              print(_selectedDate==DateTime.now());
               Navigator.push(
                 context,
                 MaterialPageRoute(

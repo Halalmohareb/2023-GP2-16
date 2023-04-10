@@ -408,6 +408,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       MyButton(
+                        colorr :Color(0xff2d99cd),
                         label: "اضافة",
                         onTap: () {
                           _validateInputs();

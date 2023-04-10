@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/provider/firestore.dart';
+import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/db/db_helper.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
@@ -225,6 +226,7 @@ class _EditAvilability extends State<EditAvilability> {
                 children: [
                   MyButton(
                     label: "تحديث ",
+                    colorr :primaryClr,
                     onTap: () {
                       _showBottomdelet(context);
                     },
