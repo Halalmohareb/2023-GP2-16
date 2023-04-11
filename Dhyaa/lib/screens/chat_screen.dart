@@ -72,7 +72,7 @@ class ChatScreen extends StatelessWidget {
     //updateRead();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:Color(0xff4B7FFB),
+        backgroundColor:Color(0xff2d99cd),
         title: Row(
           children: [
             Text(friendName,style: TextStyle(fontSize: 20),)

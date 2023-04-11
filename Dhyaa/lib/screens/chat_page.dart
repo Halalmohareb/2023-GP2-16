@@ -146,7 +146,7 @@ class _ChatPageState extends State<ChatPage> {
                             child: ListTile(
                             leading: CircleAvatar(
                               child: Icon(Icons.account_circle,
-                                color: Color(0xff4B7FFB),
+                                color: Color(0xff2d99cd),
                                 size: 35,
                               ),
                               backgroundColor: Colors.white,
