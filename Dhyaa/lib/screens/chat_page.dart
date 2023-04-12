@@ -3,6 +3,7 @@ import 'package:Dhyaa/responsiveBloc/size_config.dart';
 import 'package:Dhyaa/screens/chat_screen.dart';
 import 'package:Dhyaa/screens/services/local_push_notification.dart';
 import 'package:Dhyaa/singlton.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constant.dart';
@@ -113,7 +114,7 @@ class _ChatPageState extends State<ChatPage> {
       Center(
       child: StreamBuilder (
           stream:  FirebaseFirestore.instance.collection('Users').doc(
-              Singleton.instance.userId).collection('message').snapshots(),
+              Singleton.instance.userId).collection('message').orderBy("datemsg",descending: true).snapshots(),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.docs.length < 1) {
@@ -145,12 +146,20 @@ class _ChatPageState extends State<ChatPage> {
                             //  padding: EdgeInsets.all(10),
                             child: ListTile(
                             leading: CircleAvatar(
-                              child: Icon(Icons.account_circle,
-                                color: Color(0xff2d99cd),
-                                size: 35,
+                              child: CachedNetworkImage(
+                                imageUrl: friend['avatar'],
+                                placeholder: (context, url) =>
+                                    Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.cover,
                               ),
-                              backgroundColor: Colors.white,
-                            ),
+                              ),
+
                             title: Text(friend['username'],),
                             subtitle: Container(
                               child: Text("$lastMsg",
@@ -166,7 +175,7 @@ class _ChatPageState extends State<ChatPage> {
                                   height: 0,
                                 ),
 
-                                Text(now.day == lastMsgtime.day &&
+                              Text( now.day == lastMsgtime.day &&
                                     now.month == lastMsgtime.month &&
                                     now.year == lastMsgtime.year
                                     ? "$lastMsgtime".substring(11, 16)
