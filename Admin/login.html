@@ -18,10 +18,21 @@
         <div class="card border-0 shadow rounded-3 my-5">
           <div class="card-body p-4 p-sm-5">
             <h5 class="card-title text-center mb-5 fw-light fs-5"> </h5>
-         <img src="LOGO.jpg" alt="logo" style="float:right;" width="250" height="333">
+         <img src="LOGO.jpg" alt="logo" style="float:right;" width="250" height="250">
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
             <form>
               <div class="form-floating mb-3">
-                <label style="float:right;" for="login_id"> الهوية</label>
+                <label style="float:right;" for="login_id"> رقم الهوية</label>
                 <input type="text" class="form-control float-end text-end" id="login_id" placeholder="">
               </div>
               <div class="form-floating mb-3">
@@ -86,14 +97,15 @@
                           sessionStorage.setItem('is_logged_in','TRUE');
                           window.location.assign("index.html");
                       }
-                      alert("Login ID OR Password is Incorrect");
+                      else 
+                        alert("اسم المستخدم او كلمة المرور غير صحيحه");
                       $("#login_submit_btn").attr("disabled",false);
                       $("#login_submit_btn").text("Login");
                   });
               });
           }
           else{
-              alert("Please fill all the fields correctly.");
+              alert("فضلا تأكد من تعبئة جميع الحقول");
               $("#login_submit_btn").attr("disabled",false);
               $("#login_submit_btn").text("Login");
           }
