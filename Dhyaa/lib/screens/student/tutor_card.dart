@@ -70,8 +70,9 @@ class _TutorCardWidgetState extends State<TutorCardWidget> {
     ];
     priceList.removeWhere((element) => element == 0);
     return priceList.length > 0
-        ? priceList.reduce(max).toString() +
-            '-' +
+        ?
+    // priceList.reduce(max).toString() +
+    //         '-' +
             priceList.reduce(min).toString()
         : '-';
   }
