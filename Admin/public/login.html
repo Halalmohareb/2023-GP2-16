@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Firebase</title>
+  </head>
+  <body>
+    
+    <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5"> </h5>
+         <img src="LOGO.jpg" alt="logo" style="float:right;" width="250" height="250">
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+         <br>
+            <form>
+              <div class="form-floating mb-3">
+                <label style="float:right;" for="login_id">رقم الهوية</label>
+                <input type="text" class="form-control float-end text-end" id="login_id" placeholder="">
+              </div>
+              <div class="form-floating mb-3">
+                <label style="float:right;" for="login_pass"> الرقم السري</label>
+                <input type="password" class="form-control float-end text-end" id="login_pass" placeholder="">
+              </div>
+
+              <div class="d-grid">
+                <button class="btn btn-primary btn-block btn-login text-uppercase fw-bold" type="button" id="login_submit_btn">التسجيل</button>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+
+    <script id="MainScript">
+      const firebaseConfig = {
+        apiKey: "AIzaSyCIOE8npA7gk-1QzUcsMi2OhbZFUyV1AQw",
+        authDomain: "dhyaa-application-87f85.firebaseapp.com",
+        databaseURL: "https://dhyaa-application-87f85-default-rtdb.firebaseio.com",
+        projectId: "dhyaa-application-87f85",
+        storageBucket: "dhyaa-application-87f85.appspot.com",
+        messagingSenderId: "143138479208",
+        appId: "1:143138479208:web:914a26a824c6edbcaf6fdd"
+      };
+
+      // firebase.initializeApp(firebaseConfig);
+      // let db = firebase.firestore();
+      if(sessionStorage.getItem('is_logged_in')){
+          window.location.assign("index.html");
+      }
+
+      firebase.initializeApp(firebaseConfig);
+      let db = firebase.firestore();
+
+      $("#login_submit_btn").on("click",function(){
+          $("#login_submit_btn").attr("disabled",true);
+          $("#login_submit_btn").text("Checking Please Wait");
+          var login_id = $("#login_id").val();
+          var login_pass = $("#login_pass").val();
+          if (login_id != '' && login_pass != ''){
+              db.collection("web_login_data").onSnapshot((querySnapshot)=>{
+                  var login_data = [];
+                  querySnapshot.forEach(doc => {
+                      login_data.push(doc.data());
+                  });
+                  login_data.forEach(row =>{
+                      if (login_id == row.login_id && login_pass == row.password){
+                          sessionStorage.setItem('is_logged_in','TRUE');
+                          window.location.assign("index.html");
+                      }
+                      else 
+                        alert("اسم المستخدم او كلمة المرور غير صحيحه");
+                      $("#login_submit_btn").attr("disabled",false);
+                      $("#login_submit_btn").text("Login");
+                  });
+              });
+          }
+          else{
+            alert("فضلا تأكد من تعبئة جميع الحقول");
+              $("#login_submit_btn").attr("disabled",false);
+              $("#login_submit_btn").text("Login");
+          }
+      });
+    </script>
+
+
+
+
+  </body>
+</html>

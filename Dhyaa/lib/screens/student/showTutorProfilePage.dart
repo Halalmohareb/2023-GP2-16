@@ -1,30 +1,3 @@
-// child: Container(
-// alignment: Alignment.center,
-// width: double.infinity,
-// margin:
-// EdgeInsets.symmetric(vertical: screenWidth * 2, horizontal: screenWidth*4)
-// .copyWith(bottom: 0),
-// padding: EdgeInsets.symmetric(
-// horizontal: screenWidth * 4,
-// vertical: screenWidth * 3),
-// decoration: BoxDecoration(
-// border: Border.all(color: theme.mainColor),
-// borderRadius: BorderRadius.circular(10),
-// color: theme.blueColor,
-// ),
-// child: text(
-// 'تحديث',
-// screenWidth * 3.9,
-// theme.whiteColor,
-// ),
-// ),
-
-
-
-
-
-
-
 import 'dart:convert';
 import 'dart:math';
 import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
@@ -80,7 +53,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       for (var task in value) {
         var s = task.day.split('-');
         DateTime d =
-        DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
+            DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         bool isAfter = d.isAfter(DateTime.now());
         if (isAfter) tasks.add(task);
       }
@@ -110,10 +83,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       }
     }
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Wrap(
         children: List.generate(temp.length, (index) {
@@ -194,10 +164,9 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           borderRadius: BorderRadius.circular(20),
                           child: CachedNetworkImage(
                             imageUrl: userData.avatar,
-                            placeholder: (context, url) =>
-                                Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),
+                            ),
                             errorWidget: (context, url, error) =>
                                 Icon(Icons.error),
                             height: 70,
@@ -249,7 +218,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                           children: [
                             RatingBar.builder(
                               initialRating:
-                              double.parse(userData.averageRating),
+                                  double.parse(userData.averageRating),
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
@@ -257,11 +226,10 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                               itemCount: 5,
                               itemSize: 20,
                               itemPadding: EdgeInsets.all(0),
-                              itemBuilder: (context, _) =>
-                                  Icon(
-                                    Icons.star_rate_rounded,
-                                    color: kBlueColor,
-                                  ),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star_rate_rounded,
+                                color: kBlueColor,
+                              ),
                               onRatingUpdate: (rating) {},
                             ),
                             SizedBox(width: 5),
@@ -314,10 +282,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
               SizedBox(height: 5),
               Container(
                 height: tabHight(),
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 child: DefaultTabController(
                   initialIndex: 0,
                   length: 3,
@@ -345,8 +310,14 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         child: TabBarView(
                           physics: NeverScrollableScrollPhysics(),
                           children: <Widget>[
-                            Text(
-                              userData.bio == '' ? 'غير متوفرة' : userData.bio,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                userData.bio == ''
+                                    ? 'غير متوفرة'
+                                    : userData.bio,
+                              ),
                             ),
                             showAvailability(),
                             ReviewsComponent(allReviews: allReviews),
@@ -357,186 +328,93 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    'قد يعجبك',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'cb',
+              if (recommendationCount > 0)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'قد يعجبك',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'cb',
+                      ),
                     ),
                   ),
                 ),
-              ),
               SizedBox(height: 10),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: recommendedWidget,
               ),
               SizedBox(height: 20),
-              // widget.myUserId == widget.userData.userId
-              //     ? Container(height: 0)
-              //     : Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 15),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       GestureDetector(
-              //         onTap: () {
-              //           Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //               builder: (context) =>
-              //                   BookAppointment(
-              //                       userData: userData,
-              //                       myUserData: myUserData),
-              //             ),
-              //           );
-              //         },
-              //         child: Container(
-              //           alignment: Alignment.center,
-              //           width: MediaQuery
-              //               .of(context)
-              //               .size
-              //               .width / 2.3,
-              //           margin: EdgeInsets.symmetric(
-              //               vertical: screenWidth * 2)
-              //               .copyWith(bottom: screenWidth),
-              //           padding: EdgeInsets.all(screenWidth * 2.5),
-              //           decoration: BoxDecoration(
-              //               borderRadius: BorderRadius.circular(10),
-              //               color: theme.blueColor),
-              //           child: text(
-              //             'احجز موعدًا',
-              //             screenWidth * 3.4,
-              //             theme.whiteColor,
-              //           ),
-              //         ),
-              //       ),
-              //
-              //       GestureDetector(
-              //         onTap: () {
-              //           Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //               builder: (context) =>
-              //                   ChatScreen(
-              //                       friendId: userData.userId,
-              //                       friendName: userData.username),
-              //             ),
-              //           );
-              //         },
-              //         child: Container(
-              //           alignment: Alignment.center,
-              //           width: MediaQuery
-              //               .of(context)
-              //               .size
-              //               .width / 2.3,
-              //           margin: EdgeInsets.symmetric(
-              //               vertical: screenWidth * 2)
-              //               .copyWith(bottom: 0),
-              //           padding: EdgeInsets.all(screenWidth * 2.5),
-              //           decoration: BoxDecoration(
-              //             color: theme.fillColor,
-              //             border: Border.all(color: theme.mainColor),
-              //             borderRadius: BorderRadius.circular(10),
-              //           ),
-              //           child: text(
-              //             "تواصل مع المعلم",
-              //             screenWidth * 3.4,
-              //             theme.mainColor,
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // SizedBox(height: 20),
             ],
           ),
         ),
       ),
-      bottomNavigationBar:
-          Container(
-            padding:EdgeInsets.all(screenWidth * 2.5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              BookAppointment(
-                                  userData: userData,
-                                  myUserData: myUserData),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width / 2.3,
-                      margin: EdgeInsets.symmetric(
-                          vertical: screenWidth * 2)
-                          .copyWith(bottom: screenWidth),
-                      padding: EdgeInsets.all(screenWidth * 2.5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: theme.blueColor),
-                      child: text(
-                        'احجز موعدًا',
-                        screenWidth * 3.4,
-                        theme.whiteColor,
-                      ),
+      bottomNavigationBar: Container(
+          padding: EdgeInsets.all(screenWidth * 2.5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookAppointment(
+                          userData: userData, myUserData: myUserData),
                     ),
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width / 2.3,
+                  margin: EdgeInsets.symmetric(vertical: screenWidth * 2)
+                      .copyWith(bottom: screenWidth),
+                  padding: EdgeInsets.all(screenWidth * 2.5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: theme.blueColor),
+                  child: text(
+                    'احجز موعدًا',
+                    screenWidth * 3.4,
+                    theme.whiteColor,
                   ),
-
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ChatScreen(
-                                  friendId: userData.userId,
-                                  friendName: userData.username),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width / 2.3,
-                      margin: EdgeInsets.symmetric(
-                          vertical: screenWidth * 2)
-                          .copyWith(bottom: 0),
-                      padding: EdgeInsets.all(screenWidth * 2.5),
-                      decoration: BoxDecoration(
-                        color: theme.fillColor,
-                        border: Border.all(color: theme.mainColor),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: text(
-                        "تواصل مع المعلم",
-                        screenWidth * 3.4,
-                        theme.mainColor,
-                      ),
-                    ),
-                  ),
-                ],
-
+                ),
               ),
-            height: 80
-    ),
-
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(
+                          friendId: userData.userId,
+                          friendName: userData.username),
+                    ),
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width / 2.3,
+                  margin: EdgeInsets.symmetric(vertical: screenWidth * 2)
+                      .copyWith(bottom: 0),
+                  padding: EdgeInsets.all(screenWidth * 2.5),
+                  decoration: BoxDecoration(
+                    color: theme.fillColor,
+                    border: Border.all(color: theme.mainColor),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: text(
+                    "تواصل مع المعلم",
+                    screenWidth * 3.4,
+                    theme.mainColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          height: 80),
     );
   }
 
@@ -587,9 +465,12 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   }
 
   Widget recommendedWidget = Container();
+  int recommendationCount = 0;
 
   getRecommendedTutors() {
     FirestoreHelper.getRecommendedTutors(userData).then((tutors) {
+      recommendationCount = tutors.length;
+      if (mounted) setState(() {});
       recommendedWidget = SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -599,126 +480,141 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
             return Container(
               height: 320,
               margin: EdgeInsets.symmetric(horizontal: 5),
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 1.5,
+              width: MediaQuery.of(context).size.width / 1.5,
               child: Stack(
                 children: [
                   Positioned(
                     top: 40,
-                    child: Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width / 1.5,
-                      padding: EdgeInsets.only(top: 15, left: 10, right: 10),
-                      height: 270,
-                      decoration: BoxDecoration(
-                        color: theme.bgColor,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: theme.darkTextColor.withOpacity(0.3),
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 30),
-                          Text(
-                            _tutor.username,
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              color: kTitleTextColor,
-                              fontFamily: 'cb',
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ShowTutorProfilePage(
+                              userData: _tutor,
+                              myUserId: widget.myUserId,
                             ),
                           ),
-                          RatingBar.builder(
-                            initialRating: double.parse(_tutor.averageRating),
-                            minRating: 0,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            ignoreGestures: true,
-                            itemCount: 5,
-                            itemSize: 15,
-                            itemPadding: EdgeInsets.all(0),
-                            itemBuilder: (context, _) =>
-                                Icon(
-                                  Icons.star_rate_rounded,
-                                  color: kBlueColor,
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        padding: EdgeInsets.only(top: 15, left: 10, right: 10),
+                        height: 270,
+                        decoration: BoxDecoration(
+                          color: theme.bgColor,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.darkTextColor.withOpacity(0.3),
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 30),
+                            Text(
+                              _tutor.username,
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(
+                                color: kTitleTextColor,
+                                fontFamily: 'cb',
+                              ),
+                            ),
+                            RatingBar.builder(
+                              initialRating: double.parse(_tutor.averageRating),
+                              minRating: 0,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              ignoreGestures: true,
+                              itemCount: 5,
+                              itemSize: 15,
+                              itemPadding: EdgeInsets.all(0),
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star_rate_rounded,
+                                color: kBlueColor,
+                              ),
+                              onRatingUpdate: (rating) {},
+                            ),
+                            SizedBox(height: 5),
+                            Wrap(
+                              children: [
+                                Icon(Icons.location_on, size: 15),
+                                SizedBox(width: 5),
+                                Text(
+                                  _tutor.location + ', ' + _tutor.address,
+                                  style: TextStyle(fontSize: 13),
                                 ),
-                            onRatingUpdate: (rating) {},
-                          ),
-                          SizedBox(height: 5),
-                          Wrap(
-                            children: [
-                              Icon(Icons.location_on, size: 15),
-                              SizedBox(width: 5),
-                              Text(
-                                _tutor.location + ', ' + _tutor.address,
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
-                          ),
-                          Wrap(
-                            children: [
-                              Icon(Icons.broadcast_on_personal, size: 15),
-                              SizedBox(width: 5),
-                              Text(
-                                lessonTypePipe(_tutor),
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            'المادة: ' + degreeTextPipe(_tutor.degree),
-                            textDirection: TextDirection.rtl,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 13),
-                          ),
-                          Text(
-                            'السعر يبدأ من:  ' +
-                                getMinPrice(_tutor) +
-                                ' ' +
-                                'ريال/ساعة',
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(fontSize: 13),
-                          ),
-                        ],
+                              ],
+                            ),
+                            Wrap(
+                              children: [
+                                Icon(Icons.broadcast_on_personal, size: 15),
+                                SizedBox(width: 5),
+                                Text(
+                                  lessonTypePipe(_tutor),
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              'المادة: ' + degreeTextPipe(_tutor.degree),
+                              textDirection: TextDirection.rtl,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            Text(
+                              'السعر يبدأ من:  ' +
+                                  getMinPrice(_tutor) +
+                                  ' ' +
+                                  'ريال/ساعة',
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(fontSize: 13),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   Positioned(
                     top: 0,
-                    child: Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width / 1.5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: CachedNetworkImage(
-                              imageUrl: _tutor.avatar,
-                              placeholder: (context, url) =>
-                                  Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                              height: 70,
-                              width: 70,
-                              fit: BoxFit.cover,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ShowTutorProfilePage(
+                              userData: _tutor,
+                              myUserId: widget.myUserId,
                             ),
                           ),
-                        ],
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(
+                                imageUrl: _tutor.avatar,
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -732,55 +628,81 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     });
   }
 
+  isAppointmentExist(timeObj, date, tutorId, index) {
+    if (mounted) setState(() {});
+    FirestoreHelper.isAppointmentExist(timeObj, date, tutorId)
+        .then((isAvailableForAppointment) {
+      if (!isAvailableForAppointment) {
+        tasks.removeAt(index);
+        if (mounted) setState(() {});
+      }
+    });
+  }
+
   showAvailability() {
-    return Container(
+    var widget = Container();
+    // Availability checker
+    for (var i = 0; i < tasks.length; i++) {
+      var date = tasks[i];
+      int s = int.parse(date.startTime.split(':')[0]);
+      isAppointmentExist(
+        {
+          'start': (s + i).toString() + ':00',
+          'end': ((s + i) + 1).toString() + ':00'
+        },
+        tasks[i].day,
+        userData.userId,
+        i,
+      );
+    }
+    // Availability checker end
+
+    widget = Container(
       height: 55,
       margin: EdgeInsets.all(10),
       child: tasks.length == 0
           ? Align(
-        alignment: Alignment.topRight,
-        child: Text('المعلم غير متوفر لتحديد موعد'),
-      )
+              alignment: Alignment.topRight,
+              child: Text('المعلم غير متوفر لتحديد موعد'),
+            )
           : Wrap(
-          spacing: 10.0,
-          children: List.generate(tasks.length, (index) {
-            return Container(
-              height: 55,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 3 - 15,
-              margin: EdgeInsets.only(bottom: 10),
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: kBlueColor.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    tasks[index].day.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontFamily: 'cb',
-                      color: Colors.black,
-                    ),
+              spacing: 10.0,
+              children: List.generate(tasks.length, (index) {
+                return Container(
+                  height: 55,
+                  width: MediaQuery.of(context).size.width / 3 - 15,
+                  margin: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: kBlueColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  Text(
-                    tasks[index].startTime + ' - ' + tasks[index].endTime,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontFamily: 'cb',
-                      color: Colors.black,
-                    ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        tasks[index].day.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontFamily: 'cb',
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        tasks[index].startTime + ' - ' + tasks[index].endTime,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontFamily: 'cb',
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          })),
+                );
+              })),
     );
+    return widget;
   }
 
   tabHight() {
@@ -800,19 +722,14 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   int getNumberOfLines(String text, BuildContext context) {
     final textSpan = TextSpan(
       text: text,
-      style: DefaultTextStyle
-          .of(context)
-          .style,
+      style: DefaultTextStyle.of(context).style,
     );
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
       maxLines: null,
     );
-    textPainter.layout(maxWidth: MediaQuery
-        .of(context)
-        .size
-        .width);
+    textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
     final lines = textPainter.computeLineMetrics();
     return lines.length;
   }

@@ -163,31 +163,15 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       UserCredential? userCredential;
       if (type == "Student") {
-        List<DocumentSnapshot> usernameList =
-            await doesUserNameAlreadyExist(studentUserName.text, "Users");
-        if (usernameList.isEmpty) {
-          userCredential = await auth.createUserWithEmailAndPassword(
-              email: studentEmail.text, password: studentPassword.text);
-          final User user = userCredential.user!;
-          await addUser(user, context, type);
-        } else {
-          isLoading = false;
-          notifyListeners();
-          showToast("اسم المستخدم مسجل مسبقًا الرجاء اختيار اسم اخر");
-        }
+        userCredential = await auth.createUserWithEmailAndPassword(
+            email: studentEmail.text, password: studentPassword.text);
+        final User user = userCredential.user!;
+        await addUser(user, context, type);
       } else {
-        List<DocumentSnapshot> usernameList =
-            await doesUserNameAlreadyExist(tutorUsername.text, "Users");
-        if (usernameList.isEmpty) {
-          userCredential = await auth.createUserWithEmailAndPassword(
-              email: tutorEmail.text, password: tutorPassword.text);
-          final User user = userCredential.user!;
-          await addUser(user, context, type);
-        } else {
-          isLoading = false;
-          notifyListeners();
-          showToast("اسم المستخدم مسجل مسبقًا الرجاء اختيار اسم اخر");
-        }
+        userCredential = await auth.createUserWithEmailAndPassword(
+            email: tutorEmail.text, password: tutorPassword.text);
+        final User user = userCredential.user!;
+        await addUser(user, context, type);
       }
       notifyListeners();
     } on FirebaseAuthException catch (e) {

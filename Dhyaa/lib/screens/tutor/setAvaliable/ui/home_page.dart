@@ -138,8 +138,7 @@ class _HomePageState extends State<HomePage> {
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
             _selectedDate = focusedDay;
-            _selectedDate = selectedDay;
-
+            _selectedDate = selectedDay; // update `_focusedDay` here as well
           });
         },
     calendarStyle: CalendarStyle(
@@ -409,25 +408,15 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.of(context, rootNavigator: false).push(
                         MaterialPageRoute(
-                          builder: (context) => EditAvilability(
-                            editTask: task,
+                            builder: (context) => EditAvilability(
+                              editTask: task,
                           ),
                           maintainState: false,
                         ),
                       );
-                     // Navigator.pop(context);
+
+                      Navigator.pop(context);
                     },
-                    // onTap: ()  {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => EditAvilability(
-                    //           editTask: task,
-                    //         )),
-                    //   );
-                    //
-                    //   Navigator.pop(context);
-                    // },
 
                     clr: primaryClr,
                     context: context,

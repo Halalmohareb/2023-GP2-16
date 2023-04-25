@@ -151,13 +151,13 @@ class _ChatPageState extends State<ChatPage> {
                                 placeholder: (context, url) =>
                                     Center(
                                       child: CircularProgressIndicator(),
-                                    ),
+                              ),
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
                                 height: 70,
                                 width: 70,
                                 fit: BoxFit.cover,
-                              ),
+                            ),
                               ),
 
                             title: Text(friend['username'],),

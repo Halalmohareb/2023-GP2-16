@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:Dhyaa/models/task.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
-
+import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
+import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/input_field.dart';
 
 class MyButton extends StatelessWidget {
   final Function? onTap;

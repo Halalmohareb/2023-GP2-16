@@ -11,6 +11,7 @@ import 'package:Dhyaa/constant.dart';
 import 'package:Dhyaa/models/UserData.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/student/tutor_card.dart';
+import 'package:get/get.dart';
 import 'package:textfield_search/textfield_search.dart';
 
 import '../../singlton.dart';
@@ -242,6 +243,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                     vertical: 5,
                                     horizontal: 10,
                                   ),
+                                  margin: EdgeInsets.symmetric(horizontal: 3),
                                   decoration: BoxDecoration(
                                     color: theme.fillColor,
                                     borderRadius: BorderRadius.circular(10),
@@ -254,24 +256,27 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                             .toString(),
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 5,
-                                    horizontal: 10,
+                                if (filterData['location'] != "")
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: 10,
+                                    ),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
+                                    decoration: BoxDecoration(
+                                      color: theme.fillColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child:
+                                        Text(filterData['location'].toString()),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: theme.fillColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child:
-                                      Text(filterData['location'].toString()),
-                                ),
                                 if (filterData['isOnlineLesson'])
                                   Container(
                                     padding: EdgeInsets.symmetric(
                                       vertical: 5,
                                       horizontal: 10,
                                     ),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     decoration: BoxDecoration(
                                       color: theme.fillColor,
                                       borderRadius: BorderRadius.circular(10),
@@ -284,6 +289,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                       vertical: 5,
                                       horizontal: 10,
                                     ),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     decoration: BoxDecoration(
                                       color: theme.fillColor,
                                       borderRadius: BorderRadius.circular(10),
@@ -296,6 +302,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                       vertical: 5,
                                       horizontal: 10,
                                     ),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     decoration: BoxDecoration(
                                       color: theme.fillColor,
                                       borderRadius: BorderRadius.circular(10),
@@ -305,7 +312,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                 if (filterData['star1'])
                                   Container(
                                     padding: EdgeInsets.symmetric(vertical: 7),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     width:
                                         MediaQuery.of(context).size.width / 5 -
                                             20,
@@ -325,7 +332,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                 if (filterData['star2'])
                                   Container(
                                     padding: EdgeInsets.symmetric(vertical: 7),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     width:
                                         MediaQuery.of(context).size.width / 5 -
                                             20,
@@ -345,7 +352,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                 if (filterData['star3'])
                                   Container(
                                     padding: EdgeInsets.symmetric(vertical: 7),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     width:
                                         MediaQuery.of(context).size.width / 5 -
                                             20,
@@ -365,7 +372,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                 if (filterData['star4'])
                                   Container(
                                     padding: EdgeInsets.symmetric(vertical: 7),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     width:
                                         MediaQuery.of(context).size.width / 5 -
                                             20,
@@ -385,7 +392,7 @@ class _FindTutorScreenState extends State<FindTutorScreen> {
                                 if (filterData['star5'])
                                   Container(
                                     padding: EdgeInsets.symmetric(vertical: 7),
-                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    margin: EdgeInsets.symmetric(horizontal: 3),
                                     width:
                                         MediaQuery.of(context).size.width / 5 -
                                             20,
