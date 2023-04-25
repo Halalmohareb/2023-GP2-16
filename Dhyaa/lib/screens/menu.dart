@@ -1,4 +1,5 @@
 import 'package:Dhyaa/screens/contactPage.dart';
+import 'package:Dhyaa/screens/policy.dart';
 import 'package:Dhyaa/screens/student/showTutorProfilePage.dart';
 import 'package:Dhyaa/screens/student/student_showprofile.dart';
 import 'package:Dhyaa/screens/tutor/tutor_frofile.dart';
@@ -136,7 +137,15 @@ class _MenuState extends State<Menu> {
                 shape: Border(),
                 title: Text('سياسة الدفع'),
                 leading: Icon(Icons.payment),
-                onTap: () {},
+                 onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          policy(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 shape: Border(),
