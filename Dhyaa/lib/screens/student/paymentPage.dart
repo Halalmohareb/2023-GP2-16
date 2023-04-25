@@ -29,7 +29,10 @@ class _PaymentPageState extends State<PaymentPage> {
   OutlineInputBorder? border;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  // Functions
+// Functions
+// initiates the payment process with a credit card.
+// It uses the MoyasarPayment class to make a payment request and waits for the response.
+// The payment request includes various parameters.
   byCard() async {
     PayModel res = await MoyasarPayment().creditCard(
       description: ' درس',
@@ -42,18 +45,21 @@ class _PaymentPageState extends State<PaymentPage> {
       expiryYear: int.parse(expiryDate.split('/')[1]),
       callbackUrl: 'https://google.com',
     );
+ // If the payment request is successful, the response will contain the payment details.
+// Otherwise, an error message will be returned.
     if (res.type != null) {
       print(res.message);
     } else {
+// If the payment is successful, extract the payment details and navigate to the next screen.
       CreditcardModel cardModel = CreditcardModel.fromJson(res.source);
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => VerifyPayment(
-            url: cardModel.transactionUrl,
-            appointmentData: widget.appointmentData,
-            myUserData:widget.myUserData,
-            userData:widget.userData,
+            url: cardModel.transactionUrl, // URL for payment verification
+            appointmentData: widget.appointmentData, // appointment details
+            myUserData:widget.myUserData, // details of student
+            userData:widget.userData, // details of the the tutor 
           ),
         ),
       );

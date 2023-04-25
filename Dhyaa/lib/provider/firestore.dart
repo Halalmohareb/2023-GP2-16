@@ -113,7 +113,7 @@ class FirestoreHelper {
         .where("active_status", isEqualTo: "unsuspended")
         .get()
         .then(
-          (value) {
+      (value) {
         if (value.docs.isNotEmpty) {
           print("yeeees");
           UserData userrr = UserData.fromMap(value.docs.first.data());
@@ -127,8 +127,6 @@ class FirestoreHelper {
 
     return userData;
   }
-
-
 
   static Future<bool> updateUserData(id, updateData) async {
     await db.collection('Users').doc(id).update(updateData);
@@ -187,11 +185,11 @@ class FirestoreHelper {
   static Future getAllRecommendedTutors(UserData user) async {
     List<UserData> tutors = [];
     List temp = [];
+    // First : Retreive The users who match the following
     await db
         .collection('Users')
-        .where("type",
-            isEqualTo:
-                "Tutor") // removing the tutor its self from recommendation
+        .where("type", isEqualTo: "Tutor")
+        // removing the tutor its self from recommendation
         .where("userId", isNotEqualTo: user.userId)
         .where("active_status", isEqualTo: "unsuspended")
         .get()
@@ -200,16 +198,17 @@ class FirestoreHelper {
         tutors.add(UserData.fromMap(element.data()));
       });
     });
-    tutors.shuffle(); // To make tutors list random
+    tutors.shuffle(); // To make tutors list random so we get different recommendations 
+
+    // Second : Giving the selected attributes numaric values to measure the similarity 
     for (var tutor in tutors) {
       dynamic cosineSimilarity = 0.0;
-
       double subjectCount = 0.0;
       double locationCount = 0.0;
       double addressCount = 0.0;
       double sessionTypeCount = 0.0;
       double priceCount = 0.0;
-
+ 
       // =============================== Subject ======================
       List userDegree = jsonDecode(user.degree); // active profile tutor
       List itemDegree = jsonDecode(tutor.degree); // compared tutor
@@ -221,7 +220,7 @@ class FirestoreHelper {
         }
       }
       if (subjectCount != 0.0) {
-        // at least one subject has to match
+        //  at least one subject has to match
         // =============================== Location/City, Address/Area  ======================
         if (tutor.location == user.location) {
           locationCount = 0.175;
@@ -232,11 +231,13 @@ class FirestoreHelper {
         }
 
         // =============================== Session type ================================
+
+        // we want to show the tutors in same city only
         if (locationCount == 0.175) {
           if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
               tutor.isOnlineLesson) {
             sessionTypeCount += 0.058;
-          } // we want to show the tutors in same city only , if not they give online lessons
+          }  
           if ((tutor.isStudentHomeLesson == user.isStudentHomeLesson) &&
               tutor.isStudentHomeLesson) {
             sessionTypeCount += 0.058;
@@ -245,6 +246,7 @@ class FirestoreHelper {
               tutor.isTutorHomeLesson) {
             sessionTypeCount += 0.058;
           }
+          //if not they give online lessons
         } else {
           if ((tutor.isOnlineLesson == user.isOnlineLesson) &&
               tutor.isOnlineLesson) {
@@ -290,22 +292,20 @@ class FirestoreHelper {
         }
 
         // =============================== Cosine Similarity =========================
-        // Levels list
-        List<double> currentTutor = [0.3, 0.175, 0.175, 0.175, 0.175]; //Vector1
+       
+        List<double> currentTutor = [0.3, 0.175, 0.175, 0.175, 0.175]; // Vector1 , values assigned to all attributes 
         List<double> iterationTutor = [
           subjectCount,
           locationCount,
           addressCount,
           sessionTypeCount,
           priceCount,
-        ]; // Vector2
+        ]; // Vector2 , only has the numaric values of the matched attributes
 
         // Cosine Similarity algorithm
         cosineSimilarity = await cosineAlgorithm(
             currentTutor, iterationTutor); // sending cs param
 
-        print(
-            "UserName is: ${tutor.username} - and - CosineSimilarity is: $cosineSimilarity"); // Testing similarty for each tutor
 
         // unsorted array
         temp.add({
