@@ -306,6 +306,9 @@ class FirestoreHelper {
         cosineSimilarity = await cosineAlgorithm(
             currentTutor, iterationTutor); // sending cs param
 
+ print(
+            "UserName is: ${tutor.username} - and - CosineSimilarity is: $cosineSimilarity"); // Testing similarty for each tutor
+
 
         // unsorted array
         temp.add({
