@@ -182,7 +182,7 @@ class _contactPageState extends State<contactPage> {
                       subjectController.text.isEmpty) {
                     ErrorAllFields = 'خانه فاضيه';
                     print(ErrorAllFields);
-                    showToast("خانه فاضيه", isSuccess: false);
+                    showToast("تاكد من ادخال البيانات", isSuccess: false);
                     // }else{
                     //   if(message.length > 0){
                     //     showToast("ادخل ايميل صحيح", isSuccess: false);

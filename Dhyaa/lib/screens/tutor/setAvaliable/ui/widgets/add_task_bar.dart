@@ -356,7 +356,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     Expanded (
                       child: InputField (
                         textDirection: TextDirection.RTL,
-                        title: "تكرار كل يوم "+ repeatList[(repeatList1.indexOf(_selectedday!))]!+" لمده:",
+                        title: "تكرار كل يوم "+ repeatList[(repeatList1.indexOf(_selectedday!))]!+" لمده",
                         hint: _selectedrepeatday,
                         widget: Row(
                           children: [
@@ -563,10 +563,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
             }
           }
           Navigator.pop(context);
+    showToast('تمت اضافة الوقت بنجاح');
         }
       }
     }
   }
+
 
   showCancelAlert(BuildContext context, String massage) {
     AlertDialog alert = AlertDialog(

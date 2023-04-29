@@ -14,6 +14,8 @@ import 'package:Dhyaa/screens/signinMethodScreen/signin_method_screen.dart';
 import 'package:Dhyaa/screens/student/studentProfile_screen.dart';
 import 'package:Dhyaa/screens/update_profile.dart';
 
+import '../constant.dart';
+
 class Menu extends StatefulWidget {
   final UserData userData;
   const Menu({Key? key, required this.userData}) : super(key: key);
@@ -42,6 +44,82 @@ class _MenuState extends State<Menu> {
     });
   }
 
+  showCancelAlert(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.all(10),
+      titlePadding: EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.all(20),
+      content: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 180,
+        child: Column(
+          children: [
+            Icon(
+              Icons.warning_amber_rounded,
+              size: 70,
+            ),
+            SizedBox(height: 10),
+            Text('هل انت متأكد من الخروج ؟'),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('لا، تراجع'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    doCancel();
+                    Navigator.of(context, rootNavigator: true).pop();
+
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    side: BorderSide(color: kBlueColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text('نعم، خروج'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  doCancel() async {
+    SharedPreferences preferences =
+        await SharedPreferences.getInstance();
+    await preferences.clear();
+    await FirebaseAuth.instance.signOut().then((value) {
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => new SignInMethod(),
+        ),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,17 +243,18 @@ class _MenuState extends State<Menu> {
               Center(
                 child: GestureDetector(
                   onTap: () async {
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    await preferences.clear();
-                    await FirebaseAuth.instance.signOut().then((value) {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => new SignInMethod(),
-                        ),
-                      );
-                    });
+                    showCancelAlert(context);
+                    // SharedPreferences preferences =
+                    //     await SharedPreferences.getInstance();
+                    // await preferences.clear();
+                    // await FirebaseAuth.instance.signOut().then((value) {
+                    //   Navigator.of(context, rootNavigator: true)
+                    //       .pushReplacement(
+                    //     MaterialPageRoute(
+                    //       builder: (context) => new SignInMethod(),
+                    //     ),
+                    //   );
+                    // });
                   },
                   child: Container(
                     height: 45,

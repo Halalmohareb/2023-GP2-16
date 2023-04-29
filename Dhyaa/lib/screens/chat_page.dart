@@ -9,12 +9,14 @@ import 'package:flutter/material.dart';
 import '../constant.dart';
 import '../models/UserData.dart';
 import '../provider/firestore.dart';
+import 'package:Dhyaa/theme/theme.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 import'package:http/http.dart' as http;
 
 import '../theme/topAppBar.dart';
+import 'menu.dart';
 
 class ChatPage  extends StatefulWidget {
 
@@ -33,9 +35,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
 
-
   void initState() {
     FirestoreHelper.getMyUserDatab().then((value) {
+      userData = value;
       if (mounted) setState(() {
       });
     });
@@ -107,10 +109,55 @@ class _ChatPageState extends State<ChatPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xffF9F9F9),
-        toolbarHeight: 70,),
-      body:
+        backgroundColor: Colors.white,
+        elevation: 5,
+        toolbarHeight: 70,
+        leading: Container(
+        padding: EdgeInsets.symmetric(
+        vertical:10,
 
+    ),
+    margin: EdgeInsets.only(left: 10),
+
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context, rootNavigator: false).push(
+              MaterialPageRoute(
+                builder: (context) => Menu(userData: userData),
+                maintainState: false,
+              ),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: CachedNetworkImage(
+              imageUrl: userData.avatar,
+              height: 40,
+              width: 40,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(),
+              ),
+              errorWidget: (context, url, error) =>
+                  Icon(Icons.error),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        ),
+        actions: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+            ),
+            margin: EdgeInsets.only(right: 20),
+            child: Image.asset(
+              'assets/icons/DhyaaLogo.png',
+              height: 40,
+            ),
+          ),
+        ],
+      ),
+      body:
       Center(
       child: StreamBuilder (
           stream:  FirebaseFirestore.instance.collection('Users').doc(
