@@ -23,7 +23,7 @@ class TaskTile extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: _getBGClr(task.color),
+          color: Color(0xff2d99cd),
         ),
         child: Row(children: [
           Expanded(

@@ -9,8 +9,10 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/input_field.dart';
 import 'package:intl/intl.dart';
-
+import 'package:Dhyaa/theme/theme.dart';
+import '../../../../../globalWidgets/textWidget/text_widget.dart';
 import '../../../../../globalWidgets/toast.dart';
+import '../../../../../responsiveBloc/size_config.dart';
 
 class EditAvilability extends StatefulWidget {
   const EditAvilability({Key? key, required this.editTask}) : super(key: key);
@@ -21,7 +23,7 @@ class EditAvilability extends StatefulWidget {
 
 class _EditAvilability extends State<EditAvilability> {
   final TaskController _taskController = Get.put(TaskController());
-
+  var screenWidth = SizeConfig.widthMultiplier;
   DateTime _selectedDate = DateTime.now();
   int _selectedColor = 0;
   String? _selectedTimeStart = "1:00";
@@ -96,6 +98,7 @@ class _EditAvilability extends State<EditAvilability> {
     //Below shows the time like Sep 15, 2021
     //print(new DateFormat.yMMMd().format(new DateTime.now()));
     // print(" starttime " + _startTime!);
+    var screenWidth = SizeConfig.widthMultiplier;
     final now = new DateTime.now();
     final dt = DateTime(now.year, now.month, now.day, now.minute, now.second);
     final format = DateFormat.jm();
@@ -219,20 +222,48 @@ class _EditAvilability extends State<EditAvilability> {
                   ),
                 ),
               ]),
-              const SizedBox(height: 18.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MyButton(
-                    label: "تحديث ",
-                    colorr :primaryClr,
-                    onTap: () {
-                      _showBottomdelet(context);
-                    },
+              const SizedBox(height: 70.0),
+
+              GestureDetector(
+                onTap: () {
+                  _showBottomdelet(context);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  margin:
+                  EdgeInsets.symmetric(vertical: screenWidth * 2, horizontal: screenWidth*4)
+                      .copyWith(bottom: 0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 4,
+                      vertical: screenWidth * 3),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: theme.mainColor),
+                    borderRadius: BorderRadius.circular(10),
+                    color: theme.blueColor,
                   ),
-                ],
+                  child: text(
+                    'تحديث',
+                    screenWidth * 3.9,
+                    theme.whiteColor,
+                  ),
+                ),
               ),
+
+
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.end,
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     MyButton(
+              //       label: "تحديث ",
+              //       colorr :primaryClr,
+              //       onTap: () {
+              //         _showBottomdelet(context);
+              //       },
+              //     ),
+              //   ],
+              // ),
               const SizedBox(
                 height: 30.0,
               ),
@@ -489,11 +520,9 @@ class _EditAvilability extends State<EditAvilability> {
     await _taskController.updateTask(
         task: Task(
             widget.editTask!.id,
-            0,
             _selectedTimeStart.toString(),
             _selectedTimeStart.toString(),
             _selectedTimeEnd.toString(),
-            _selectedColor,
             _selectedRepeat.toString()));
 
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(

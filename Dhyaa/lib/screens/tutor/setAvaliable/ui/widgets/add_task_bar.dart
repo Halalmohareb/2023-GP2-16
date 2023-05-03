@@ -8,10 +8,10 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/controllers/task_controller.dar
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/input_field.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import 'package:Dhyaa/theme/theme.dart';
+import '../../../../../globalWidgets/textWidget/text_widget.dart';
 import '../../../../../globalWidgets/toast.dart';
+import '../../../../../responsiveBloc/size_config.dart';
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key, required this.userdate}) : super(key: key);
@@ -95,6 +95,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   int day = DateTime.now().weekday;
   int repeatTime = 1;
   int hour = DateTime.now().hour;
+  var screenWidth = SizeConfig.widthMultiplier;
   // setHours(){
   //   //.substring(0,(timeList2.indexOf(':')))
   //   int j=0;
@@ -107,6 +108,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   // }
   @override
   Widget build(BuildContext context) {
+    var screenWidth = SizeConfig.widthMultiplier;
     _selectedRepeat = widget.userdate;
     day = widget.userdate.weekday;
     _selectedday = DateFormat.MMMMEEEEd().format( _selectedRepeat!).substring(0,DateFormat.MMMMEEEEd()
@@ -401,25 +403,38 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     )
                   ]),
                   const SizedBox(
-                    height: 18.0,
+                    height: 70.0,
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      MyButton(
-                        colorr :Color(0xff2d99cd),
-                        label: "اضافة",
+
+                     GestureDetector(
                         onTap: () {
-                          _validateInputs();
-                        },
+                                  _validateInputs();
+                          },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          margin:
+                          EdgeInsets.symmetric(vertical: screenWidth * 2, horizontal: screenWidth*4)
+                              .copyWith(bottom: 0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 4,
+                              vertical: screenWidth * 3),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: theme.mainColor),
+                            borderRadius: BorderRadius.circular(10),
+                            color: theme.blueColor,
+                          ),
+                          child: text(
+                            'اضافة',
+                            screenWidth * 3.9,
+                            theme.whiteColor,
+                          ),
+                        ),
                       ),
-                      //_colorChips(),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
+
+
+
+
                 ],
               ),
             ],
@@ -752,11 +767,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
     await _taskController.addTask(
         task: Task(
             '0',
-            0,
             _selectedTimeStart.toString(),
             _selectedTimeStart.toString(),
             _selectedTimeEnd.toString(),
-            _selectedColor,
             _selectedRepeat.toString().substring(0,10)));
 
    // Navigator.pop(context);

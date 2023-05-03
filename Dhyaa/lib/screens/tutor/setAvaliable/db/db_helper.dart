@@ -108,11 +108,9 @@ class DBHelper {
       value.docs.forEach((element) {
         tasks.add(Task(
           element.id,
-          element.data()['isCompleted'] ?? 0,
           'date',
           element.data()['startTime'],
           element.data()['endTime'],
-          element.data()['color'],
           element.data()['day'],
         ).toJson());
       });

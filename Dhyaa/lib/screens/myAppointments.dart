@@ -441,7 +441,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                 color: kTitleTextColor,
                               ),
                             ),
-                            Text('لم تقبل أي حجز مع أي طالب.'),
+                            // Text('لم تقبل أي حجز مع أي طالب.'),
                           ],
                         ),
                       )
@@ -524,7 +524,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                   style: TextStyle(
                                                     color: item.status == 'ملغي'
                                                         ? Colors.red[700]
-                                                        : Colors.grey,
+                                                        :item.status == 'مؤكد'? Colors.green:Colors.grey,
                                                     fontFamily: 'cb',
                                                   ),
                                                 ),
@@ -572,7 +572,8 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                     ),
                                     Visibility(
                                       visible:
-                                          item.status == 'مؤكد', // if Confirmed
+                                          item.status == 'مؤكد',
+                                      // if Confirmed
                                       child: SingleChildScrollView(
                                       child: Row(
                                         mainAxisAlignment:
