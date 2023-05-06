@@ -148,22 +148,16 @@ class _FilterOptionsState extends State<FilterOptions> {
         if (tutor.isOnlineLesson == isOnlineLesson) {
           isOnlineChecker = true;
         }
-      } else {
-        isOnlineChecker = true;
       }
       if (isStudentHomeLesson) {
         if (tutor.isStudentHomeLesson == isStudentHomeLesson) {
           isStudentHomeChecker = true;
         }
-      } else {
-        isStudentHomeChecker = true;
       }
       if (isTutorHomeLesson) {
         if (tutor.isTutorHomeLesson == isTutorHomeLesson) {
           isTutorHomeChecker = true;
         }
-      } else {
-        isTutorHomeChecker = true;
       }
 
       if (star1) {
@@ -198,16 +192,41 @@ class _FilterOptionsState extends State<FilterOptions> {
       if (!star1 && !star2 && !star3 && !star4 && !star5) {
         ratingChecker = true;
       }
-      if (priceChecker &&
-          locationChecker &&
-          addressChecker &&
-          isOnlineChecker &&
-          isStudentHomeChecker &&
-          isTutorHomeChecker &&
-          ratingChecker) {
-        filteredList.add(tutor);
-      }
-    }
+
+
+
+          if (isOnlineChecker) {
+            if (priceChecker &&
+                locationChecker &&
+                addressChecker &&
+                isOnlineChecker &&
+                ratingChecker) {
+              filteredList.add(tutor);
+            }
+          }else {
+          if (isStudentHomeChecker) {
+            if (priceChecker &&
+                locationChecker &&
+                addressChecker &&
+                isStudentHomeChecker &&
+                ratingChecker) {
+              filteredList.add(tutor);
+            }
+          } else {
+            if (isTutorHomeChecker) {
+              if (priceChecker &&
+                  locationChecker &&
+                  addressChecker &&
+                  isTutorHomeChecker &&
+                  ratingChecker) {
+                filteredList.add(tutor);
+              }
+            }
+          }
+        }
+
+
+     }
     var temp = {
       "priceRange": priceRange,
       "location": location.text,
@@ -235,6 +254,11 @@ class _FilterOptionsState extends State<FilterOptions> {
     isOnlineLesson = true;
     isStudentHomeLesson = false;
     isTutorHomeLesson = false;
+    star1 = false;
+    star2 = false;
+    star3 = false;
+    star4 = false;
+    star5 = false;
     widget.onReset('reset');
     if (mounted) setState(() {});
   }
