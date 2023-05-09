@@ -120,14 +120,14 @@
           action_btn = '<select class="form-select form-select-lg change_status" style="font-size:16px" data-user_id="'+row.id+'" aria-label="Default select example"> <option selected>ايقاف ( اختر سبب الايقاف )</option> <option value="لم يحضر الدرس">لم يحضر الدرس</option> <option value="بلاغ"> بلاغ</option> <option value="سلوك لو استخدام غير لائق للعبارات">سلوك او استخدام غير لائق للعبارات</option> <option value="اخرى">اخرى</option> </select>';
                   
           if (row.data().active_status){
-              if (row.data().active_status == 'suspended'){
+              if (row.data().active_status == 'موقوف'){
                   action_btn = '<button type="button" class="btn btn-primary unsus_btn" data-user_id="'+row.id+'">تفعيل المستخدم</button>';
               }
           } else{
               const docRef = doc(db, "Users", row.id);
 
               const data = {
-                  active_status: "unsuspended"
+                  active_status: "مفعل"
               };
 
               updateDoc(docRef, data)
@@ -137,7 +137,7 @@
                   .catch(error => {
                       console.log(error);
                   })
-              current_status = "unsuspended";
+              current_status = "مفعل";
           }
           if (row.data().updated_at) {
           }else{
@@ -202,7 +202,7 @@
           const docRef = doc(db, "Users", user_id);
 
           const data = {
-              active_status: "suspended"
+              active_status: "موقوف"
           };
 
           updateDoc(docRef, data)
@@ -225,7 +225,7 @@
           const docRef = doc(db, "Users", user_id);
 
           const data = {
-              active_status: "unsuspended",
+              active_status: "مفعل",
               status_reason : "",
               updated_at : current_updated_at
           };
@@ -248,7 +248,7 @@
           const docRef = doc(db, "Users", user_id);
 
           const data = {
-              active_status: "suspended",
+              active_status: "موقوف",
               updated_at : current_updated_at,
               status_reason : update_status
           };

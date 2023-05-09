@@ -25,7 +25,7 @@ class FirestoreHelper {
       await db
           .collection('Users')
           .where('email', isEqualTo: data)
-          .where("active_status", isEqualTo: "unsuspended")
+          .where("active_status", isEqualTo: "مفعل")
           .get()
           .then((value) {
         if (value.docs.isNotEmpty) {
@@ -89,7 +89,7 @@ class FirestoreHelper {
     await db
         .collection('Users')
         .where('email', isEqualTo: data)
-        .where("active_status", isEqualTo: "unsuspended")
+        .where("active_status", isEqualTo: "مفعل")
         .get()
         .then(
       (value) {
@@ -110,7 +110,7 @@ class FirestoreHelper {
     await db
         .collection('Users')
         .where('email', isEqualTo: data)
-        .where("active_status", isEqualTo: "unsuspended")
+        .where("active_status", isEqualTo: "مفعل")
         .get()
         .then(
       (value) {
@@ -142,7 +142,7 @@ class FirestoreHelper {
           await db
               .collection('Users')
               .where('email', isEqualTo: data)
-              .where("active_status", isEqualTo: "unsuspended")
+              .where("active_status", isEqualTo: "مفعل")
               .get()
               .then(
             (value) {
@@ -162,7 +162,7 @@ class FirestoreHelper {
     await db
         .collection('Users')
         .where("type", isEqualTo: "Tutor")
-        .where("active_status", isEqualTo: "unsuspended")
+        .where("active_status", isEqualTo: "مفعل")
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -191,7 +191,7 @@ class FirestoreHelper {
         .where("type", isEqualTo: "Tutor")
         // removing the tutor its self from recommendation
         .where("userId", isNotEqualTo: user.userId)
-        .where("active_status", isEqualTo: "unsuspended")
+        .where("active_status", isEqualTo: "مفعل")
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -351,7 +351,7 @@ class FirestoreHelper {
     QuerySnapshot<Map<String, dynamic>> value = await db
         .collection('Users')
         .where('userId', isEqualTo: id)
-        .where("active_status", isEqualTo: "unsuspended")
+        .where("active_status", isEqualTo: "مفعل")
         .get();
     uData = UserData.fromMap(value.docs.first.data());
     return uData;

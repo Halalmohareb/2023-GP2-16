@@ -64,7 +64,7 @@ class UserData {
     bio = obj['bio'] ?? '';
     avatar = obj['avatar'] ?? defaultAvatar;
     averageRating = obj['averageRating'] ?? '0.0';
-    active_status = obj['active_status'] ?? 'unsuspended';
+    active_status = obj['active_status'] ?? 'مفعل';
   }
 
   Map<String, dynamic> toMap() {

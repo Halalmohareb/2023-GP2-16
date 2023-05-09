@@ -201,7 +201,7 @@ class AuthProvider extends ChangeNotifier {
 
       Map<String, dynamic> userData =
           await doesNameAlreadyExist(user.uid, "Users");
-      if (userData["active_status"] == "unsuspended") {
+      if (userData["active_status"] == "مفعل") {
         if (userData["type"] == type) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('type', type);
@@ -234,7 +234,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       if (e.code == "user-not-found") {
         showToast("لم يتم العثور على المستخدم", isSuccess: false);
-      } else if (e.code == "suspended") {
+      } else if (e.code == "موقوف") {
         showToast("حسابك متوقف", isSuccess: false);
       } else {
         showToast("تأكد من إدخال البريد الإلكتروني وكلمة المرور الصحيحين.");
@@ -379,7 +379,7 @@ class AuthProvider extends ChangeNotifier {
           "studentsHomeLessonPrice": '',
           "tutorsHomeLessonPrice": '',
           "bio": '',
-          "active_status": 'unsuspended',
+          "active_status": 'مفعل',
         }).then((value) {
           studentUserName.clear();
           studentEmail.clear();
@@ -410,7 +410,7 @@ class AuthProvider extends ChangeNotifier {
           "studentsHomeLessonPrice": studentsHomeLessonPrice.text,
           "tutorsHomeLessonPrice": tutorsHomeLessonPrice.text,
           "bio": '',
-          "active_status": 'unsuspended',
+          "active_status": 'مفعل',
         }).then((value) {
           tutorUsername.clear();
           tutorEmail.clear();
