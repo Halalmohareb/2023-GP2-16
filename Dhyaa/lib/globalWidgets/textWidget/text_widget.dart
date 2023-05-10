@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show FontWeight, Text, TextAlign, TextDecoration, TextStyle, Widget;
 
 Widget text(
   text,

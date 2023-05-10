@@ -32,6 +32,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   UserData userData = emptyUserData;
   UserData myUserData = emptyUserData;
   List<Task> tasks = [];
+  List availability = [];
   List<Review> allReviews = [];
   int tabIndex = 0;
 
@@ -59,6 +60,9 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       }
       tasks.sort((Task a, Task b) => a.day.compareTo(b.day));
       if (mounted) setState(() {});
+      // Availability checker
+      availabilityChecker();
+      // Availability checker end
     });
   }
 
@@ -629,45 +633,70 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
   }
 
   isAppointmentExist(timeObj, date, tutorId, index) {
-    if (mounted) setState(() {});
     FirestoreHelper.isAppointmentExist(timeObj, date, tutorId)
         .then((isAvailableForAppointment) {
       if (!isAvailableForAppointment) {
-        tasks.removeAt(index);
+        availability[index]['counter']--;
+        if (availability[index]['counter'] < 1) {
+          availability.removeAt(index);
+        }
         if (mounted) setState(() {});
       }
     });
   }
 
+  availabilityChecker() {
+    for (var i = 0; i < tasks.length; i++) {
+      var task = tasks[i];
+      int s = int.parse(task.startTime.split(':')[0]);
+      int e = int.parse(task.endTime.split(':')[0]);
+      int counter = e - s;
+      availability.insert(i, {"availability": task, "counter": counter});
+      if (mounted) setState(() {});
+      for (var j = 0; j < counter.abs(); j++) {
+        var d = task.day.split('-');
+        if (int.parse(d[0]) == DateTime.now().year &&
+            int.parse(d[1]) == DateTime.now().month &&
+            int.parse(d[2]) == DateTime.now().day) {
+          if (((s + j) + 1) > DateTime.now().hour) {
+            isAppointmentExist(
+              {
+                'start': (s + j).toString() + ':00',
+                'end': ((s + j) + 1).toString() + ':00'
+              },
+              task.day,
+              userData.userId,
+              i,
+            );
+          }
+        } else {
+          isAppointmentExist(
+            {
+              'start': (s + j).toString() + ':00',
+              'end': ((s + j) + 1).toString() + ':00'
+            },
+            task.day,
+            userData.userId,
+            i,
+          );
+        }
+      }
+    }
+  }
+
   showAvailability() {
     var widget = Container();
-    // Availability checker
-    for (var i = 0; i < tasks.length; i++) {
-      var date = tasks[i];
-      int s = int.parse(date.startTime.split(':')[0]);
-      isAppointmentExist(
-        {
-          'start': (s + i).toString() + ':00',
-          'end': ((s + i) + 1).toString() + ':00'
-        },
-        tasks[i].day,
-        userData.userId,
-        i,
-      );
-    }
-    // Availability checker end
-
     widget = Container(
       height: 55,
       margin: EdgeInsets.all(10),
-      child: tasks.length == 0
+      child: availability.length == 0
           ? Align(
               alignment: Alignment.topRight,
               child: Text('المعلم غير متوفر لتحديد موعد'),
             )
           : Wrap(
               spacing: 10.0,
-              children: List.generate(tasks.length, (index) {
+              children: List.generate(availability.length, (index) {
                 return Container(
                   height: 55,
                   width: MediaQuery.of(context).size.width / 3 - 15,
@@ -682,7 +711,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        tasks[index].day.toUpperCase(),
+                        availability[index]['availability'].day.toUpperCase(),
                         style: TextStyle(
                           fontSize: 11,
                           fontFamily: 'cb',
@@ -690,7 +719,9 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                         ),
                       ),
                       Text(
-                        tasks[index].startTime + ' - ' + tasks[index].endTime,
+                        availability[index]['availability'].startTime +
+                            ' - ' +
+                            availability[index]['availability'].endTime,
                         style: TextStyle(
                           fontSize: 11,
                           fontFamily: 'cb',
@@ -711,7 +742,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
       h = 50.0 + (25.0 * getNumberOfLines(userData.bio, context));
     }
     if (tabIndex == 1) {
-      h = tasks.length > 3 ? (tasks.length / 2) * 70 : 120;
+      h = availability.length > 3 ? (availability.length / 2) * 100 : 120;
     }
     if (tabIndex == 2) {
       h = 200;
