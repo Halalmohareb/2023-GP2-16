@@ -334,7 +334,7 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Text(
-                      'قد يعجبك',
+                      'معلمين اخرين',
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'cb',

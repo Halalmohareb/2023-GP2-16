@@ -148,7 +148,7 @@ class _StudentShowProfile extends State<StudentShowProfile> {
                 child: Container(
                   margin: EdgeInsets.only(right: 10),
                   child: Text(
-                    ': التقييم ',
+                    ' التقييم ',
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: 'cb',

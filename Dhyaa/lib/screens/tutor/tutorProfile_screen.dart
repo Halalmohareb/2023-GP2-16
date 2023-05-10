@@ -150,7 +150,7 @@ class _TutorProfileScreenState extends State<TutorProfileScreen> {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  ' : التقييم ',
+                  ' التقييم ',
                   style: TextStyle(
                     fontSize: 15,
                     fontFamily: 'cb',

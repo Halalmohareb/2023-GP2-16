@@ -835,7 +835,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
             Row(
               children: [
                 Text(
-                  'التقييم:  ',
+                  'التقييم',
                   style: const TextStyle(
                     fontFamily: 'cb',
                   ),

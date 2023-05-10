@@ -127,7 +127,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                         height: 10,
                       ),
                       Text(
-                        ' : التقييم ',
+                        ' التقييم ',
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),

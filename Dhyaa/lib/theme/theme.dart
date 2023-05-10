@@ -12,4 +12,5 @@ class theme {
   static Color bgColor = Color(0xffF9F9F9);
   static Color fillColor = Color(0xffF0F0F0);
   static Color fillLightColor = Color(0xfff9f9f9);
+  static Color greencolor = Color(0xff93c47d);
 }
