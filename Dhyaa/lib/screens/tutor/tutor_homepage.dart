@@ -62,27 +62,27 @@ class _TutorHomepageState extends State<TutorHomepage> {
     if (snapshot.hasData) {
       if (snapshot.data!.docs.length < 1) {
         return BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
+        items: [
+          BottomNavigationBarItem(
               icon: BadgeIcon(
                 icon: Icon(Icons.chat, size: 25),
                 badgeCount: 0,
               ),
-              label: 'محادثة',
+            label: 'محادثة',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'الرئيسية',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.calendar_month_rounded,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'الرئيسية',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_month_rounded,
-              ),
-              label: 'دروسك',
-            ),
-          ],
-          currentIndex: _currentIndex,
-          onTap: onTabTapped,
+            label: 'دروسك',
+          ),
+        ],
+        currentIndex: _currentIndex,
+        onTap: onTabTapped,
         );
       }
       return ListView(
@@ -101,7 +101,7 @@ class _TutorHomepageState extends State<TutorHomepage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_filled),
                 label: 'الرئيسية',
-              ),
+      ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.calendar_month_rounded,
@@ -111,7 +111,7 @@ class _TutorHomepageState extends State<TutorHomepage> {
             ],
             currentIndex: _currentIndex,
             onTap: onTabTapped,
-          );
+    );
         }).toList(),
       );
     }

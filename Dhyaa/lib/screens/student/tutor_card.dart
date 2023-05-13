@@ -57,25 +57,15 @@ class _TutorCardWidgetState extends State<TutorCardWidget> {
   }
 
   String getMinPrice() {
-    var priceList = [
-      int.parse(widget.tutor.onlineLessonPrice == ''
-          ? '0'
-          : widget.tutor.onlineLessonPrice),
-      int.parse(widget.tutor.studentsHomeLessonPrice == ''
-          ? '0'
-          : widget.tutor.studentsHomeLessonPrice),
-      int.parse(widget.tutor.tutorsHomeLessonPrice == ''
-          ? '0'
-          : widget.tutor.tutorsHomeLessonPrice)
-    ];
-    priceList.removeWhere((element) => element == 0);
-    return priceList.length > 0
-        ?
-    // priceList.reduce(max).toString() +
-    //         '-' +
-            priceList.reduce(min).toString()
-        : '-';
-  }
+  var priceList = [
+    if (widget.tutor.onlineLessonPrice.isNotEmpty) int.tryParse(widget.tutor.onlineLessonPrice) ?? 0,
+    if (widget.tutor.studentsHomeLessonPrice.isNotEmpty) int.tryParse(widget.tutor.studentsHomeLessonPrice) ?? 0,
+    if (widget.tutor.tutorsHomeLessonPrice.isNotEmpty) int.tryParse(widget.tutor.tutorsHomeLessonPrice) ?? 0,
+  ];
+  priceList.removeWhere((element) => element == 0);
+  return priceList.isNotEmpty ? priceList.reduce(min).toString() : '-';
+}
+
 
   @override
   Widget build(BuildContext context) {

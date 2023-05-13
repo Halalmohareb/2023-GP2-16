@@ -434,7 +434,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                               'assets/images/calendar.png',
                             ),
                             Text(
-                              'لا يوجد طلب حجوزات بعد!',
+                              'لا يوجد لديك مواعيد',
                               style: TextStyle(
                                 fontFamily: 'cb',
                                 fontSize: 16,
@@ -516,7 +516,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(height: 5),
+                                            SizedBox(height: 2),
                                             Wrap(
                                               children: [
                                                 Text(
@@ -534,7 +534,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                 Text(timePipe(item.time)),
                                               ],
                                             ),
-                                            SizedBox(height: 10),
+                                            SizedBox(height: 2),
                                           SingleChildScrollView(
                                             child: Row(
                                               children: [
@@ -544,7 +544,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                     fontFamily: 'cb',
                                                   ),
                                                 ),
-                                                SizedBox(width: 15),
+                                                SizedBox(width:2),
                                                 Text(
                                                   ' | ' +
                                                       lessonTypePipe(
@@ -554,7 +554,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                                     fontFamily: 'cb',
                                                   ),
                                                 ),
-                                                SizedBox(width: 15),
+                                                SizedBox(width: 2),
                                                 Text(
                                                   item.amount.toString() +
                                                       ' ريال/ساعة ',
@@ -807,6 +807,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
+      
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.width,
@@ -831,7 +832,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                 style: TextStyle(fontFamily: 'cb'),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 2),
             Row(
               children: [
                 Text(
@@ -868,7 +869,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
                 fontFamily: 'cb',
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               child: TextFormField(
@@ -912,20 +913,20 @@ class _ReviewComponentState extends State<ReviewComponent> {
             TextButton(
                 onPressed: () {
                   leaveReview(index);
-      },
-        style: TextButton.styleFrom(
+                },
+                style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(
             horizontal: 15,
           ),
           side:
           BorderSide(color: kBlueColor),
-          shape: RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
             borderRadius:
             BorderRadius.circular(10),
-          ),
-        ),
-        child: Text('تقييم'),
-      ),
+                  ),
+                ),
+                child: Text('تقييم'),
+              ),
       ],
     ),
     ),
@@ -970,12 +971,12 @@ class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
             '! رائع',
             style: TextStyle(fontFamily: 'cb'),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 2),
           Text(
             'تم التقييم بنجاح',
             style: TextStyle(fontFamily: 'cb'),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           TextButton(
             onPressed: () {
               Navigator.pop(context);

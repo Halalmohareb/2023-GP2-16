@@ -29,13 +29,13 @@ class FilterOptions extends StatefulWidget {
 class _FilterOptionsState extends State<FilterOptions> {
   // Variables
   var screenWidth = SizeConfig.widthMultiplier;
-  SfRangeValues priceRange = SfRangeValues(1.0, 100.0);
+  SfRangeValues priceRange = SfRangeValues(1.0, 250.0);
   TextEditingController location = TextEditingController();
   GlobalKey<FormFieldState> locationKey = GlobalKey<FormFieldState>();
   TextEditingController address = TextEditingController();
   GlobalKey<FormFieldState> addressKey = GlobalKey<FormFieldState>();
 
-  bool isOnlineLesson = true;
+  bool isOnlineLesson = false;
   bool isStudentHomeLesson = false;
   bool isTutorHomeLesson = false;
 
@@ -82,176 +82,86 @@ class _FilterOptionsState extends State<FilterOptions> {
       return null;
     }
   }
+  
+ getMinPrice(UserData tutor) {
+  var priceList = [
+    if (tutor.onlineLessonPrice != null && tutor.onlineLessonPrice!.isNotEmpty)
+      int.tryParse(tutor.onlineLessonPrice!.replaceAll(RegExp('[^0-9]'), '')) ?? 0,
+    if (tutor.studentsHomeLessonPrice != null && tutor.studentsHomeLessonPrice!.isNotEmpty)
+      int.tryParse(tutor.studentsHomeLessonPrice!.replaceAll(RegExp('[^0-9]'), '')) ?? 0,
+    if (tutor.tutorsHomeLessonPrice != null && tutor.tutorsHomeLessonPrice!.isNotEmpty)
+      int.tryParse(tutor.tutorsHomeLessonPrice!.replaceAll(RegExp('[^0-9]'), '')) ?? 0,
+  ];
+  // excluding (0) from the minimum comparison
+  priceList.removeWhere((element) => element == 0);
+  return priceList.length > 0 ? priceList.reduce(min) : 0;
+}
 
-  getMinPrice(UserData tutor) {
-    var priceList = [
-      int.parse(tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
-      int.parse(tutor.studentsHomeLessonPrice == ''
-          ? '0'
-          : tutor.studentsHomeLessonPrice),
-      int.parse(
-          tutor.tutorsHomeLessonPrice == '' ? '0' : tutor.tutorsHomeLessonPrice)
-    ];
-    // excluding (0) from the minimum comparison
-    priceList.removeWhere((element) => element == 0);
-    return priceList.length > 0 ? priceList.reduce(min) : 0;
+getMaxPrice(UserData tutor) {
+  var priceList = [
+    if (tutor.onlineLessonPrice != null && tutor.onlineLessonPrice!.isNotEmpty)
+      int.tryParse(tutor.onlineLessonPrice!.replaceAll(RegExp('[^0-9]'), '')) ?? 0,
+    if (tutor.studentsHomeLessonPrice != null && tutor.studentsHomeLessonPrice!.isNotEmpty)
+      int.tryParse(tutor.studentsHomeLessonPrice!.replaceAll(RegExp('[^0-9]'), '')) ?? 0,
+    if (tutor.tutorsHomeLessonPrice != null && tutor.tutorsHomeLessonPrice!.isNotEmpty)
+      int.tryParse(tutor.tutorsHomeLessonPrice!.replaceAll(RegExp('[^0-9]'), '')) ?? 0,
+  ];
+  // excluding (0) from the maximum comparison
+  priceList.removeWhere((element) => element == 0);
+  return priceList.length > 0 ? priceList.reduce(max) : 0;
+}
+doFilter() {
+  List<UserData> filteredList = [];
+  for (var tutor in widget.tutorList) {
+    var min = getMinPrice(tutor);
+    var max = getMaxPrice(tutor);
+    bool priceChecker = false;
+    bool locationChecker = false;
+    bool addressChecker = false;
+    bool ratingChecker = false;
+
+    double minPrice = priceRange.start;
+    double maxPrice = priceRange.end;
+
+    if ((minPrice <= min && maxPrice >= max) &&
+        (location.text == '' || tutor.location == location.text) &&
+        (address.text == '' || tutor.address == address.text) &&
+        ((star1 && double.parse(tutor.averageRating) == 1) ||
+        (star2 && double.parse(tutor.averageRating) >= 2 && double.parse(tutor.averageRating) < 3) ||
+        (star3 && double.parse(tutor.averageRating) >= 3 && double.parse(tutor.averageRating) < 4) ||
+        (star4 && double.parse(tutor.averageRating) >= 4 && double.parse(tutor.averageRating) < 5) ||
+        (star5 && double.parse(tutor.averageRating) == 5) ||
+        (!star1 && !star2 && !star3 && !star4 && !star5))) {
+      filteredList.add(tutor);
+    }
   }
 
-  getMaxPrice(UserData tutor) {
-    var priceList = [
-      int.parse(tutor.onlineLessonPrice == '' ? '0' : tutor.onlineLessonPrice),
-      int.parse(tutor.studentsHomeLessonPrice == ''
-          ? '0'
-          : tutor.studentsHomeLessonPrice),
-      int.parse(
-          tutor.tutorsHomeLessonPrice == '' ? '0' : tutor.tutorsHomeLessonPrice)
-    ];
-    // excluding (0) from the minimum comparison
-    priceList.removeWhere((element) => element == 0);
-    return priceList.length > 0 ? priceList.reduce(max) : 0;
-  }
+  var temp = {
+    "priceRange": priceRange,
+    "location": location.text,
+    "address": address.text,
+    "isOnlineLesson": isOnlineLesson,
+    "isStudentHomeLesson": isStudentHomeLesson,
+    "isTutorHomeLesson": isTutorHomeLesson,
+    "star1": star1,
+    "star2": star2,
+    "star3": star3,
+    "star4": star4,
+    "star5": star5,
+  };
+  widget.onChange({"list": filteredList, "filterData": temp});
+  Navigator.pop(context);
+}
 
-  doFilter() {
-    List<UserData> filteredList = [];
-    for (var tutor in widget.tutorList) {
-      var min = getMinPrice(tutor);
-      var max = getMinPrice(tutor);
-      bool priceChecker = false;
-      bool locationChecker = false;
-      bool addressChecker = false;
-      bool isOnlineChecker = false;
-      bool isStudentHomeChecker = false;
-      bool isTutorHomeChecker = false;
-      bool ratingChecker = false;
-
-      if ((priceRange.start <= min && priceRange.end >= max)) {
-        priceChecker = true;
-      }
-
-      if (location.text == '') {
-        locationChecker = true;
-      } else {
-        if (tutor.location == location.text) {
-          locationChecker = true;
-        }
-      }
-
-      if (address.text == '') {
-        addressChecker = true;
-      } else {
-        if (tutor.address == address.text) {
-          addressChecker = true;
-        }
-      }
-
-      if (isOnlineLesson) {
-        if (tutor.isOnlineLesson == isOnlineLesson) {
-          isOnlineChecker = true;
-        }
-      }
-      if (isStudentHomeLesson) {
-        if (tutor.isStudentHomeLesson == isStudentHomeLesson) {
-          isStudentHomeChecker = true;
-        }
-      }
-      if (isTutorHomeLesson) {
-        if (tutor.isTutorHomeLesson == isTutorHomeLesson) {
-          isTutorHomeChecker = true;
-        }
-      }
-
-      if (star1) {
-        if (double.parse(tutor.averageRating) == 1) {
-          ratingChecker = true;
-        }
-      }
-
-      if (star2) {
-        if (double.parse(tutor.averageRating) >= 2 &&
-            double.parse(tutor.averageRating) < 3) {
-          ratingChecker = true;
-        }
-      }
-      if (star3) {
-        if (double.parse(tutor.averageRating) >= 3 &&
-            double.parse(tutor.averageRating) < 4) {
-          ratingChecker = true;
-        }
-      }
-      if (star4) {
-        if (double.parse(tutor.averageRating) >= 4 &&
-            double.parse(tutor.averageRating) < 5) {
-          ratingChecker = true;
-        }
-      }
-      if (star5) {
-        if (double.parse(tutor.averageRating) == 5) {
-          ratingChecker = true;
-        }
-      }
-      if (!star1 && !star2 && !star3 && !star4 && !star5) {
-        ratingChecker = true;
-      }
-
-
-
-          if (isOnlineChecker) {
-            if (priceChecker &&
-                locationChecker &&
-                addressChecker &&
-                isOnlineChecker &&
-                ratingChecker) {
-              filteredList.add(tutor);
-            }
-          }else {
-          if (isStudentHomeChecker) {
-            if (priceChecker &&
-                locationChecker &&
-                addressChecker &&
-                isStudentHomeChecker &&
-                ratingChecker) {
-              filteredList.add(tutor);
-            }
-          } else {
-            if (isTutorHomeChecker) {
-              if (priceChecker &&
-                  locationChecker &&
-                  addressChecker &&
-                  isTutorHomeChecker &&
-                  ratingChecker) {
-                filteredList.add(tutor);
-              }
-            }
-          }
-        }
-
-
-     }
-    var temp = {
-      "priceRange": priceRange,
-      "location": location.text,
-      "address": address.text,
-      "isOnlineLesson": isOnlineLesson,
-      "isStudentHomeLesson": isStudentHomeLesson,
-      "isTutorHomeLesson": isTutorHomeLesson,
-      "star1": star1,
-      "star2": star2,
-      "star3": star3,
-      "star4": star4,
-      "star5": star5,
-    };
-    widget.onChange({"list": filteredList, "filterData": temp});
-    Navigator.pop(context);
-  }
 
   reset() {
-    priceRange = SfRangeValues(1.0, 100.0);
+    priceRange = SfRangeValues(1.0, 250.0);
     locationKey.currentState?.reset();
     addressKey.currentState?.reset();
     location.clear();
     address.clear();
     areasList.clear();
-    isOnlineLesson = true;
+    isOnlineLesson = false;
     isStudentHomeLesson = false;
     isTutorHomeLesson = false;
     star1 = false;
@@ -365,7 +275,7 @@ class _FilterOptionsState extends State<FilterOptions> {
                       ),
                       SfRangeSlider(
                         min: 1,
-                        max: 150,
+                        max: 250,
                         stepSize: 1,
                         interval: 20,
                         showTicks: false,

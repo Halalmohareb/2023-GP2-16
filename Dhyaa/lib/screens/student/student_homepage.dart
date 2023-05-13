@@ -64,27 +64,27 @@ class _StudentHomepageState extends State<StudentHomepage> {
               if (snapshot.hasData) {
                 if (snapshot.data!.docs.length < 1) {
                   return BottomNavigationBar(
-                    items: [
-                      BottomNavigationBarItem(
+        items: [
+          BottomNavigationBarItem(
                         icon: BadgeIcon(
                           icon: Icon(Icons.chat, size: 25),
                           badgeCount: 0,
                         ),
-                        label: 'محادثة',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.home_filled),
-                        label: 'الرئيسية',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          Icons.calendar_month_rounded,
-                        ),
-                        label: 'دروسك',
-                      ),
-                    ],
-                    currentIndex: tabIndex,
-                    onTap: onTabTapped,
+            label: 'محادثة',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: 'الرئيسية',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.calendar_month_rounded,
+            ),
+            label: 'دروسك',
+          ),
+        ],
+        currentIndex: tabIndex,
+        onTap: onTabTapped,
                   );
                 }
                 return ListView(
@@ -103,7 +103,7 @@ class _StudentHomepageState extends State<StudentHomepage> {
                         BottomNavigationBarItem(
                           icon: Icon(Icons.home_filled),
                           label: 'الرئيسية',
-                        ),
+      ),
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.calendar_month_rounded,
