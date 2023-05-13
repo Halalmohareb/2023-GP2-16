@@ -17,6 +17,7 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/button.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/editavilability.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../globalWidgets/textWidget/text_widget.dart';
+import '../../../../globalWidgets/toast.dart';
 import '../controllers/task_controller.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   DateTime _focusedDay = DateTime.now();
   // DateTime jHijri = DateTime.parse(JHijri.now().toString());
 
-  DateTime Fday = DateTime.now().add(Duration(days: 1));
+  DateTime Fday = DateTime.now().add(Duration(days:1));
   final _taskController = Get.put(TaskController());
 
   // late var notifyHelper;
@@ -41,6 +42,7 @@ class _HomePageState extends State<HomePage> {
   double left = 630;
   double top = 900;
   Timer? _timer;
+
 
   List<String> repeatList = [
     'الاحد',
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     'friday',
     'saturday',
   ];
-  CalendarFormat format = CalendarFormat.month;
+  CalendarFormat format =CalendarFormat.month;
   int index = 0;
   final screens = [
     Center(child: Text('uuuuu1u')),
@@ -109,24 +111,28 @@ class _HomePageState extends State<HomePage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10, left: 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-      child: TableCalendar(
+      child:
+      TableCalendar(
         locale: "ar",
-        firstDay: DateTime.now(),
+        firstDay:  DateTime.now(),
         lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: DateTime.now().add(Duration(days: 2)),
-        calendarFormat: format,
-        currentDay: DateTime.now(),
-        pageJumpingEnabled: true,
-        availableCalendarFormats: const {
-          CalendarFormat.month: 'اسبوع',
-          CalendarFormat.twoWeeks: 'شهر',
-          CalendarFormat.week: 'اسبوعين'
+        focusedDay: DateTime.now().add(Duration(days:2)),
+        calendarFormat: format ,
+        currentDay:DateTime.now() ,
+        pageJumpingEnabled : true,
+        availableCalendarFormats : const
+        {CalendarFormat.month : 'اسبوع',
+          CalendarFormat.twoWeeks : 'شهر',
+          CalendarFormat.week : 'اسبوعين'
         },
-        onFormatChanged: (CalendarFormat _format) {
+
+
+        onFormatChanged: (CalendarFormat _format){
           setState(() {
             format = _format;
           });
         },
+
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDate, day);
         },
@@ -139,11 +145,9 @@ class _HomePageState extends State<HomePage> {
         calendarStyle: CalendarStyle(
           isTodayHighlighted: true,
           selectedDecoration: BoxDecoration(
-            color: _selectedDate.toString().substring(0, 10) ==
-                    DateTime.now().toString().substring(0, 10)
-                ? CupertinoColors.systemIndigo.withOpacity(0.5)
-                : Color(0xff2d99cd),
+            color: _selectedDate.toString().substring(0,10)==DateTime.now().toString().substring(0,10)?CupertinoColors.systemIndigo.withOpacity(0.5):Color(0xff2d99cd),
             shape: BoxShape.circle,
+
           ),
         ),
       ),
@@ -156,33 +160,30 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _selectedDate.toString().substring(0, 10) ==
-                  DateTime.now().toString().substring(0, 10)
-              ? MyButton(
-                  label: "+ اضافة موعد ",
-                  colorr: Colors.grey,
-                  onTap: () async {
-                    print(_selectedDate.toString().substring(0, 10) ==
-                        DateTime.now().toString().substring(0, 10));
-                  },
-                )
-              : MyButton(
-                  label: "+ اضافة موعد ",
-                  colorr: Color(0xff2d99cd),
-                  onTap: () async {
-                    print(_selectedDate);
-                    print(DateTime.now());
-                    print(_selectedDate == DateTime.now());
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            AddTaskPage(userdate: _selectedDate),
-                      ),
-                    );
-                    _taskController.getTasks();
-                  },
+
+          _selectedDate.toString().substring(0,10)==DateTime.now().toString().substring(0,10)?
+          MyButton(
+            label: "+ اضافة موعد ",
+            colorr :Colors.grey,
+            onTap: () async {
+              print(_selectedDate.toString().substring(0,10)==DateTime.now().toString().substring(0,10));
+            },
+          ):MyButton(
+            label: "+ اضافة موعد ",
+            colorr : Color(0xff2d99cd),
+            onTap: () async {
+              print(_selectedDate);
+              print(DateTime.now());
+              print(_selectedDate==DateTime.now());
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>  AddTaskPage(userdate: _selectedDate),
                 ),
+              );
+              _taskController.getTasks();
+            },
+          ),
           Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -207,13 +208,13 @@ class _HomePageState extends State<HomePage> {
     bool i = false;
     return Expanded(
       child: Obx(() {
+
         for (int j = 0; j < _taskController.taskList.length; j++) {
           print("_taskController.taskList[j].day");
           print(_taskController.taskList[j].day);
           print("_selectedDate.day");
-          print(_selectedDate.toString().substring(0, 10));
-          if (_taskController.taskList[j].day.toString() ==
-              _selectedDate.toString().substring(0, 10)) {
+          print(_selectedDate.toString().substring(0,10));
+          if (_taskController.taskList[j].day.toString() ==_selectedDate.toString().substring(0,10)) {
             i = true;
             print(i);
           }
@@ -224,6 +225,7 @@ class _HomePageState extends State<HomePage> {
           return Container(child: Text("لايوجد وقت متاح "));
         } else {
           return ListView.builder(
+
               itemCount: _taskController.taskList.length,
               itemBuilder: (_, index) {
                 Task task = _taskController.taskList[index];
@@ -231,32 +233,34 @@ class _HomePageState extends State<HomePage> {
                 int v = (repeatList2.indexOf(
                     DateFormat('EEEE').format(_selectedDate).toLowerCase()));
 
-                if ((_selectedDate.toString().substring(0, 10)) == task.day) {
+                if (( _selectedDate.toString().substring(0,10))==task.day){
                   //  if (task.day == repeatList[v]) {
                   return AnimationConfiguration.staggeredList(
                       position: index,
                       child: SlideAnimation(
                           child: FadeInAnimation(
                               child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      print("tapped");
-                                      _showBottomSheet(context, task);
-                                    },
-                                    child: TaskTile(task))
-                              ],
-                            ),
-                          ),
-                        ],
-                      ))));
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        GestureDetector(
+                                            onTap: () {
+                                              print("tapped");
+                                              _showBottomSheet(context, task);
+                                            },
+                                            child: TaskTile(task))
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ))));
                 } else {
+
                   return Container();
                 }
+
               });
         }
       }),
@@ -264,8 +268,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   showCancelAlert(BuildContext context, Task task) {
-    AlertDialog alert = AlertDialog(
-      content: Container(
+    AlertDialog alert =
+
+    AlertDialog(
+      content:
+      Container(
           padding: const EdgeInsets.only(top: 4),
           height: MediaQuery.of(context).size.height * 0.40,
           color: Get.isDarkMode ? darkHeaderClr : Colors.white,
@@ -284,8 +291,8 @@ class _HomePageState extends State<HomePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => EditAvilability(
-                                editTask: task,
-                              )),
+                            editTask: task,
+                          )),
                     );
 
                     Navigator.of(context, rootNavigator: true).pop();
@@ -293,13 +300,13 @@ class _HomePageState extends State<HomePage> {
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     //  side: BorderSide(color: kBlueColor),
-                    backgroundColor: kBlueColor,
+                    backgroundColor:kBlueColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text(
-                    'تعديل الوقت',
+
+                  child: Text('تعديل الوقت',
                     style: titleTextStle.copyWith(color: Colors.white),
                   ),
                 ),
@@ -315,6 +322,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () async {
                     Navigator.of(context, rootNavigator: true).pop();
                     _showBottomdelet(context, task);
+
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 15),
@@ -324,8 +332,8 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text(
-                    'حذف الوقت',
+
+                  child: Text('حذف الوقت',
                     style: titleTextStle.copyWith(color: Colors.white),
                   ),
                 ),
@@ -338,24 +346,26 @@ class _HomePageState extends State<HomePage> {
                 height: 55,
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: ()  {
                     Navigator.pop(context);
                     // doCancel(index);
+
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     //  side: BorderSide(color: kBlueColor),
-                    backgroundColor: kBlueColor,
+                    backgroundColor:kBlueColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text(
-                    ' إلغاء',
+
+                  child: Text(' إلغاء',
                     style: titleTextStle.copyWith(color: Colors.white),
                   ),
                 ),
               ),
+
             ],
           )),
     );
@@ -364,7 +374,8 @@ class _HomePageState extends State<HomePage> {
       barrierDismissible: true,
       context: context,
       builder: (BuildContext context) {
-        return alert;
+        return
+          alert;
       },
     );
   }
@@ -374,9 +385,12 @@ class _HomePageState extends State<HomePage> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return  Container(
             padding: const EdgeInsets.only(top: 4),
-            height: MediaQuery.of(context).size.height * 0.32,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.32,
             color: Get.isDarkMode ? darkHeaderClr : Colors.white,
             child: Column(
               children: [
@@ -391,6 +405,7 @@ class _HomePageState extends State<HomePage> {
                 Spacer(),
                 _buildBottomSheetButton(
                   label: "تعديل الوقت",
+
                   onTap: () {
                     Navigator.of(context, rootNavigator: false).push(
                       MaterialPageRoute(
@@ -402,6 +417,7 @@ class _HomePageState extends State<HomePage> {
                     );
                     // Navigator.pop(context);
                   },
+
                   clr: primaryClr,
                   context: context,
                 ),
@@ -412,6 +428,7 @@ class _HomePageState extends State<HomePage> {
                   label: "حذف الوقت",
                   onTap: () {
                     _showBottomdelet(context, task);
+
                   },
                   clr: Colors.red[300],
                   context: context,
@@ -433,6 +450,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ));
+
       },
     );
   }
@@ -443,7 +461,10 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context) {
           return Container(
               padding: const EdgeInsets.only(top: 4),
-              height: MediaQuery.of(context).size.height * 0.32,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.32,
               color: Get.isDarkMode ? darkHeaderClr : Colors.white,
               margin: const EdgeInsets.only(
                 left: 10,
@@ -470,6 +491,7 @@ class _HomePageState extends State<HomePage> {
                       _taskController.deleteTask(task);
                       Navigator.pop(context);
                       Navigator.pop(context);
+                      showToast("تم حذف الوقت بنجاح ", isSuccess: true);
                     },
                     clr: Colors.red[300],
                     context: context,
@@ -487,9 +509,13 @@ class _HomePageState extends State<HomePage> {
                     isClose: true,
                     context: context,
                   ),
+
                 ],
               ));
-        });
+
+        }
+
+    );
   }
 
   _buildBottomSheetButton({
@@ -510,19 +536,19 @@ class _HomePageState extends State<HomePage> {
                 width: 2,
                 color: isClose == true
                     ? Get.isDarkMode
-                        ? Colors.grey[600]!
-                        : Colors.grey[300]!
+                    ? Colors.grey[600]!
+                    : Colors.grey[300]!
                     : clr!),
             borderRadius: BorderRadius.circular(24),
             color: isClose ? Colors.transparent : clr,
           ),
           child: Center(
               child: Text(
-            label,
-            style: isClose
-                ? titleTextStle
-                : titleTextStle.copyWith(color: Colors.white),
-          )),
+                label,
+                style: isClose
+                    ? titleTextStle
+                    : titleTextStle.copyWith(color: Colors.white),
+              )),
         ));
   }
 }

@@ -61,45 +61,8 @@ class _ChatPageState extends State<ChatPage> {
       }
       // LocalNotificationService.display(event);
     });
-    //storeNotificationsToken();
-    // sendNotification('title', "eLoVj1X-SvuxUEbJacb_kB:APA91bExLkuwu3gf9CXowxbToIYw3-aQOlPggki9I_NHMo09q1nT6LH0ElXUJK2an4wPSzPBehE1aoVIwQYYjnifKjsiom280One1ZNTB3PuL9bRfpPqo7lf1j5MuAHpnp20uQlWVYKT");
 
   }
-
-  // sendNotification(String title, String token) async {
-  //
-  //   final data = {
-  //     'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-  //     'id': '0',
-  //     'status': 'done',
-  //     'message': title,
-  //   };
-  //
-  //   try{
-  //     http.Response response = await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),headers: <String,String>{
-  //       'Content-Type': 'application/json',
-  //       'Authorization':'key=AAAAIVO33Gg:APA91bH0Bus7E6OwJi2bR3Qoj3clfScVv7_SP1PFhLZYCQPI5ys659fZC6mjJ3oNkMEgGszPQdBOHZBw6Znn3FqZy6W2-zgEj_PkHY0wbMC3RYA2HnDfB-GrX0_d7NWomod6Nddg1bHd'
-  //     },
-  //         body: jsonEncode(<String,dynamic>{
-  //           'notification': <String,dynamic> {'title': title,'body': 'You are followed by someone'},
-  //           'priority': 'high',
-  //           'data': data,
-  //           'to': '$token'
-  //         })
-  //     );
-  //
-  //
-  //     if(response.statusCode == 200){
-  //       print("Yeh notificatin is sended");
-  //     }else{
-  //       print("Error");
-  //     }
-  //
-  //   }catch(e){
-  //
-  //   }
-  //
-  // }
 
 
 

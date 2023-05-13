@@ -8,8 +8,8 @@ showToast(text, {isSuccess = true}) {
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    backgroundColor: theme.whiteColor,
-    textColor: isSuccess ?theme.greencolor :theme.redColor ,
+    backgroundColor:isSuccess ?theme.mainColor :theme.bgColor ,
+    textColor: isSuccess ?theme.bgColor :theme.redColor ,
     fontSize: 16.0,
   );
 }

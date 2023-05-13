@@ -809,7 +809,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
       textDirection: TextDirection.rtl,
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 400,
+        height: MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -906,19 +906,42 @@ class _ReviewComponentState extends State<ReviewComponent> {
             ),
             SizedBox(height: 10),
             Center(
-              child: TextButton(
+               child: SingleChildScrollView(
+            child: Row(
+            children: [
+            TextButton(
                 onPressed: () {
                   leaveReview(index);
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  side: BorderSide(color: kBlueColor),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text('تقييم'),
-              ),
+      },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            horizontal: 15,
+          ),
+          side:
+          BorderSide(color: kBlueColor),
+          shape: RoundedRectangleBorder(
+            borderRadius:
+            BorderRadius.circular(10),
+          ),
+        ),
+        child: Text('تقييم'),
+      ),
+      ],
+    ),
+    ),
+              // TextButton(
+              //   onPressed: () {
+              //     leaveReview(index);
+              //   },
+              //   style: TextButton.styleFrom(
+              //     padding: EdgeInsets.symmetric(),
+              //     side: BorderSide(color: kBlueColor),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius:  BorderRadius.circular(screenWidth * 5),
+              //     ),
+              //   ),
+              //   child: Text('تقييم'),
+              // ),
             ),
           ],
         ),
@@ -936,10 +959,11 @@ class ReviewDonePopUp extends StatefulWidget {
 
 class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
   @override
+  var screenWidth = SizeConfig.widthMultiplier;
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 120,
+      height: MediaQuery.of(context).size.width/2,
       child: Column(
         children: [
           Text(
@@ -957,10 +981,10 @@ class _ReviewDonePopUpState extends State<ReviewDonePopUp> {
               Navigator.pop(context);
             },
             style: TextButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(),
               side: BorderSide(color: kBlueColor),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(screenWidth * 5),
               ),
             ),
             child: Text('تم'),

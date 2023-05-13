@@ -1,6 +1,4 @@
-
-
-  import 'dart:convert';
+ import 'dart:convert';
   import 'dart:math';
   import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
   import 'package:Dhyaa/models/review.dart';
@@ -17,7 +15,6 @@
   import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
   import 'package:get/get_connect/http/src/utils/utils.dart';
   import '../chat_screen.dart';
-  import '../tutor/editTutorialPage.dart';
   import '../update_profile.dart';
 
   class tutorFrofile extends StatefulWidget {

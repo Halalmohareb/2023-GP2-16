@@ -578,7 +578,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             }
           }
           Navigator.pop(context);
-    showToast('تمت اضافة الوقت بنجاح');
+          showToast("تم اضافة الوقت بنجاح ", isSuccess: true);
         }
       }
     }
