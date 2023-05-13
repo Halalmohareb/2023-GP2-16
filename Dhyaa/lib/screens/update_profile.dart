@@ -16,6 +16,7 @@ import 'package:Dhyaa/globalWidgets/textWidget/text_widget.dart';
 import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/theme/theme.dart';
 import '../_helper/helper.dart';
+import '../globalWidgets/toast.dart';
 import '../models/UserData.dart';
 import '../responsiveBloc/size_config.dart';
 import 'package:fluttertoast/fluttertoast.dart'
@@ -185,19 +186,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   checkValidation() {
     if (phone.text.length > 10) {
-      showToast("الهاتف الذي تم إدخاله غير صحيح");
+      showToast("الهاتف الذي تم إدخاله غير صحيح",isSuccess: false);
       allValid = false;
     } else if (location.text.isEmpty || oldVal() == null) {
-      showToast("المدينة التي تم إدخالها غير صحيحة");
+      showToast("المدينة التي تم إدخالها غير صحيحة",isSuccess: false);
       allValid = false;
     } else if (subject.text.isEmpty && type == 'Tutor') {
-      showToast('التخصص المدخل غير صحيح');
+      showToast('التخصص المدخل غير صحيح',isSuccess: false);
       allValid = false;
     } else if (degree.text.isEmpty && type == 'Tutor') {
-      showToast('المادة  الذي تم إدخالها غير صحيح');
+      showToast('المادة  الذي تم إدخالها غير صحيح',isSuccess: false);
       allValid = false;
     } else if (address.text.isEmpty && type == 'Tutor') {
-      showToast('العنوان / الحي  المدخل غير صحيح');
+      showToast('العنوان / الحي  المدخل غير صحيح',isSuccess: false);
       allValid = false;
     } else if (((isOnlineLesson && onlineLessonPrice.text.isEmpty) &&
             type == 'Tutor') ||
@@ -205,12 +206,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
             type == 'Tutor') ||
         ((isTutorHomeLesson && tutorsHomeLessonPrice.text.isEmpty) &&
             type == 'Tutor')) {
-      showToast('تأكد من إدخال السعر بشكل صحيح');
+      showToast('تأكد من إدخال السعر بشكل صحيح',isSuccess: false);
       allValid = false;
     } else if ((!isOnlineLesson && type == 'Tutor') &&
         (!isStudentHomeLesson && type == 'Tutor') &&
         (!isTutorHomeLesson && type == 'Tutor')) {
-      showToast('تأكد من إدخال السعر بشكل صحيح');
+      showToast('تأكد من إدخال السعر بشكل صحيح',isSuccess: false);
       allValid = false;
     } //else if (bio.text.isEmpty && type == 'Tutor') {
     // showToast(' المدخل غير صحيح');
@@ -222,17 +223,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     if (mounted) setState(() {});
   }
 
-  showToast(msg) {
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: theme.appBackgroundColor,
-      textColor: theme.darkTextColor,
-      fontSize: screenWidth * 3,
-    );
-  }
+
 
   oldVal() {
     if (citiesList.contains(location.text)) {

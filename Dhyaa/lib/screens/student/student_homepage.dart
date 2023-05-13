@@ -56,68 +56,71 @@ class _StudentHomepageState extends State<StudentHomepage> {
         home: _children[tabIndex],
         pageRoute: PageRoutes.materialPageRoute,
       ),
-      bottomNavigationBar:StreamBuilder<QuerySnapshot>(
-        stream:  FirebaseFirestore.instance.collection('Users').doc(
-            Singleton.instance.userId).collection('message').orderBy("datemsg",descending: true).limit(1).snapshots(),
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot> snapshot) {
-    if (snapshot.data!.docs.length < 1) {
-      return  BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: BadgeIcon(
-              icon: Icon(Icons.chat, size: 25),
-              badgeCount:0,
-            ),
-            label: 'محادثة',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'الرئيسية',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_month_rounded,
-            ),
-            label: 'دروسك',
-          ),
-        ],
-        currentIndex: tabIndex,
-        onTap: onTabTapped,
-      );
-    }
-          return  ListView(
-    shrinkWrap: true,
-    children:
-    snapshot.data!.docs.map((DocumentSnapshot document) {
-      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+        bottomNavigationBar:StreamBuilder<QuerySnapshot>(
+            stream:  FirebaseFirestore.instance.collection('Users').doc(
+                Singleton.instance.userId).collection('message').orderBy("datemsg",descending: true).limit(1).snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.docs.length < 1) {
+                  return BottomNavigationBar(
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: BadgeIcon(
+                          icon: Icon(Icons.chat, size: 25),
+                          badgeCount: 0,
+                        ),
+                        label: 'محادثة',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home_filled),
+                        label: 'الرئيسية',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.calendar_month_rounded,
+                        ),
+                        label: 'دروسك',
+                      ),
+                    ],
+                    currentIndex: tabIndex,
+                    onTap: onTabTapped,
+                  );
+                }
+                return ListView(
+                  shrinkWrap: true,
+                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                    return BottomNavigationBar(
+                      items: [
+                        BottomNavigationBarItem(
+                          icon: BadgeIcon(
+                            icon: Icon(Icons.chat, size: 25),
+                            badgeCount: data['numberOfRead'],
+                          ),
+                          label: 'محادثة',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home_filled),
+                          label: 'الرئيسية',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.calendar_month_rounded,
+                          ),
+                          label: 'دروسك',
+                        ),
+                      ],
+                      currentIndex: tabIndex,
+                      onTap: onTabTapped,
+                    );
+                  }).toList(),
+                );
+              }
+              return  Center(child: CircularProgressIndicator(),);
+            }
+        )
 
-          return  BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: BadgeIcon(
-                  icon: Icon(Icons.chat, size: 25),
-                  badgeCount: data['numberOfRead'],
-                ),
-                label: 'محادثة',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home_filled),
-                label: 'الرئيسية',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.calendar_month_rounded,
-                ),
-                label: 'دروسك',
-              ),
-            ],
-            currentIndex: tabIndex,
-            onTap: onTabTapped,
-          );
-    }).toList(),
-    );
-        })
     );
   }
 }

@@ -18,6 +18,7 @@ import 'package:Dhyaa/screens/tutor/setAvaliable/ui/widgets/editavilability.dart
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../globalWidgets/textWidget/text_widget.dart';
 import '../../../../globalWidgets/toast.dart';
+import '../../../../responsiveBloc/size_config.dart';
 import '../controllers/task_controller.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var screenWidth = SizeConfig.widthMultiplier;
   DateTime _selectedDate = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   // DateTime jHijri = DateTime.parse(JHijri.now().toString());
@@ -109,10 +111,10 @@ class _HomePageState extends State<HomePage> {
 
   _dateBar() {
     return Container(
+
       margin: const EdgeInsets.only(bottom: 10, left: 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-      child:
-      TableCalendar(
+      child: TableCalendar(
         locale: "ar",
         firstDay:  DateTime.now(),
         lastDay: DateTime.utc(2030, 3, 14),
