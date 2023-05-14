@@ -126,7 +126,7 @@ the Admin is able to:
 
 # Payment testing 💳
 
-to test the payment you need to use the following :
+to test the payment and book a lesson as a student you need to use the following :
 
 Use any two-part name, any future expiry date, and any three digit number.
 
