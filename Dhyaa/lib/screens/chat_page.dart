@@ -129,7 +129,7 @@ class _ChatPageState extends State<ChatPage> {
             if (snapshot.hasData) {
               if (snapshot.data.docs.length < 1) {
                 return Center(
-                  child: Text("no chat"),
+                  child: Text("لايوجد محادثه"),
                 );
               }
               return ListView.builder(

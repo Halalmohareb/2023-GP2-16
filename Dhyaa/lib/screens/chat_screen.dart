@@ -9,7 +9,7 @@ import '../provider/firestore.dart';
 import '../singlton.dart';
 
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String friendId;
   final String friendName;
   //  UserData userData ;
@@ -22,11 +22,15 @@ class ChatScreen extends StatelessWidget {
     //required this.userData,
     //  int? numberread,
 
-  });
-
-
+  }
+      );
+  @override
+  State<ChatScreen> createState() => _ChatScreen();
+}
+class _ChatScreen extends State<ChatScreen> {
+  UserData userData = emptyUserData;
   updateUser(id) async {
-    await FirebaseFirestore.instance.collection("Users").doc(Singleton.instance.userId).collection('message').doc(friendId).collection('chats').doc(id).update({
+    await FirebaseFirestore.instance.collection("Users").doc(Singleton.instance.userId).collection('message').doc(widget.friendId).collection('chats').doc(id).update({
       "isRead": true,
     });
   }
@@ -34,7 +38,7 @@ class ChatScreen extends StatelessWidget {
   updateUserread() async {
     print("Singleton.instance.userId");
     print(Singleton.instance.userId);
-    await FirebaseFirestore.instance.collection("Users").doc(Singleton.instance.userId).collection('message').doc(friendId).set({
+    await FirebaseFirestore.instance.collection("Users").doc(Singleton.instance.userId).collection('message').doc(widget.friendId).set({
       "numberOfRead": 0,
     },SetOptions(merge: true)
     );
@@ -45,24 +49,20 @@ class ChatScreen extends StatelessWidget {
     print("numberOfUnRead");
     print(numberOfUnRead);
     //updateRead();
-    await FirebaseFirestore.instance.collection('Users').doc(friendId).collection('message').doc(Singleton.instance.userId).set({
+    await FirebaseFirestore.instance.collection('Users').doc(widget.friendId).collection('message').doc(Singleton.instance.userId).set({
       "numberOfRead": numberOfUnRead,
     },SetOptions(merge: true)
     );
   }
 
-  //  updateRead() async {
-  //
-  //   print("numberOfUnRead");
-  //   print(numberOfUnRead);
-  //   var document = await FirebaseFirestore.instance.collection('Users')
-  //       .doc(friendId).collection('message').doc(userData.userId);
-  //   document.get().then((document) {
-  //     print("hiiiiiiiiiiiiiiiiii");
-  //   print(document.data()!['numberOfRead']);
-  //     numberOfUnRead = document.data()!['numberOfRead'];
+  // void initState() {
+  //   FirestoreHelper.getMyUserData().then((value) {
+  //     userData = value;
+  //     if (mounted) setState(() {});
+  //     print("tssssttttt");
+  //     print(Singleton.instance.userId);
   //   });
-  //
+  //   super.initState();
   // }
 
 
@@ -75,7 +75,7 @@ class ChatScreen extends StatelessWidget {
         backgroundColor:Color(0xff2d99cd),
         title: Row(
           children: [
-            Text(friendName,style: TextStyle(fontSize: 20),)
+            Text(widget.friendName,style: TextStyle(fontSize: 20),)
           ],
         ),
         leading: IconButton(
@@ -98,12 +98,12 @@ class ChatScreen extends StatelessWidget {
             ),
 
             child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection("Users").doc(Singleton.instance.userId).collection('message').doc(friendId).collection('chats').orderBy("date",descending: true).snapshots(),
+                stream: FirebaseFirestore.instance.collection("Users").doc(Singleton.instance.userId).collection('message').doc(widget.friendId).collection('chats').orderBy("date",descending: true).snapshots(),
                 builder:(context,AsyncSnapshot snapshot){
                   if(snapshot.hasData) {
                     if (snapshot.data.docs.length < 1) {
                       return Center(
-                        child: Text("say hi"),
+                        child: Text("قل مرحبا"),
                       );
                     }
                     //numberOfUnRead = 0;
@@ -114,12 +114,12 @@ class ChatScreen extends StatelessWidget {
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context,index){
                           bool isMe = snapshot.data.docs[index]['senderId']==Singleton.instance.userId;
-                          if (snapshot.data.docs[index]['senderId']==friendId && snapshot.data.docs[index]['isRead']== false ) {
+                          if (snapshot.data.docs[index]['senderId']==widget.friendId && snapshot.data.docs[index]['isRead']== false ) {
                             print(snapshot.data.docs[index].id);
                             updateUser(snapshot.data.docs[index].id);
                             updateUserread();
                             // updateRead();
-                            print(numberOfUnRead);
+                            print(widget.numberOfUnRead);
                           }
                           //  if (snapshot.data.docs[index]['receiverId']==friendId && snapshot.data.docs[index]['isRead']== false ) {
                           //    print(snapshot.data.docs[index].id);
@@ -139,7 +139,7 @@ class ChatScreen extends StatelessWidget {
                         });
                   }
                   print("numberOfUnRead");
-                  print(numberOfUnRead);
+                  print(widget.numberOfUnRead);
                   return Center(
                       child: CircularProgressIndicator()
                   );
@@ -148,7 +148,7 @@ class ChatScreen extends StatelessWidget {
 
           )),
 
-          MessageTextField(friendName, friendId),
+          MessageTextField(widget.friendName, widget.friendId),
 
         ],
       ),

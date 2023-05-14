@@ -15,6 +15,8 @@ import 'package:Dhyaa/provider/firestore.dart';
 import 'package:Dhyaa/screens/tutor/setAvaliable/ui/theme.dark.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import '../chat_screen.dart';
+import 'package:Dhyaa/singlton.dart';
+
 
 class ShowTutorProfilePage extends StatefulWidget {
   final UserData userData;
@@ -45,6 +47,11 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
     FirestoreHelper.getMyUserData().then((value) {
       myUserData = value;
       if (mounted) setState(() {});
+    });
+    FirestoreHelper.getMyUserDatab().then((value) {
+      if (mounted) setState(() {});
+      print("Singleton.instance.userId");
+      print(Singleton.instance.userId);
     });
     super.initState();
   }
@@ -389,6 +396,8 @@ class _ShowTutorProfilePageState extends State<ShowTutorProfilePage> {
               ),
               GestureDetector(
                 onTap: () {
+                  print(userData.userId);
+                  print(userData.username);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

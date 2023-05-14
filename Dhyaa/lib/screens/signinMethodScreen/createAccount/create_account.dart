@@ -181,7 +181,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         backgroundColor: theme.appBackgroundColor,
         appBar: appBar1('إنشاء حساب', screenWidth, context),
         body: Padding(
-          padding: EdgeInsets.all(screenWidth * 8).copyWith(top: 0, bottom: 0),
+          padding: EdgeInsets.all(screenWidth * 7).copyWith(top: 0, bottom: 0),
           child: SizedBox(
             height: double.infinity,
             width: double.infinity,
@@ -320,6 +320,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget tutorBlock(screenWidth, AuthProvider authProvider) {
     return Directionality(
       textDirection: TextDirection.rtl,
+      child: Container(
+        margin: EdgeInsets.only(right: screenWidth ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -1512,13 +1514,16 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
         ],
       ),
+      )
     );
   }
 
   Widget studentBlock(screenWidth, AuthProvider authProvider) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+      child: Container(
+    margin: EdgeInsets.only(right: screenWidth ),
+    child:Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
         sizedBox(height: screenWidth * 4),
         Row(
           children: [
@@ -2026,6 +2031,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 ),
               ),
       ]),
+    )
     );
   }
 }

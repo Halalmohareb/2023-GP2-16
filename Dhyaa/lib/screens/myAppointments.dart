@@ -722,7 +722,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
   leaveReview(index) {
     FocusScope.of(context).unfocus();
     if (stars == 0.0) {
-      showToast('التقييم مطلوب');
+      showToast('التقييم مطلوب',isSuccess: false);
     } else {
       createReview();
     }
@@ -834,6 +834,8 @@ class _ReviewComponentState extends State<ReviewComponent> {
             ),
             SizedBox(height: 2),
             Row(
+              mainAxisAlignment:
+              MainAxisAlignment.center,
               children: [
                 Text(
                   'التقييم',
@@ -909,6 +911,8 @@ class _ReviewComponentState extends State<ReviewComponent> {
             Center(
                child: SingleChildScrollView(
             child: Row(
+              mainAxisAlignment:
+              MainAxisAlignment.center,
             children: [
             TextButton(
                 onPressed: () {
