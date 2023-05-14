@@ -115,6 +115,7 @@ class _HomePageState extends State<HomePage> {
       margin: const EdgeInsets.only(bottom: 10, left: 20),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
       child: TableCalendar(
+        daysOfweekHeight: 60,
         locale: "ar",
         firstDay:  DateTime.now(),
         lastDay: DateTime.utc(2030, 3, 14),
