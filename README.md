@@ -124,7 +124,7 @@ the Admin is able to:
 
 - The app will begin installing on your device
 
-# Payment testing 💳
+# 💳 Payment testing 
 
 to test the payment and book a lesson as a student you need to use the following :
 
