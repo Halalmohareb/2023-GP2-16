@@ -9,7 +9,7 @@ https://github.com/Halalmohareb/2023-GP2-16/assets/114612881/d485a03a-cac9-4158-
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
-# Introduction:
+
 
 Many students struggle to find the right tutor for their needs, while tutors face challenges in managing their availability and reaching potential students. The purpose of developing Dhyaa is to provide a platform that helps them find each other, address these challenges, and provide a more convenient and effective tutoring service. 
 The software was developed using an iterative approach that broke down the large problem into smaller, manageable tasks. Each task was solved individually, and the solutions were then integrated to address the overall problem and build the final product incrementally. 
