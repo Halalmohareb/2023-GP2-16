@@ -124,6 +124,21 @@ the Admin is able to:
 
 - The app will begin installing on your device
 
+# Payment testing 💳
+
+to test the payment you need to use the following :
+
+Use any two-part name, any future expiry date, and any three digit number.
+
+Type	     Card Number	         Status 	Message
+Visa	    4111111111111111	Successful	Succeeded!
+Visa	    4012888888881881	Failed	Unable to process the purchase transaction
+Visa	    4123450131000508	Failed	3-D Secure transaction attempt failed (Not Enrolled)
+MasterCard	5457210001000092	Failed	Insufficient Funds
+MasterCard	5204730000002514	Failed	Declined
+MasterCard	5204730000001177	Failed	Invalid Card. Unable to store the card
+MasterCard	5555555555554444	Failed	Unable to process the purchase transaction
+MasterCard	5105105105105100	Failed	Unable to process the purchase transaction
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 # 🖥 Website 
