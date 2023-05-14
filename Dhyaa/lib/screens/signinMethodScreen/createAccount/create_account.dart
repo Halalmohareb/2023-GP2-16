@@ -1037,6 +1037,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               ),
             ],
           ),
+        Column(
+          children: [
           Row(
             children: [
               Expanded(
@@ -1194,6 +1196,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ],
                   ),
                 ),
+            SizedBox(height: 5),
           Row(
             children: [
               Expanded(
@@ -1512,6 +1515,9 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ],
                   ),
                 ),
+            SizedBox(height: 5),
+            ]
+        ),
         ],
       ),
       )

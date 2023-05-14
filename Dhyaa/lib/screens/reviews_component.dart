@@ -31,7 +31,7 @@ class _ReviewsComponentState extends State<ReviewsComponent> {
                     height: 125,
                     width: MediaQuery.of(context).size.width / 1.3,
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    margin: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
                     decoration: BoxDecoration(
                       color: theme.bgColor,
                       borderRadius: BorderRadius.circular(20),

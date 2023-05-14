@@ -20,6 +20,8 @@ import 'package:intl/intl.dart' as intl;
 import '../responsiveBloc/size_config.dart';
 import'package:http/http.dart' as http;
 
+import '../singlton.dart';
+
 
 List<Appointment> allAppointments = [];
 
@@ -41,11 +43,17 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
 
   // Functions
   @override
+
   void initState() {
     FirestoreHelper.getMyUserData().then((value) {
       userData = value;
       if (mounted) setState(() {});
       loadData();
+    });
+    FirestoreHelper.getMyUserDatab().then((value) {
+      if (mounted) setState(() {});
+      print("Singleton.instance.userId");
+      print(Singleton.instance.userId);
     });
     super.initState();
   }
@@ -87,7 +95,6 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
     }
 
   }
-
 
   loadData() {
     if (upcomingTab) {
@@ -341,6 +348,8 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(userData.userId);
+    print(userData.username);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -585,8 +594,7 @@ class _MyAppointmentPageState extends State<MyAppointmentPage> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ChatScreen(
+                                                  builder: (context) => ChatScreen(
                                                     friendId: userData.type ==
                                                             'Student'
                                                         ? item.tutorId
@@ -728,7 +736,7 @@ class _ReviewComponentState extends State<ReviewComponent> {
     }
   }
 
-  showReviewCompletedAlert(BuildContext context) {
+  showReviewCompletedAlert (BuildContext context) {
     AlertDialog alert = AlertDialog(
       contentPadding: EdgeInsets.all(10),
       titlePadding: EdgeInsets.all(0),

@@ -1,5 +1,6 @@
 import 'package:Dhyaa/models/review.dart';
 import 'package:Dhyaa/screens/reviews_component.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:Dhyaa/models/UserData.dart';
@@ -72,6 +73,20 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 20),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        imageUrl: userData.avatar,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            Icon(Icons.error),
+                        height: 70,
+                        width: 70,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -151,7 +166,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              ReviewsComponent(allReviews: allReviews),
+        Container(
+          margin: EdgeInsets.only(top: 6,bottom: 1),
+              child: ReviewsComponent(allReviews: allReviews),
+        ),
               SizedBox(height: 30),
             ],
           ),

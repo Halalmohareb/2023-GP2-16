@@ -208,7 +208,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                       Padding(
                         padding: EdgeInsets.all(15),
-                        child: Image.asset('assets/images/supportedCards.png'),
+                        child: Image.asset('assets/images/cards.jpeg'),
                       )
                     ],
                   ),

@@ -213,7 +213,7 @@ class _MenuState extends State<Menu> {
               ),
               ListTile(
                 shape: Border(),
-                title: Text('سياسة الدفع'),
+                title: Text('سياسة ضياء'),
                 leading: Icon(Icons.payment),
                  onTap: () {
                   Navigator.push(
