@@ -160,4 +160,4 @@ you can access the admin panel through : https://dhyaa-website.web.app
 
 Log-in credentianls : 
 - ID : 11114412013
-- Passwoed : Dh160321
+- Password : Dh160321
