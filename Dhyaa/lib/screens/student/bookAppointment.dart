@@ -201,7 +201,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         ),
                         SizedBox(width: 15),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.6,
                           height: 30,
                           padding: EdgeInsets.all(0),
                           decoration: BoxDecoration(
