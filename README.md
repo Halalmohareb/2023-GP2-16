@@ -10,10 +10,19 @@ https://github.com/Halalmohareb/2023-GP2-16/assets/114612881/d485a03a-cac9-4158-
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 # Introduction:
-whether it is in person or online, private tutoring allows students to take as much time as they require to study, and comprehend their coursework, furthermore, tutoring offers students a safe environment where they can ask questions, they're too hesitant or embarrassed to ask in class.the problem is that students struggle to find suitable tutors and tutors struggle to reach students who need them, due to the lack of communication platforms between the two.
+
+Many students struggle to find the right tutor for their needs, while tutors face challenges in managing their availability and reaching potential students. The purpose of developing Dhyaa is to provide a platform that helps them find each other, address these challenges, and provide a more convenient and effective tutoring service. 
+The software was developed using an iterative approach that broke down the large problem into smaller, manageable tasks. Each task was solved individually, and the solutions were then integrated to address the overall problem and build the final product incrementally. 
+After conducting the UAT, it was found that the main purpose of the software was clear and easy to use. Additionally, the evaluation showed that Dhyaa has strong performance, usability, error handling, and availability while also providing robust security measures. 
+In conclusion, we are optimistic that Dhyaa will help connect both tutors and students, making the process of private tutoring more accessible and convenient.
 
 
-Dhyaa is an android-based mobile application that supports Arabic language. It’s an application that makes it easy for students who struggle to connect with expert tutors for in-person or online lessons. It permits students to search based on a wide variety of subjects, different hourly rates, ratings, session types (in-person or online), and any location of their choosing !
+
+كثيرًا ما يواجه الطلاب صعوبة في إيجاد المدرس المناسب لاحتياجاتهم، بينما يواجه المدرسون تحديات في إدارة أوقات الدروس والوصول إلى الطلاب المحتملين. يهدف تطوير تطبيق "ضياء" إلى توفير منصة تساعدهم على العثور على بعضهم البعض ومعالجة هذه التحديات وتقديم خدمة تعليمية أكثر ملاءمة وفعالية. 
+تم تطوير التطبيق باستخدام منهجية التطوير التدريجي يقسم المشكلة الكبيرة إلى مهام صغيرة يمكن إدارتها. تم حل كل مهمة بشكل فردي، ثم تم دمج الحلول لبناء المنتج النهائي تدريجيًا. 
+بعد إجراء اختبار التطبيق النهائي، تبين أن الهدف الرئيسي للبرنامج واضح كما أن التطبيق سهل الاستخدام. بالإضافة إلى ذلك، أظهر التقييم أن "ضياء" يتمتع بأداء قوي وسهولة الاستخدام مع توفير تدابير أمان قوية.
+  تطبيق "ضياء" يساعد في ربط المدرسين والطلاب معًا، مما يجعل عملية التدريس الخصوصي أكثر إمكانية وملاءمة.
+
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
